@@ -3,10 +3,23 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var mongoose = require("mongoose");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+console.log(process.env.MONGO_URL);
+// Connect to atlat
+
+var url = 'mongodb+srv://congpham251299:Cong12322132@clusters.odice.mongodb.net/nodejsDatabase?retryWrites=true&w=majority';
+mongoose.connect(
+  //process.env.MONGO_URL,
+  //process.env.LOCAL_URL,
+  url,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  () => {
+    console.log("Connected to MongoDB");
+  }
+);
 var app = express();
 
 // view engine setup

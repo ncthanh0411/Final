@@ -7,6 +7,15 @@ var mongoose = require("mongoose");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+var User = require('./models/user');
+
+var newUser = new User({
+  name: 'TD',
+  email: 'td@gmail.com',
+  password: '123'
+});
+newUser.save();
+
 console.log(process.env.MONGO_URL);
 // Connect to atlat
 

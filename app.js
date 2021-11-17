@@ -16,13 +16,9 @@ console.log(process.env.MONGO_URL);
 
 var url = 'mongodb+srv://congpham251299:Cong12322132@clusters.odice.mongodb.net/nodejsDatabase?retryWrites=true&w=majority';
 mongoose.connect(
-<<<<<<< HEAD
-  process.env.MONGO_URL || url,
-=======
   //process.env.MONGO_URL,
   //process.env.LOCAL_URL,
   process.env.MONGO_URL  || url,
->>>>>>> c29d3044cf53f95c87400fe7100a653aa39a466c
   { useNewUrlParser: true, useUnifiedTopology: true },
   () => {
     console.log("Connected to MongoDB");

@@ -9,12 +9,6 @@ var usersRouter = require('./routes/users');
 
 var User = require('./models/user');
 
-var newUser = new User({
-  name: 'TD',
-  email: 'td@gmail.com',
-  password: '123'
-});
-newUser.save();
 
 console.log(process.env.MONGO_URL);
 // Connect to atlat
@@ -23,12 +17,20 @@ var url = 'mongodb+srv://congpham251299:Cong12322132@clusters.odice.mongodb.net/
 mongoose.connect(
   //process.env.MONGO_URL,
   //process.env.LOCAL_URL,
-  url,
+  process.env.MONGO_URL  || url,
   { useNewUrlParser: true, useUnifiedTopology: true },
   () => {
     console.log("Connected to MongoDB");
   }
 );
+
+var newUser = new User({
+  name: 'TD',
+  email: 'td@gmail.com',
+  password: '123'
+});
+newUser.save();
+
 var app = express();
 
 // view engine setup

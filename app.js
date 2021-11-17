@@ -4,11 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require("mongoose");
-var Secret = require('./secret');
+var secret = require('./secret');
+var bcrypt = require('bcrypt');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var User = require('./models/user');
+
 
 
 console.log(process.env.MONGO_URL);
@@ -25,12 +27,16 @@ mongoose.connect(
   }
 );
 
-var newUser = new User({
-  name: 'TD',
-  email: 'td@gmail.com',
-  password: '123'
-});
-newUser.save();
+// bcrypt.hash('admin', 10).then(function(hash) {
+//   var newUser = new User({
+//     username: 'admin',
+//     email: '',
+//     password: hash,
+//     role: 0,
+//     id_gg: ''
+//   });
+//   newUser.save();
+// })
 
 var app = express();
 

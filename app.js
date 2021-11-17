@@ -10,6 +10,25 @@ var usersRouter = require('./routes/users');
 
 var User = require('./models/user');
 
+
+console.log(process.env.MONGO_URL);
+// Connect to atlat
+
+var url = 'mongodb+srv://congpham251299:Cong12322132@clusters.odice.mongodb.net/nodejsDatabase?retryWrites=true&w=majority';
+mongoose.connect(
+<<<<<<< HEAD
+  process.env.MONGO_URL || url,
+=======
+  //process.env.MONGO_URL,
+  //process.env.LOCAL_URL,
+  process.env.MONGO_URL  || url,
+>>>>>>> c29d3044cf53f95c87400fe7100a653aa39a466c
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  () => {
+    console.log("Connected to MongoDB");
+  }
+);
+
 var newUser = new User({
   name: 'TD',
   email: 'td@gmail.com',
@@ -17,17 +36,6 @@ var newUser = new User({
 });
 newUser.save();
 
-console.log(process.env.MONGO_URL);
-// Connect to atlat
-
-var url = 'mongodb+srv://congpham251299:Cong12322132@clusters.odice.mongodb.net/nodejsDatabase?retryWrites=true&w=majority';
-mongoose.connect(
-  process.env.MONGO_URL || url,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => {
-    console.log("Connected to MongoDB");
-  }
-);
 var app = express();
 
 // view engine setup

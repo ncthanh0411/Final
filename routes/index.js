@@ -5,7 +5,10 @@ var User = require('../models/user');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  if(!req.session.user){
+  console.log("session1" + req.session.user)
+  console.log("session2" + req.session.email)
+
+  if(!req.session.user && !req.session.email){
     return res.redirect('/login');
   }
   console.log('role: ', req.session.role);
@@ -13,13 +16,58 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next) {
+  if(req.session.user || req.session.email){
+    res.redirect('/');
+  }
   res.render('login');
 });
 
+router.get('/logout', function(req, res, next) {
+  if(req.session.user || req.session.email){
+    delete req.session.user;
+    delete req.session.email;
+  }
+  res.redirect('/login');
+});
+
 router.post('/login', function(req, res, next) {
-  username = req.body.username
-  pass = req.body.password
-  console.log(username);
+
+  console.log(req.body);
+
+  var username = req.body.username
+  var name = req.body.name
+  var email = req.body.email
+  var pass  = req.body.password
+  var id_gg = req.body.id_gg
+
+  if(email){
+    User.findOne({ email: email }, (error, user) => {
+      if(!error && user) {                              
+        req.session.email = user.email;
+        req.session.role  = user.role;
+        return res.status(200).json({ message: 'Student login sucessfull' })      
+      }
+
+      //Check if student first login -> Save to DB
+      let user_new = new User({
+        name: name,
+        email: email,
+        id_gg: id_gg,
+        role: 2
+      })
+      user_new.save((err, user_new) => {
+        console.log(err)
+        if(err){
+          return res.status(404).json({ error: 'DB Error, please login again'})             
+        }
+        req.session.email = user_new.email;
+        req.session.role  = user_new.role;           
+        return res.status(200).json({ message: 'Student login sucessfull' })
+      })                                                           
+    })
+  }
+
+  //For Admin or phòng ban
   User.findOne({ username: username }, (error, user) => {
     if(error || !user) {
       // req.session.flash = {

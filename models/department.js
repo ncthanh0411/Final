@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 
 var departmentSchema = mongoose.Schema({
-    categoryName: String,
+    departmentName: String,
 });
 var Department = mongoose.model('Department', departmentSchema);
 module.exports = Department;

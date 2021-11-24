@@ -7,7 +7,11 @@ var userSchema = mongoose.Schema({
     email: String,
     password: String,
     role: Number,
-    id_gg: String
+    id_gg: String,
+    post:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "post"
+    }]    
 });
 var User = mongoose.model('User', userSchema);
 module.exports = User;

@@ -8,7 +8,7 @@ var secret = require('./secret');
 var bcrypt = require('bcrypt');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+var postRouter = require('./routes/post');
 var User = require('./models/user');
 
 
@@ -53,6 +53,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/post', postRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -4,30 +4,30 @@ var bcrypt = require('bcrypt');
 var User = require('../models/user');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  console.log("session1" + req.session.user)
-  console.log("session2" + req.session.email)
+router.get("/", function (req, res, next) {
+  console.log("session1" + req.session.user);
+  console.log("session2" + req.session.email);
 
-  if(!req.session.user && !req.session.email){
-    return res.redirect('/login');
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
   }
-  console.log('role: ', req.session.role);
-  res.render('index', { title: 'Express' });
+  console.log("role: ", req.session.role);
+  res.render("index2", { title: "Express" });
 });
 
-router.get('/login', function(req, res, next) {
-  if(req.session.user || req.session.email){
-    res.redirect('/');
+router.get("/login", function (req, res, next) {
+  if (req.session.user || req.session.email) {
+    res.redirect("/");
   }
-  res.render('login');
+  res.render("login");
 });
 
-router.get('/logout', function(req, res, next) {
-  if(req.session.user || req.session.email){
+router.get("/logout", function (req, res, next) {
+  if (req.session.user || req.session.email) {
     delete req.session.user;
     delete req.session.email;
   }
-  res.redirect('/login');
+  res.status(200).redirect("/login");
 });
 
 router.post('/login', function(req, res, next) {

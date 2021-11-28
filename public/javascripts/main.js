@@ -4,6 +4,10 @@ window.onload = function() {
   });
 };
 
+$(document).ready(function() {
+  $('.js-example-basic-multiple').select2();
+});
+
 function onSignIn(googleUser){
     var profile = googleUser.getBasicProfile()
 
@@ -54,6 +58,7 @@ function newDepartment() {
 }
 
 function createUser() {
+  var departlst = $('.js-example-basic-multiple').select2('val');
   $.ajax({
     url: '/createUser',
     method: 'post',
@@ -62,6 +67,7 @@ function createUser() {
       username: $('#newUsername').val(),
       password: $('#newPassword').val(),
       confpassword: $('#newConfpassword').val(),
+      department: JSON.stringify(departlst),
     },
     success: function(data) {
         if(data.isvalid) {
@@ -69,6 +75,7 @@ function createUser() {
           $('#newUsername').val('');
           $('#newPassword').val('');
           $('#newConfpassword').val('');
+          $('.js-example-basic-multiple').val('').trigger('change');
         } else {
             alert(data.msg);
         }
@@ -78,4 +85,7 @@ function createUser() {
     }
   });
 }
+
+
+
 

@@ -93,7 +93,7 @@ router.post('/login', function(req, res, next) {
 });
 
 router.get('/admin', function(req, res, next) {
-  res.render('admin');
+  res.render("admin2");
 })
 
 router.post('/newDepartment', function(req, res, next) {

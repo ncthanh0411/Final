@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 var User = require('../models/user');
 var Department = require('../models/department');
 
@@ -93,7 +95,10 @@ router.post('/login', function(req, res, next) {
 });
 
 router.get('/admin', function(req, res, next) {
-  res.render('admin');
+  Department.find(function(err, departLst) {
+    if(err) return res.status(404).json({ msg: 'DB error' });
+    return res.render('admin', { departlst: departLst });
+  })
 })
 
 router.post('/newDepartment', function(req, res, next) {
@@ -115,6 +120,7 @@ router.post('/createUser', function(req, res, next) {
   let username = req.body.username;
   let password = req.body.password;
   let confpass = req.body.confpassword;
+  let departlst = JSON.parse(req.body.department);
   if(!username) return res.json({isvalid: false, msg: 'Vui lòng nhập username '});
   if(!password) return res.json({isvalid: false, msg: 'Vui lòng nhập password '});
   if(password !== confpass) return res.json({isvalid: false, msg: 'Confirm password không trùng khớp '});
@@ -122,12 +128,16 @@ router.post('/createUser', function(req, res, next) {
     if(error || user) {
       return res.json({isvalid: false, msg: 'Đã tồn tại username, vui lòng nhập tên khác '});
     }
-    User({
-      name: name,
-      username: username,
-      password: password,
-    }).save();
-    return res.json({isvalid: true});
+    bcrypt.hash(password, saltRounds).then(function(hash) {
+      User({
+        name: name,
+        username: username,
+        password: hash,
+        role: 1,
+        department: departlst
+      }).save();
+      return res.json({isvalid: true});
+    });
   })
 });
 

@@ -62,8 +62,9 @@
                 <div class="form-group">
                     <label for="name">Chọn Phòng ban</label>
                     <select class="js-example-basic-multiple" style="width: 100%;" name="states[]" multiple="multiple">
-                        <option value="AL">Alabama</option>
-                        <option value="WY">Wyoming</option>
+                        {{#each departlst}}
+                            <option value="{{id}}" selected>{{departmentName}}</option>
+                        {{/each}}
                     </select>
                 </div>
 
@@ -75,9 +76,3 @@
         </div>
     </div>
 </div>
-
-<script>
-$(document).ready(function() {
-  $('.js-example-basic-multiple').select2();
-});
-</script>

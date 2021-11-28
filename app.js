@@ -1,6 +1,7 @@
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
+var hbs = require('hbs');
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
@@ -9,10 +10,13 @@ var bcrypt = require('bcrypt');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var postRouter = require('./routes/post');
-var User = require('./models/user');
-
 
 var User = require("./models/user");
+
+// Add helper here
+hbs.registerHelper('ifEquals', function (firstVal, secondVal, options) { 
+  return (firstVal == secondVal) ? options.fn(this) : options.inverse(this);
+});
 
 console.log(process.env.MONGO_URL);
 // Connect to atlat

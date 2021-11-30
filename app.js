@@ -1,6 +1,7 @@
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
+var hbs = require('hbs');
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
@@ -9,9 +10,15 @@ var bcrypt = require('bcrypt');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var postRouter = require('./routes/post');
+<<<<<<< HEAD
+=======
+var adminRouter = require('./routes/admin');
+>>>>>>> f43d2804dfab51d70a14cb0164a87bb7feeeec31
 
-
-var User = require("./models/user");
+// Add helper here
+hbs.registerHelper('ifEquals', function (firstVal, secondVal, options) { 
+  return (firstVal == secondVal) ? options.fn(this) : options.inverse(this);
+});
 
 console.log(process.env.MONGO_URL);
 // Connect to atlat
@@ -28,6 +35,7 @@ mongoose.connect(
   }
 );
 
+// var User = require("./models/user");
 // bcrypt.hash('admin', 10).then(function(hash) {
 //   var newUser = new User({
 //     username: 'admin',
@@ -61,6 +69,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/post', postRouter);
+app.use('/admin', adminRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

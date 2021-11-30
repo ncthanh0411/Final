@@ -15,7 +15,14 @@ var userSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Like"
     }],
-    department: [String]
+    department: [String],
+    class: String,
+    stu_department: String,
+    image_url: String,
+    department: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Department"
+    }]
 });
 var User = mongoose.model('User', userSchema);
 module.exports = User;

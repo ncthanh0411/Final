@@ -39,26 +39,26 @@ function signOut() {
 function newDepartment() {
   var newDep = $("#newDepartment").val();
   $.ajax({
-    url: "/newDepartment",
-    method: "post",
-    data: { department: newDep },
-    success: function (data) {
-      if (data.isvalid) {
-        $("#newDepartment").val("");
-      } else {
-        alert(data.msg);
+      url: '/admin/newDepartment',
+      method: 'post',
+      data: {department: newDep},
+      success: function(data) {
+          if(data.isvalid) {
+              $('#newDepartment').val('');
+          } else {
+              alert(data.msg);
+          }
+      },
+      error: function(xhr, sts, errr) {
+          console.log(err);
       }
-    },
-    error: function (xhr, sts, errr) {
-      console.log(err);
-    },
-  });
+  })
 }
 function createUser() {
   var departlst = $(".js-example-basic-multiple").select2("val");
   $.ajax({
-    url: "/createUser",
-    method: "post",
+    url: '/admin/createUser',
+    method: 'post',
     data: {
       name: $("#newName").val(),
       username: $("#newUsername").val(),

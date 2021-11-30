@@ -41,7 +41,7 @@ function signOut(){
 function newDepartment() {
   var newDep = $('#newDepartment').val();
   $.ajax({
-      url: '/newDepartment',
+      url: '/admin/newDepartment',
       method: 'post',
       data: {department: newDep},
       success: function(data) {
@@ -60,7 +60,7 @@ function newDepartment() {
 function createUser() {
   var departlst = $('.js-example-basic-multiple').select2('val');
   $.ajax({
-    url: '/createUser',
+    url: '/admin/createUser',
     method: 'post',
     data: {
       name: $('#newName').val(),

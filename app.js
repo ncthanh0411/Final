@@ -10,8 +10,7 @@ var bcrypt = require('bcrypt');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var postRouter = require('./routes/post');
-
-var User = require("./models/user");
+var adminRouter = require('./routes/admin');
 
 // Add helper here
 hbs.registerHelper('ifEquals', function (firstVal, secondVal, options) { 
@@ -33,6 +32,7 @@ mongoose.connect(
   }
 );
 
+// var User = require("./models/user");
 // bcrypt.hash('admin', 10).then(function(hash) {
 //   var newUser = new User({
 //     username: 'admin',
@@ -66,6 +66,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/post', postRouter);
+app.use('/admin', adminRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

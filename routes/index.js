@@ -97,7 +97,7 @@ router.post('/login', function(req, res, next) {
 router.get("/admin", function (req, res, next) {
   Department.find(function (err, departLst) {
     if (err) return res.status(404).json({ msg: "DB error" });
-    return res.render("admin2", { departlst: departLst });
+    return res.render("admin2", { departlst: departLst, layout: false });
   });
 });
 

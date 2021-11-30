@@ -52,11 +52,7 @@ function newDepartment() {
       error: function(xhr, sts, errr) {
           console.log(err);
       }
-    },
-    error: function (xhr, sts, errr) {
-      console.log(err);
-    },
-  });
+  })
 }
 function createUser() {
   var departlst = $(".js-example-basic-multiple").select2("val");

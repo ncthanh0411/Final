@@ -9,7 +9,6 @@ var bcrypt = require('bcrypt');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var postRouter = require('./routes/post');
-var User = require('./models/user');
 
 
 var User = require("./models/user");

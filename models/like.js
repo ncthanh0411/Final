@@ -5,7 +5,7 @@ var likeSchema = mongoose.Schema({
     content: String,
     user:{
           type: mongoose.Schema.Types.ObjectId,
-          ref: "user"
+          ref: "User"
     },
     createdAt: Date
   

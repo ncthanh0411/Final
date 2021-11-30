@@ -5,15 +5,15 @@ var postSchema = mongoose.Schema({
     content: String,
     user:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "user"
+        ref: "User"
     },
     like:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "like"
+        ref: "Like"
     }],
     comment:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "comment"
+        ref: "Comment"
     }],    
     createdAt: Date
 });

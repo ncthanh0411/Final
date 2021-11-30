@@ -10,10 +10,7 @@ var bcrypt = require('bcrypt');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var postRouter = require('./routes/post');
-<<<<<<< HEAD
-=======
 var adminRouter = require('./routes/admin');
->>>>>>> f43d2804dfab51d70a14cb0164a87bb7feeeec31
 
 // Add helper here
 hbs.registerHelper('ifEquals', function (firstVal, secondVal, options) { 

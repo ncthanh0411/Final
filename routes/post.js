@@ -72,21 +72,23 @@ router.post('/', function(req, res, next) {
 });
 
 //New Comment
-router.get('/comment/:id', function(req, res, next) {
+router.post('/comment/:id', function(req, res, next) {
   User.findOne({ email: req.session.email }, (error, user) => {
     if(error || !user) {                              
       return res.status(404).json({ message: error })      
     }
 
-    console.log(req.params.id);
+    //Get data from body
+    let id_post = req.body.id_post;
+    let comment_content = req.body.comment;  
     //post
-    Post.findOne({ _id: req.params.id }, (error, post) => {
+    Post.findOne({_id: id_post }, (error, post) => {
       if(error || !post) {                              
         return res.status(404).json({ message: error })      
       }
       //comment     
       var comment = new Comment({
-        content: "Comment 1",
+        content: comment_content,
         user: user._id,
         post: post._id
       });       
@@ -97,8 +99,14 @@ router.get('/comment/:id', function(req, res, next) {
           if(error || !post_update)
           if(err){
             return res.status(404).json({ error: 'DB Error, please login again'})             
-          }        
-          return res.status(200).json({ message: 'New comment added' })
+          }       
+          comment_respond ={
+            content: comment_content,
+            user_id: user._id,
+            user_name: user.name
+          }
+          console.log(comment_respond)
+          return res.status(200).json(comment_respond)
         })         
       });   
     })       

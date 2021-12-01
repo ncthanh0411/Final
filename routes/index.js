@@ -4,6 +4,8 @@ var bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 var User = require('../models/user');
+var Post = require('../models/post');
+var Comment = require('../models/comment');
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -13,8 +15,29 @@ router.get("/", function (req, res, next) {
   if (!req.session.user && !req.session.email) {
     return res.redirect("/login");
   }
+
   console.log("role: ", req.session.role);
-  res.render("index2", { title: "Express" });
+  Post.find({})
+      .populate()
+      .populate("user")
+      .populate({
+        path:"comment",
+        populate:[{
+          path: "user",
+        }] 
+      })
+      .then( post => {
+        User.findOne({ email: req.session.email }, (error, user) => {
+          if(error || !user) {                              
+            return res.status(404).json({ message: error })      
+          }        
+          res.render("index2", {post: post, user: user});
+        })
+      })
+      .catch(error => {
+        console.log(error)
+        res.render("index2");
+      })   
 });
 
 router.get("/login", function (req, res, next) {

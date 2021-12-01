@@ -7,10 +7,14 @@ var User = require('../models/user');
 var Department = require('../models/department');
 
 router.get('/', function (req, res, next) {
+    // check login
+
     Department.find(function (err, departLst) {
-        console.log(departLst.id);
         if (err) return res.status(404).json({ msg: "DB error" });
-        return res.render("admin2", { departlst: departLst });
+        User.find({ $or: [{ role: 1 }, { role: 2 }] }, function(err, userLst) {
+            if (err) return res.status(404).json({ msg: "DB error" });
+            return res.render("admin2", { departlst: departLst, userlst: userLst });
+        });
     });
 });
 
@@ -33,31 +37,27 @@ router.post('/createUser', function(req, res, next) {
     let username = req.body.username;
     let password = req.body.password;
     let confpass = req.body.confpassword;
-    let departlst = [];
+    let departlst = JSON.parse(req.body.department);
+    
     if(!username) return res.json({isvalid: false, msg: 'Vui lòng nhập username '});
     if(!password) return res.json({isvalid: false, msg: 'Vui lòng nhập password '});
     if(password !== confpass) return res.json({isvalid: false, msg: 'Confirm password không trùng khớp '});
-  
-    JSON.parse(req.body.department).forEach(departId => {
-      Department.findById(departId, (err, depart) => {
-        if(err || !depart) {
-          return res.json({isvalid: false, msg: 'ERROR! Không tồn tại department '});
-        }
-        departlst.push(depart);
-      });
-    })
+
     User.findOne({ username: username }, (error, user) => {
         if(error || user) {
             return res.json({isvalid: false, msg: 'Đã tồn tại username, vui lòng nhập tên khác '});
         }
         bcrypt.hash(password, saltRounds).then(function(hash) {
-        User({
-            name: name,
-            username: username,
-            password: hash,
-            role: 1,
-            department: departlst
-        }).save();
+            let newUser = new User({
+                name: name,
+                username: username,
+                password: hash,
+                role: 1,
+            });
+            departlst.forEach(departId => {
+                newUser.department.push(departId);
+            });
+            newUser.save();
             return res.json({isvalid: true});
         });
     })

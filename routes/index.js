@@ -14,14 +14,14 @@ router.get("/", function (req, res, next) {
     return res.redirect("/login");
   }
   console.log("role: ", req.session.role);
-  res.render("index2", { title: "Express" });
+  res.render("index2", { title: "Home" });
 });
 
 router.get("/login", function (req, res, next) {
   if (req.session.user || req.session.email) {
     res.redirect("/");
   }
-  res.render("login");
+  res.render("login", { title: "Login", layout: false });
 });
 
 router.get("/logout", function (req, res, next) {

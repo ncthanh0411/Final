@@ -7,6 +7,10 @@ var notificationSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Department"
     },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
     createdAt: Date
 });
 var Notification = mongoose.model('Notification', notificationSchema);

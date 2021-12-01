@@ -93,4 +93,64 @@ router.post('/login', function(req, res, next) {
   })
 });
 
+router.get("/admin", function (req, res, next) {
+  Department.find(function (err, departLst) {
+    if (err) return res.status(404).json({ msg: "DB error" });
+    return res.render("admin2", { departlst: departLst, layout: false });
+  });
+});
+
+router.post("/newDepartment", function (req, res, next) {
+  let newDep = req.body.department;
+  if (!newDep)
+    return res.json({ isvalid: false, msg: "Chưa nhập tên phòng ban " });
+  Department.findOne({ departmentName: newDep }, (error, user) => {
+    if (error || user) {
+      return res.json({
+        isvalid: false,
+        msg: "Đã tồn tại phòng ban, vui lòng nhập tên khác ",
+      });
+    }
+    Department({
+      departmentName: newDep,
+    }).save();
+    return res.json({ isvalid: true });
+  });
+});
+
+router.post("/createUser", function (req, res, next) {
+  let name = req.body.name;
+  let username = req.body.username;
+  let password = req.body.password;
+  let confpass = req.body.confpassword;
+  let departlst = JSON.parse(req.body.department);
+  if (!username)
+    return res.json({ isvalid: false, msg: "Vui lòng nhập username " });
+  if (!password)
+    return res.json({ isvalid: false, msg: "Vui lòng nhập password " });
+  if (password !== confpass)
+    return res.json({
+      isvalid: false,
+      msg: "Confirm password không trùng khớp ",
+    });
+  User.findOne({ username: username }, (error, user) => {
+    if (error || user) {
+      return res.json({
+        isvalid: false,
+        msg: "Đã tồn tại username, vui lòng nhập tên khác ",
+      });
+    }
+    bcrypt.hash(password, saltRounds).then(function (hash) {
+      User({
+        name: name,
+        username: username,
+        password: hash,
+        role: 1,
+        department: departlst,
+      }).save();
+      return res.json({ isvalid: true });
+    });
+  });
+});
+
 module.exports = router;

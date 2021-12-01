@@ -89,6 +89,49 @@ function createUser() {
   });
 }
 
+
+//----------------------------- Post, Like, Comment ------------------------------------
+function post_comment(e,id){
+    //Press enter event
+    if (e.keyCode == 13) {
+      //Post
+      let post_comment =  $('#post_comment'+id)
+      //Get content of comment
+      let comment_content = $('#comment_content'+id);   
+      var comment = {
+        id_post: id,
+        comment: comment_content.val()
+      }
+      $.ajax({
+          url: '/post/comment/' + id,
+          method: 'post',
+          data: comment,
+          success: function(comment){
+            var comment_HTML =
+            '	<li>' +
+              '<div class="comet-avatar">' +
+              '<img src="images/resources/comet-1.jpg" alt=""></div>' +
+              '<div class="we-comment">' +
+              '<div class="coment-head">' +
+              '<h5><a href="time-line.html" title="">' + comment.user_name + '</a></h5>' +
+              '<span>1 year ago</span><a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a></div>' +
+              '<p>' + comment.content +'</p></div>' +
+            '</li>';           
+            post_comment.prepend(comment_HTML)
+            comment_content.val("") 
+          },
+          error: function(comment){
+            console.log(comment)
+            alert('Fail to comment')
+          }
+      })       
+  }
+
+  
+}
+
+
+//----------------------------- Layout ------------------------------------
 if ($("#map-canvas").length) {
   jQuery(document).ready(function ($) {
     var map;
@@ -367,18 +410,18 @@ jQuery(document).ready(function ($) {
   if ($.isFunction($.fn.downCount)) {
     $(".countdown").downCount({ date: "11/12/2018 12:00:00", offset: +10 });
   }
-  jQuery(".post-comt-box textarea").on("keydown", function (event) {
-    if (event.keyCode == 13) {
-      var comment = jQuery(this).val();
-      var parent = jQuery(".showmore").parent("li");
-      var comment_HTML =
-        '	<li><div class="comet-avatar"><img src="images/resources/comet-1.jpg" alt=""></div><div class="we-comment"><div class="coment-head"><h5><a href="time-line.html" title="">Jason borne</a></h5><span>1 year ago</span><a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a></div><p>' +
-        comment +
-        "</p></div></li>";
-      $(comment_HTML).insertBefore(parent);
-      jQuery(this).val("");
-    }
-  });
+  // jQuery(".post-comt-box textarea").on("keydown", function (event) {
+  //   if (event.keyCode == 13) {
+  //     var comment = jQuery(this).val();
+  //     var parent = jQuery(".showmore").parent("li");
+  //     var comment_HTML =
+  //       '	<li><div class="comet-avatar"><img src="images/resources/comet-1.jpg" alt=""></div><div class="we-comment"><div class="coment-head"><h5><a href="time-line.html" title="">Jason borne</a></h5><span>1 year ago</span><a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a></div><p>' +
+  //       comment +
+  //       "</p></div></li>";
+  //     $(comment_HTML).insertBefore(parent);
+  //     jQuery(this).val("");
+  //   }
+  // });
   $(".message-list > li > span.star-this").on("click", function () {
     $(this).toggleClass("starred");
   });

@@ -44,7 +44,7 @@ router.get("/login", function (req, res, next) {
   if (req.session.user || req.session.email) {
     res.redirect("/");
   }
-  res.render("login");
+  res.render("login", { title: "Login", layout: false });
 });
 
 router.get("/logout", function (req, res, next) {

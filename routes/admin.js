@@ -13,7 +13,11 @@ router.get('/', function (req, res, next) {
         if (err) return res.status(404).json({ msg: "DB error" });
         User.find({ $or: [{ role: 1 }, { role: 2 }] }, function(err, userLst) {
             if (err) return res.status(404).json({ msg: "DB error" });
-            return res.render("admin2", { departlst: departLst, userlst: userLst });
+            return res.render("admin2", {
+              departlst: departLst,
+              userlst: userLst,
+              layout: false,
+            });
         });
     });
 });

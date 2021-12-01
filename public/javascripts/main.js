@@ -36,6 +36,9 @@ function signOut() {
       window.location.replace("/logout");
     });
 }
+
+// ------------------------- Create department, Create User -------------
+
 function newDepartment() {
   var newDep = $("#newDepartment").val();
   $.ajax({
@@ -54,6 +57,9 @@ function newDepartment() {
       }
   })
 }
+
+// ------------------------- Layout -------------------------------------
+
 function createUser() {
   var departlst = $(".js-example-basic-multiple").select2("val");
   $.ajax({
@@ -82,6 +88,7 @@ function createUser() {
     },
   });
 }
+
 if ($("#map-canvas").length) {
   jQuery(document).ready(function ($) {
     var map;

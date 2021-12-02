@@ -20,7 +20,6 @@ var userSchema = mongoose.Schema({
         ref: "Notification"
     }],
     class: String,
-    stu_department: String,
     image_url: String,
     department: [{
         type: mongoose.Schema.Types.ObjectId,

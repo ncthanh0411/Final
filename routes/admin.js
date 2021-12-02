@@ -12,16 +12,26 @@ router.get('/', function (req, res, next) {
     if (!req.session.user && !req.session.email) {
         return res.redirect("/login");
     }
-    if(req.session.role != 0) {
-        return res.redirect('/');
-    }
+    // if(req.session.role != 0) {
+    //     return res.redirect('/');
+    // }
     Department.find(function (err, departLst) {
         if (err) return res.status(404).json({ msg: "DB error" });
         User.find({ $or: [{ role: 1 }, { role: 2 }] }, function(err, userLst) {
             if (err) return res.status(404).json({ msg: "DB error" });
+
+            let user_depart_lst = [];
+            let user_stu_lst = [];
+            userLst.forEach(user => {
+                if(user.role == 1)
+                    user_depart_lst.push(user);
+                else
+                    user_stu_lst.push(user);
+            });
             return res.render("admin2", {
               departlst: departLst,
-              userlst: userLst,
+              user_depart_lst: user_depart_lst,
+              user_stu_lst: user_stu_lst,
               layout: false,
             });
         });

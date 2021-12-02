@@ -186,12 +186,6 @@
                 <hr>
                 <div class="w3-container">
                     <h5>Action</h5>
-                    <button type="button" class="btn btn-light border" data-toggle="modal" data-target="#new-department-dialog">
-                        <i class="fa fa-file"></i> Create New Department
-                    </button>
-                    <button type="button" class="btn btn-light border" data-toggle="modal" data-target="#new-user-dialog">
-                        <i class="fa fa-file"></i> Create New User for Department
-                    </button>
                     <p>New Visitors</p>
                     <div class="w3-grey">
                         <div class="w3-container w3-center w3-padding w3-green" style="width:25%">+25%</div>
@@ -221,21 +215,63 @@
                         {{/each}}
                         {{!-- End --}}
                     </table><br>
-                    <button class="w3-button w3-dark-grey">More Countries  <i class="fa fa-arrow-right"></i></button>
+                    <button type="button" class="btn btn-light border" data-toggle="modal" data-target="#new-department-dialog">
+                        <i class="fa fa-file"></i> Create New Department
+                    </button>
                 </div>
-                    <hr>
+                <hr>
+                {{!-- Td: 2-12-2021 --}}
+                {{#if user_depart_lst}}
                     <div class="w3-container">
-                        <h5>Recent Users</h5>
-                        <ul class="w3-ul w3-card-4 w3-white">
-                            {{#each userlst}}
-                                <li class="w3-padding-16">
+                    <h5>Department Users</h5>
+                    <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+                        {{#each user_depart_lst}}
+                            <tr id="tr{{id}}">
+                                <td>
                                     <img src="/w3images/avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
                                     <span class="w3-xlarge">{{name}}</span><br>
-                                    <span class="w3-xlarge">{{username}}</span><br>
-                                </li>
-                            {{/each}}
-                        </ul>
+                                </td>
+                                <td>{{username}}</td>
+                                <td>{{email}}</td>
+                                <td>{{department}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-light fa fa-edit"/>
+                                    <button type="button" class="btn btn-light fa fa-minus-circle" onclick=""/>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </table><br>
+                    <button type="button" class="btn btn-light border" data-toggle="modal" data-target="#new-user-dialog">
+                        <i class="fa fa-file"></i> Create New User for Department
+                    </button>
                     </div>
+                    <hr>
+                {{/if}}
+
+                {{#if user_stu_lst}}
+                    <div class="w3-container">
+                    <h5>Student Users</h5>
+                    <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+                        {{#each user_stu_lst}}
+                            <tr id="tr{{id}}">
+                                <td>
+                                    <img src="/w3images/avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
+                                    <span class="w3-xlarge">{{name}}</span><br>
+                                </td>
+                                <td>{{email}}</td>
+                                <td>{{class}}</td>
+                                <td>{{department}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-light fa fa-edit"/>
+                                    <button type="button" class="btn btn-light fa fa-minus-circle" onclick=""/>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </table><br>
+                    </div>
+                    <hr>
+                {{/if}}
+                {{!-- End --}}
         <hr>
         <div class="w3-container">
             <h5>Recent Comments</h5>

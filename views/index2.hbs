@@ -50,7 +50,8 @@
 												<i class="fa fa-bar-chart-o"></i>
 												<a href="insights.html" title="">insights</a>
 											</li>
-											<button type="button" onclick="signOut()" class="btn btn-outline-info"><i class="ti-power-off"></i> Log Out</button>
+											<button type="button" onclick="signOut()" class="btn btn-outline-info"><i
+													class="ti-power-off"></i> Log Out</button>
 										</ul>
 									</div><!-- Shortcuts -->
 									<div class="widget">
@@ -181,13 +182,14 @@
 														<p>
 															{{content}}
 														</p>
-													</div>												
+													</div>
 													<div class="post-meta">
 														<img src="images/resources/user-post.jpg" alt="">
 														<div class="we-video-info">
 															<ul>
 																<li>
-																	<span class="like" data-toggle="tooltip" title="like">
+																	<span class="like" data-toggle="tooltip"
+																		title="like">
 																		<i class="ti-heart"></i>
 																		<ins>2.2k</ins>
 																	</span>
@@ -211,31 +213,33 @@
 															</div>
 															<div class="post-comt-box">
 																<form method="post">
-																	<textarea placeholder="Post your comment" id = "comment_content{{id}}" onkeypress="post_comment(event,'{{id}}')"></textarea>
+																	<textarea placeholder="Post your comment"
+																		id="comment_content{{id}}"
+																		onkeypress="post_comment(event,'{{id}}')"></textarea>
 																	<div class="add-smiles">
 																		<span class="em em-expressionless"
 																			title="add icon"></span>
 																	</div>
-																	<button type="submit" ></button>
+																	<button type="submit"></button>
 																</form>
 															</div>
 														</li>
 													</ul>
-													<ul class="we-comet"  id = "post_comment{{id}}">
-														{{#each comment}}														
-														<li>
-															<div class="comet-avatar">
-																<img src="images/resources/comet-1.jpg">
-															</div>
-															<div class="we-comment">
-																<div class="coment-head">
-																	<h5><a href="time-line.html" >{{user.name}}</a>
-																	</h5>
-																	<span>1 year ago</span>
+													<ul class="we-comet" id="post_comment{{id}}">
+														{{#each comment}}
+															<li>
+																<div class="comet-avatar">
+																	<img src="images/resources/comet-1.jpg">
 																</div>
-																<p>{{content}}</p>
-															</div>
-														</li>									
+																<div class="we-comment">
+																	<div class="coment-head">
+																		<h5><a href="time-line.html">{{user.name}}</a>
+																		</h5>
+																		<span>1 year ago</span>
+																	</div>
+																	<p>{{content}}</p>
+																</div>
+															</li>
 														{{/each}}
 													</ul>
 													<ul class="we-comet">
@@ -260,16 +264,18 @@
 												</div>
 												<div class="post-meta">
 													<div class="description">
-												
+
 														<p>
-															Lonely Cat Enjoying in Summer Curabitur <a href="#" title="">#mypage</a> ullamcorper ultricies nisi. Nam
+															Lonely Cat Enjoying in Summer Curabitur <a href="#"
+																title="">#mypage</a> ullamcorper ultricies nisi. Nam
 															eget dui. Etiam rhoncus. Maecenas tempus, tellus eget
 															condimentum rhoncus, sem quam semper libero, sit amet
 															adipiscing sem neque sed ipsum. Nam quam nunc,
 														</p>
 													</div>
-													<iframe width="" height="315" src="https://www.youtube.com/embed/5JJ_jqqpTMY" allow="autoplay;"
-														allowfullscreen></iframe>
+													<iframe width="" height="315"
+														src="https://www.youtube.com/embed/5JJ_jqqpTMY"
+														allow="autoplay;" allowfullscreen></iframe>
 													<div class="we-video-info">
 														<ul>
 															<li>
@@ -847,8 +853,8 @@
 											<li>
 												<span>favourit music</span>
 												<p>Justin Biber, Shakira, Nati Natasah</p>
-												</li>
-												</ul>
+											</li>
+										</ul>
 									</div>
 								</aside>
 							</div><!-- sidebar -->
@@ -860,4 +866,3 @@
 	</section>
 
 </div>
-

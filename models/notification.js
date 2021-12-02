@@ -10,8 +10,7 @@ var notificationSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-    },
-    createdAt: Date
-});
+    }
+}, { timestamps: true });
 var Notification = mongoose.model('Notification', notificationSchema);
 module.exports = Notification;

@@ -9,6 +9,12 @@ var Department = require('../models/department');
 router.get('/', function (req, res, next) {
     // check login
 
+    if (!req.session.user && !req.session.email) {
+        return res.redirect("/login");
+    }
+    if(req.session.role != 0) {
+        return res.redirect('/');
+    }
     Department.find(function (err, departLst) {
         if (err) return res.status(404).json({ msg: "DB error" });
         User.find({ $or: [{ role: 1 }, { role: 2 }] }, function(err, userLst) {

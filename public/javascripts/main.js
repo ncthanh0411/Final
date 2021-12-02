@@ -58,8 +58,6 @@ function newDepartment() {
   })
 }
 
-// ------------------------- Layout -------------------------------------
-
 function createUser() {
   var departlst = $(".js-example-basic-multiple").select2("val");
   $.ajax({
@@ -88,6 +86,42 @@ function createUser() {
     },
   });
 }
+
+function confirmDel(id, name) {
+  $('#delDepartName').text(name);
+  $('#delidD').val(id);
+}
+
+function testHide() {
+  $('#delDepartName').text('');
+  $('#delidD').val('517H0042');
+  $('#conf-del-depart').modal('hide');
+}
+
+function delDepart() {
+  let id = $('#delidD').val();
+  $.ajax({
+    url: '/admin/delDepart',
+    method: 'delete',
+    data: { id: id },
+    success: function (data) {
+      if (data.isvalid) {
+        $('#tr' + id).remove();
+        $('#delDepartName').text('');
+        $('#delidD').val('517H0042');
+        $('#conf-del-depart').hide();
+        alert(data.msg);
+      } else {
+        alert(data.msg);
+      }
+    },
+    error: function (xhr, sts, errr) {
+      console.log(err);
+    },
+  });
+}
+
+// ------------------------- Layout -------------------------------------
 
 if ($("#map-canvas").length) {
   jQuery(document).ready(function ($) {

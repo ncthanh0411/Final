@@ -187,10 +187,10 @@
                 <div class="w3-container">
                     <h5>Action</h5>
                     <button type="button" class="btn btn-light border" data-toggle="modal" data-target="#new-department-dialog">
-                        <i class="fas fa-file"></i> Create New Department
+                        <i class="fa fa-file"></i> Create New Department
                     </button>
                     <button type="button" class="btn btn-light border" data-toggle="modal" data-target="#new-user-dialog">
-                        <i class="fas fa-file"></i> Create New User for Department
+                        <i class="fa fa-file"></i> Create New User for Department
                     </button>
                     <p>New Visitors</p>
                     <div class="w3-grey">
@@ -209,30 +209,17 @@
                 <div class="w3-container">
                     <h5>Department List</h5>
                     <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
-                        <tr>
-                            <td>United States</td>
-                            <td>65%</td>
-                        </tr>
-                        <tr>
-                            <td>UK</td>
-                            <td>15.7%</td>
-                        </tr>
-                        <tr>
-                            <td>Russia</td>
-                            <td>5.6%</td>
-                        </tr>
-                        <tr>
-                            <td>Spain</td>
-                            <td>2.1%</td>
-                        </tr>
-                        <tr>
-                            <td>India</td>
-                            <td>1.9%</td>
-                        </tr>
-                        <tr>
-                            <td>France</td>
-                            <td>1.5%</td>
-                        </tr>
+                        {{!-- Td: 1-12-2021 --}}
+                        {{#each departlst}}
+                            <tr id="tr{{id}}">
+                                <td>{{departmentName}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-light fa fa-edit"/>
+                                    <button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDel('{{id}}', '{{departmentName}}')" data-toggle="modal" data-target="#conf-del-depart"/>
+                                </td>
+                            </tr>
+                        {{/each}}
+                        {{!-- End --}}
                     </table><br>
                     <button class="w3-button w3-dark-grey">More Countries  <i class="fa fa-arrow-right"></i></button>
                 </div>
@@ -240,18 +227,13 @@
                     <div class="w3-container">
                         <h5>Recent Users</h5>
                         <ul class="w3-ul w3-card-4 w3-white">
-                            <li class="w3-padding-16">
-                                <img src="/w3images/avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
-                                <span class="w3-xlarge">Mike</span><br>
-                            </li>
-                            <li class="w3-padding-16">
-                                <img src="/w3images/avatar5.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
-                                <span class="w3-xlarge">Jill</span><br>
-                            </li>
-                            <li class="w3-padding-16">
-                                <img src="/w3images/avatar6.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
-                                <span class="w3-xlarge">Jane</span><br>
-                            </li>
+                            {{#each userlst}}
+                                <li class="w3-padding-16">
+                                    <img src="/w3images/avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
+                                    <span class="w3-xlarge">{{name}}</span><br>
+                                    <span class="w3-xlarge">{{username}}</span><br>
+                                </li>
+                            {{/each}}
                         </ul>
                     </div>
         <hr>
@@ -377,6 +359,33 @@
         </div>
     </div>
 </div>
+
+<!-- Confirm delete Department -->
+<div class="modal fade" id="conf-del-depart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Delete Department</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          Bạn có chắc rằng muốn xóa <strong id="delDepartName">517H0042</strong>?
+        </div>
+        <input type="hidden" id="delidD"/>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" onclick="testHide()">Delete</button>
+          <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!-- End Confirm delete Department -->
+
 <script>
     // Get the Sidebar
     var mySidebar = document.getElementById("mySidebar");

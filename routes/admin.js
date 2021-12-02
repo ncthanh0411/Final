@@ -6,6 +6,9 @@ const saltRounds = 10;
 var User = require('../models/user');
 var Department = require('../models/department');
 
+// AllPosts.findOne({ user: req.params.userid })
+// .populate({path: 'housingposts', options: { sort: { 'date': -1 } } })
+
 router.get('/', function (req, res, next) {
     // check login
 
@@ -17,24 +20,29 @@ router.get('/', function (req, res, next) {
     // }
     Department.find(function (err, departLst) {
         if (err) return res.status(404).json({ msg: "DB error" });
-        User.find({ $or: [{ role: 1 }, { role: 2 }] }, function(err, userLst) {
-            if (err) return res.status(404).json({ msg: "DB error" });
+        User.find({ $or: [{ role: 1 }, { role: 2 }] })
+            .populate('department')
+            .then(userLst => {
+                let user_depart_lst = [];
+                let user_stu_lst = [];
 
-            let user_depart_lst = [];
-            let user_stu_lst = [];
-            userLst.forEach(user => {
-                if(user.role == 1)
-                    user_depart_lst.push(user);
-                else
-                    user_stu_lst.push(user);
+                userLst.forEach(user => {
+                    if(user.role == 1)
+                        user_depart_lst.push(user);
+                    else
+                        user_stu_lst.push(user);
+                });
+                return res.render("admin2", {
+                  departlst: departLst,
+                  user_depart_lst: user_depart_lst,
+                  user_stu_lst: user_stu_lst,
+                  layout: false,
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                return res.status(404).json({ msg: "DB error" });
             });
-            return res.render("admin2", {
-              departlst: departLst,
-              user_depart_lst: user_depart_lst,
-              user_stu_lst: user_stu_lst,
-              layout: false,
-            });
-        });
     });
 });
 

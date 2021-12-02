@@ -92,12 +92,6 @@ function confirmDel(id, name) {
   $('#delidD').val(id);
 }
 
-function testHide() {
-  $('#delDepartName').text('');
-  $('#delidD').val('517H0042');
-  $('#conf-del-depart').modal('hide');
-}
-
 function delDepart() {
   let id = $('#delidD').val();
   $.ajax({
@@ -109,7 +103,6 @@ function delDepart() {
         $('#tr' + id).remove();
         $('#delDepartName').text('');
         $('#delidD').val('517H0042');
-        $('#conf-del-depart').hide();
         alert(data.msg);
       } else {
         alert(data.msg);

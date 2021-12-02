@@ -233,7 +233,13 @@
                                 </td>
                                 <td>{{username}}</td>
                                 <td>{{email}}</td>
-                                <td>{{department}}</td>
+                                <td>
+                                    {{#if department}}
+                                        {{#each department}}
+                                            <p>{{departmentName}}</p>
+                                        {{/each}}
+                                    {{/if}}
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-light fa fa-edit"/>
                                     <button type="button" class="btn btn-light fa fa-minus-circle" onclick=""/>
@@ -260,7 +266,11 @@
                                 </td>
                                 <td>{{email}}</td>
                                 <td>{{class}}</td>
-                                <td>{{department}}</td>
+                                <td>
+                                    {{#if department}}
+                                        {{departmentName}}
+                                    {{/if}}
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-light fa fa-edit"/>
                                     <button type="button" class="btn btn-light fa fa-minus-circle" onclick=""/>
@@ -326,7 +336,8 @@
                     </footer>
                     <!-- End page content -->
                     </div>
-                    <!-- New department dialog -->
+
+<!-- New department dialog -->
 <div class="modal fade" id="new-department-dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -413,7 +424,7 @@
         <input type="hidden" id="delidD"/>
         <!-- Modal footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" onclick="testHide()">Delete</button>
+          <button type="button" class="btn btn-danger" onclick="delDepart()" data-dismiss="modal">Delete</button>
           <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
         </div>
         

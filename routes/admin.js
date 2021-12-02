@@ -22,7 +22,8 @@ router.get('/', function (req, res, next) {
             return res.render("admin2", {
               departlst: departLst,
               userlst: userLst,
-              layout: false,
+              layout: "alayout",
+              title: "Admin Page",
             });
         });
     });

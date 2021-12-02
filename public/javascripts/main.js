@@ -3,8 +3,10 @@ window.onload = function () {
     gapi.auth2.init();
   });
 };
+
 $(document).ready(function () {
-  $(".js-example-basic-multiple").select2();
+  if ($(".js-example-basic-multiple").length != 0)
+    $(".js-example-basic-multiple").select2();
 });
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
@@ -42,27 +44,27 @@ function signOut() {
 function newDepartment() {
   var newDep = $("#newDepartment").val();
   $.ajax({
-      url: '/admin/newDepartment',
-      method: 'post',
-      data: {department: newDep},
-      success: function(data) {
-          if(data.isvalid) {
-              $('#newDepartment').val('');
-          } else {
-              alert(data.msg);
-          }
-      },
-      error: function(xhr, sts, errr) {
-          console.log(err);
+    url: "/admin/newDepartment",
+    method: "post",
+    data: { department: newDep },
+    success: function (data) {
+      if (data.isvalid) {
+        $("#newDepartment").val("");
+      } else {
+        alert(data.msg);
       }
-  })
+    },
+    error: function (xhr, sts, errr) {
+      console.log(err);
+    },
+  });
 }
 
 function createUser() {
   var departlst = $(".js-example-basic-multiple").select2("val");
   $.ajax({
-    url: '/admin/createUser',
-    method: 'post',
+    url: "/admin/createUser",
+    method: "post",
     data: {
       name: $("#newName").val(),
       username: $("#newUsername").val(),
@@ -88,28 +90,28 @@ function createUser() {
 }
 
 function confirmDel(id, name) {
-  $('#delDepartName').text(name);
-  $('#delidD').val(id);
+  $("#delDepartName").text(name);
+  $("#delidD").val(id);
 }
 
 function testHide() {
-  $('#delDepartName').text('');
-  $('#delidD').val('517H0042');
-  $('#conf-del-depart').modal('hide');
+  $("#delDepartName").text("");
+  $("#delidD").val("517H0042");
+  $("#conf-del-depart").modal("hide");
 }
 
 function delDepart() {
-  let id = $('#delidD').val();
+  let id = $("#delidD").val();
   $.ajax({
-    url: '/admin/delDepart',
-    method: 'delete',
+    url: "/admin/delDepart",
+    method: "delete",
     data: { id: id },
     success: function (data) {
       if (data.isvalid) {
-        $('#tr' + id).remove();
-        $('#delDepartName').text('');
-        $('#delidD').val('517H0042');
-        $('#conf-del-depart').hide();
+        $("#tr" + id).remove();
+        $("#delDepartName").text("");
+        $("#delidD").val("517H0042");
+        $("#conf-del-depart").hide();
         alert(data.msg);
       } else {
         alert(data.msg);
@@ -123,47 +125,47 @@ function delDepart() {
 
 // ------------------------- Layout -------------------------------------
 
-
 //----------------------------- Post, Like, Comment ------------------------------------
-function post_comment(e,id){
-    //Press enter event
-    if (e.keyCode == 13) {
-      //Post
-      let post_comment =  $('#post_comment'+id)
-      //Get content of comment
-      let comment_content = $('#comment_content'+id);   
-      var comment = {
-        id_post: id,
-        comment: comment_content.val()
-      }
-      $.ajax({
-          url: '/post/comment/' + id,
-          method: 'post',
-          data: comment,
-          success: function(comment){
-            var comment_HTML =
-            '	<li>' +
-              '<div class="comet-avatar">' +
-              '<img src="images/resources/comet-1.jpg" alt=""></div>' +
-              '<div class="we-comment">' +
-              '<div class="coment-head">' +
-              '<h5><a href="time-line.html" title="">' + comment.user_name + '</a></h5>' +
-              '<span>1 year ago</span><a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a></div>' +
-              '<p>' + comment.content +'</p></div>' +
-            '</li>';           
-            post_comment.prepend(comment_HTML)
-            comment_content.val("") 
-          },
-          error: function(comment){
-            console.log(comment)
-            alert('Fail to comment')
-          }
-      })       
+function post_comment(e, id) {
+  //Press enter event
+  if (e.keyCode == 13) {
+    //Post
+    let post_comment = $("#post_comment" + id);
+    //Get content of comment
+    let comment_content = $("#comment_content" + id);
+    var comment = {
+      id_post: id,
+      comment: comment_content.val(),
+    };
+    $.ajax({
+      url: "/post/comment/" + id,
+      method: "post",
+      data: comment,
+      success: function (comment) {
+        var comment_HTML =
+          "	<li>" +
+          '<div class="comet-avatar">' +
+          '<img src="images/resources/comet-1.jpg" alt=""></div>' +
+          '<div class="we-comment">' +
+          '<div class="coment-head">' +
+          '<h5><a href="time-line.html" title="">' +
+          comment.user_name +
+          "</a></h5>" +
+          '<span>1 year ago</span><a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a></div>' +
+          "<p>" +
+          comment.content +
+          "</p></div>" +
+          "</li>";
+        post_comment.prepend(comment_HTML);
+        comment_content.val("");
+      },
+      error: function (comment) {
+        console.log(comment);
+        alert("Fail to comment");
+      },
+    });
   }
-
-  
 }
-
 
 //----------------------------- Layout ------------------------------------
 if ($("#map-canvas").length) {
@@ -302,9 +304,10 @@ jQuery(document).ready(function ($) {
     NProgress.done();
     $(".fade").removeClass("out");
   }, 2000);
-  $(function () {
-    $('[data-toggle="tooltip"]').tooltip();
-  });
+  // $(function () {
+  //   console.log($('[data-toggle="tooltip"]'));
+  //   $('[data-toggle="tooltip"]').tooltip();
+  // });
   if ($(window).width() < 769) {
     jQuery(".sidebar").children().removeClass("stick-widget");
   }
@@ -416,6 +419,7 @@ jQuery(document).ready(function ($) {
     });
   }
   $(function () {
+    console.log($("#menu"));
     $("#menu").mmenu();
     $("#shoppingbag").mmenu({
       navbar: { title: "General Setting" },

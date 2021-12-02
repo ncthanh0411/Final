@@ -24,7 +24,6 @@ router.get("/", function (req, res, next) {
       populate: [
         {
           path: "user",
-<<<<<<< HEAD
         }],
         options: { sort: { createdAt: -1 }}
       })
@@ -41,23 +40,6 @@ router.get("/", function (req, res, next) {
         console.log(error)
         res.render("index2");
       })   
-=======
-        },
-      ],
-    })
-    .then((post) => {
-      User.findOne({ email: req.session.email }, (error, user) => {
-        if (error || !user) {
-          return res.status(404).json({ message: error });
-        }
-        res.render("index2", { post: post, user: user, title: "Home Page" });
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.render("index2");
-    });
->>>>>>> 36d0714fd50976b742a9eb41f226f33fdca640db
 });
 
 router.get("/login", function (req, res, next) {

@@ -143,7 +143,7 @@ function post_comment(e,id){
               '<div class="we-comment">' +
               '<div class="coment-head">' +
               '<h5><a href="time-line.html" title="">' + comment.user_name + '</a></h5>' +
-              '<span>' + comment.create_date +'</span><a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a></div>' +
+              '<span>' + comment.create_date +'</span></div>' +
               '<p>' + comment.content +'</p></div>' +
             '</li>';           
             post_comment.prepend(comment_HTML)

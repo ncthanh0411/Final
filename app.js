@@ -12,10 +12,11 @@ var usersRouter = require('./routes/users');
 var postRouter = require('./routes/post');
 var adminRouter = require('./routes/admin');
 var notificationRouter = require('./routes/notification');
+const { localsAsTemplateData } = require("hbs");
 
 // Add helper here
-hbs.registerHelper('ifEquals', function (firstVal, secondVal, options) { 
-  return (firstVal == secondVal) ? options.fn(this) : options.inverse(this);
+hbs.registerHelper("ifEquals", function (firstVal, secondVal, options) {
+  return firstVal == secondVal ? options.fn(this) : options.inverse(this);
 });
 
 console.log(process.env.MONGO_URL);
@@ -64,15 +65,15 @@ app.use(
 );
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/post', postRouter);
-app.use('/admin', adminRouter);
-app.use('/notification', notificationRouter);
+app.use("/", indexRouter);
+app.use("/users", usersRouter);
+app.use("/post", postRouter);
+app.use("/admin", adminRouter);
+app.use("/notification", notificationRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+  res.render("404", { layout: false, title: "404" });
 });
 
 // error handler

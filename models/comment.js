@@ -10,9 +10,12 @@ var commentSchema = mongoose.Schema({
     post:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post"
-  },    
-    createdAt: Date
-  
+    },
+    create_date: String,
+    update_date: String     
+},
+{ 
+    timestamps: true
 });
 var Comment = mongoose.model('Comment', commentSchema);
 module.exports = Comment;

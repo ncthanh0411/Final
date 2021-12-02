@@ -7,8 +7,11 @@ var likeSchema = mongoose.Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: "User"
     },
-    createdAt: Date
-  
+    create_date: String,
+    update_date: String     
+},
+{ 
+    timestamps: true
 });
 var Like = mongoose.model('Like', likeSchema);
 module.exports = Like;

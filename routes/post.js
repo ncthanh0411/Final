@@ -1,4 +1,5 @@
 var express = require('express');
+var moment= require('moment') 
 var router = express.Router();
 var User = require('../models/user');
 var Post = require('../models/post');
@@ -86,12 +87,19 @@ router.post('/comment/:id', function(req, res, next) {
       if(error || !post) {                              
         return res.status(404).json({ message: error })      
       }
+
       //comment     
+      var datetime = new Date();
+      var c_date  = moment(datetime).format('YYYY-MM-DD h:mm:ss');
+      var u_date  = c_date;
       var comment = new Comment({
         content: comment_content,
         user: user._id,
-        post: post._id
+        post: post._id,
+        create_date: c_date,
+        update_date: u_date
       });       
+      console.log(comment)
       comment.save(function (err, comment) {
         if(err || !comment) return res.status(404).json({ message: error }) 
         post.comment.push(comment._id)
@@ -103,7 +111,9 @@ router.post('/comment/:id', function(req, res, next) {
           comment_respond ={
             content: comment_content,
             user_id: user._id,
-            user_name: user.name
+            user_name: user.name,
+            create_date: c_date,
+            update_date: u_date
           }
           console.log(comment_respond)
           return res.status(200).json(comment_respond)

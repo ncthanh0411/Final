@@ -15,7 +15,6 @@ router.get("/", function (req, res, next) {
   if (!req.session.user && !req.session.email) {
     return res.redirect("/login");
   }
-
   console.log("role: ", req.session.role);
   Post.find({})
       .populate()
@@ -24,13 +23,15 @@ router.get("/", function (req, res, next) {
         path:"comment",
         populate:[{
           path: "user",
-        }] 
+        }],
+        options: { sort: { createdAt: -1 }}
       })
       .then( post => {
         User.findOne({ email: req.session.email }, (error, user) => {
           if(error || !user) {                              
             return res.status(404).json({ message: error })      
           }        
+          //return res.status(200).json(post);
           res.render("index2", {post: post, user: user});
         })
       })

@@ -33,12 +33,11 @@ router.get('/', function (req, res, next) {
                         user_stu_lst.push(user);
                 });
                 return res.render("admin2", {
-                    departlst: departLst,
-                    layout: "alayout",
-                    title: "Admin Page",
-                    user_depart_lst: user_depart_lst,
-                    user_stu_lst: user_stu_lst,
-                    layout: false,
+                  departlst: departLst,
+                  layout: "alayout",
+                  title: "Admin Page",
+                  user_depart_lst: user_depart_lst,
+                  user_stu_lst: user_stu_lst,
                 });
             })
             .catch(err => {

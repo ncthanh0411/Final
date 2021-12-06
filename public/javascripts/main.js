@@ -4,7 +4,8 @@ window.onload = function () {
   });
 };
 $(document).ready(function () {
-  $(".js-example-basic-multiple").select2();
+  if ($(".js-example-basic-multiple").length != 0)
+    $(".js-example-basic-multiple").select2();
 });
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
@@ -62,14 +63,14 @@ function newDepartment() {
       error: function(xhr, sts, errr) {
           console.log(err);
       }
-  })
+  });
 }
 
 function createUser() {
   var departlst = $(".js-example-basic-multiple").select2("val");
   $.ajax({
-    url: '/admin/createUser',
-    method: 'post',
+    url: "/admin/createUser",
+    method: "post",
     data: {
       name: $("#newName").val(),
       username: $("#newUsername").val(),
@@ -125,16 +126,16 @@ function confirmDelUser(id, name) {
 }
 
 function delDepart() {
-  let id = $('#delidD').val();
+  let id = $("#delidD").val();
   $.ajax({
-    url: '/admin/delDepart',
-    method: 'delete',
+    url: "/admin/delDepart",
+    method: "delete",
     data: { id: id },
     success: function (data) {
       if (data.isvalid) {
-        $('#tr' + id).remove();
-        $('#delDepartName').text('');
-        $('#delidD').val('517H0042');
+        $("#tr" + id).remove();
+        $("#delDepartName").text("");
+        $("#delidD").val("517H0042");
         alert(data.msg);
       } else {
         alert(data.msg);
@@ -172,47 +173,49 @@ function delUser() {
 
 // ------------------------- Layout -------------------------------------
 
-
 //----------------------------- Post, Like, Comment ------------------------------------
-function post_comment(e,id){
-    //Press enter event
-    if (e.keyCode == 13) {
-      //Post
-      let post_comment =  $('#post_comment'+id)
-      //Get content of comment
-      let comment_content = $('#comment_content'+id);   
-      var comment = {
-        id_post: id,
-        comment: comment_content.val()
-      }
-      $.ajax({
-          url: '/post/comment/' + id,
-          method: 'post',
-          data: comment,
-          success: function(comment){
-            var comment_HTML =
-            '	<li>' +
-              '<div class="comet-avatar">' +
-              '<img src="images/resources/comet-1.jpg" alt=""></div>' +
-              '<div class="we-comment">' +
-              '<div class="coment-head">' +
-              '<h5><a href="time-line.html" title="">' + comment.user_name + '</a></h5>' +
-              '<span>' + comment.create_date +'</span></div>' +
-              '<p>' + comment.content +'</p></div>' +
-            '</li>';           
-            post_comment.prepend(comment_HTML)
-            comment_content.val("") 
-          },
-          error: function(comment){
-            console.log(comment)
-            alert('Fail to comment')
-          }
-      })       
+function post_comment(e, id) {
+  //Press enter event
+  if (e.keyCode == 13) {
+    //Post
+    let post_comment = $("#post_comment" + id);
+    //Get content of comment
+    let comment_content = $("#comment_content" + id);
+    var comment = {
+      id_post: id,
+      comment: comment_content.val(),
+    };
+    $.ajax({
+      url: "/post/comment/" + id,
+      method: "post",
+      data: comment,
+      success: function (comment) {
+        var comment_HTML =
+          "	<li>" +
+          '<div class="comet-avatar">' +
+          '<img src="images/resources/comet-1.jpg" alt=""></div>' +
+          '<div class="we-comment">' +
+          '<div class="coment-head">' +
+          '<h5><a href="time-line.html" title="">' +
+          comment.user_name +
+          "</a></h5>" +
+          "<span>" +
+          comment.create_date +
+          "</span></div>" +
+          "<p>" +
+          comment.content +
+          "</p></div>" +
+          "</li>";
+        post_comment.prepend(comment_HTML);
+        comment_content.val("");
+      },
+      error: function (comment) {
+        console.log(comment);
+        alert("Fail to comment");
+      },
+    });
   }
-
-  
 }
-
 
 //----------------------------- Layout ------------------------------------
 if ($("#map-canvas").length) {
@@ -351,9 +354,10 @@ jQuery(document).ready(function ($) {
     NProgress.done();
     $(".fade").removeClass("out");
   }, 2000);
-  $(function () {
-    $('[data-toggle="tooltip"]').tooltip();
-  });
+  // $(function () {
+  //   console.log($('[data-toggle="tooltip"]'));
+  //   $('[data-toggle="tooltip"]').tooltip();
+  // });
   if ($(window).width() < 769) {
     jQuery(".sidebar").children().removeClass("stick-widget");
   }

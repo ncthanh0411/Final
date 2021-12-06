@@ -38,7 +38,7 @@ function signOut() {
 }
 
 // ------------------------- Create department, Create User -------------
-
+const socket = io();
 function newDepartment() {
   var newDep = $("#newDepartment").val();
   $.ajax({
@@ -48,6 +48,13 @@ function newDepartment() {
       success: function(data) {
           if(data.isvalid) {
               $('#newDepartment').val('');
+              document.getElementById('depart_table').innerHTML += '<tr id="tr{{id}}">' + 
+                '<td>{{departmentName}}</td>' +
+                '<td>' +
+                  '<button type="button" class="btn btn-light fa fa-edit"/>' +
+                  `<button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelDepart('{{id}}', '{{departmentName}}')" data-toggle="modal" data-target="#conf-del-depart"/>` +
+                '</td>' +
+              '</tr>';
           } else {
               alert(data.msg);
           }
@@ -57,8 +64,6 @@ function newDepartment() {
       }
   })
 }
-
-// ------------------------- Layout -------------------------------------
 
 function createUser() {
   var departlst = $(".js-example-basic-multiple").select2("val");
@@ -79,6 +84,26 @@ function createUser() {
         $("#newPassword").val("");
         $("#newConfpassword").val("");
         $(".js-example-basic-multiple").val("").trigger("change");
+        document.getElementById('departuser_table').innerHTML += 
+          '<tr id="tr{{id}}">' +
+            '<td>' +
+                '<img src="/w3images/avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px">' +
+                '<span class="w3-xlarge">{{name}}</span><br>'+
+            '</td>' +
+            '<td>{{username}}</td>' +
+            '<td>{{email}}</td>' +
+            '<td>' +
+                '{{#if department}}' +
+                    '{{#each department}}' +
+                        '<p>{{departmentName}}</p>' +
+                    '{{/each}}' +
+                '{{/if}}' +
+            '</td>' +
+            '<td>' +
+                '<button type="button" class="btn btn-light fa fa-edit"/>' +
+                `<button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelUser('{{id}}', '{{username}}')" data-toggle="modal" data-target="#conf-del-user"/>` +
+            '</td>' +
+        '</tr>';
       } else {
         alert(data.msg);
       }
@@ -89,9 +114,14 @@ function createUser() {
   });
 }
 
-function confirmDel(id, name) {
+function confirmDelDepart(id, name) {
   $('#delDepartName').text(name);
   $('#delidD').val(id);
+}
+
+function confirmDelUser(id, name) {
+  $('#delUserName').text(name);
+  $('#delidU').val(id);
 }
 
 function delDepart() {
@@ -115,6 +145,30 @@ function delDepart() {
     },
   });
 }
+
+function delUser() {
+  let id = $('#delidU').val();
+  $.ajax({
+    url: '/admin/delUser',
+    method: 'delete',
+    data: { id: id },
+    success: function (data) {
+      if (data.isvalid) {
+        $('#tr' + id).remove();
+        $('#delUserName').text('');
+        $('#delidU').val('517H0042');
+        alert(data.msg);
+      } else {
+        alert(data.msg);
+      }
+    },
+    error: function (xhr, sts, errr) {
+      console.log(err);
+    },
+  });
+}
+
+
 
 // ------------------------- Layout -------------------------------------
 

@@ -33,11 +33,11 @@ router.get('/', function (req, res, next) {
                         user_stu_lst.push(user);
                 });
                 return res.render("admin2", {
-                  departlst: departLst,
-                  layout: "alayout",
-                  title: "Admin Page",
-                  user_depart_lst: user_depart_lst,
-                  user_stu_lst: user_stu_lst,
+                    departlst: departLst,
+                    layout: "alayout",
+                    title: "Admin Page",
+                    user_depart_lst: user_depart_lst,
+                    user_stu_lst: user_stu_lst,
                 });
             })
             .catch(err => {
@@ -112,7 +112,7 @@ router.delete("/delDepart", function (req, res, next) {
     .then((result) => {
       return res.json({
         isvalid: true,
-        msg: "Department " + result.departmentName + "had been deleted",
+        msg: "Department " + result.departmentName + " had been deleted",
       });
     })
     .catch((err) => {
@@ -120,14 +120,14 @@ router.delete("/delDepart", function (req, res, next) {
     });
 });
 
-// Delete user - update
+// Delete user - done
 router.delete("/delUser", function (req, res, next) {
   let id = req.body.id;
   User.findByIdAndDelete(id)
     .then((result) => {
       return res.json({
         isvalid: true,
-        msg: "User " + result.username + "had been deleted",
+        msg: "User " + result.username + " had been deleted",
       });
     })
     .catch((err) => {

@@ -125,4 +125,49 @@ router.get("/test", function (req, res, next) {
   res.render("test");
 });
 
+// CongP 06.12.21 Update
+router.get("/me", function (req, res, next) {
+  console.log("session1" + req.session.user);
+  console.log("session2" + req.session.email);
+
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  console.log("role: ", req.session.role);
+  Post.find({})
+    .populate()
+    .populate("user")
+    .populate({
+      path: "comment",
+      populate: [
+        {
+          path: "user",
+        },
+      ],
+      options: { sort: { createdAt: -1 } },
+    })
+    .then((post) => {
+      User.findOne({ email: req.session.email }, (error, user) => {
+        if (error || !user) {
+          return res.status(404).json({ message: error });
+        }
+        //return res.status(200).json(post);
+        res.render("me", { post: post, user: user });
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.render("me");
+    });
+});
+
+router.get("/test2", function (req, res, next) {
+  res.render("test2", { layout: 'alayout.hbs' } );
+});
+
+router.get("/posts", function (req, res, next) {
+  res.render("posts", { layout: "alayout.hbs", title:"Department Posts" });
+});
+
+
 module.exports = router;

@@ -16,7 +16,8 @@ router.get("/", function (req, res, next) {
     return res.redirect("/login");
   }
   console.log("role: ", req.session.role);
-  Post.find({})
+  Post.find()
+    .sort({createdAt: -1})
     .populate()
     .populate("user")
     .populate({

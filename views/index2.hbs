@@ -129,44 +129,37 @@
 											<img src="images/resources/admin2.jpg" alt="">
 										</figure>
 										<div class="newpst-input">
-											<form method="post">
-												<textarea rows="2" placeholder="write something"></textarea>
+											<form id="formSubmit" method="post" onsubmit="postForm(event)" enctype="multipart/form-data">
+												<textarea rows="2" id = "content" name="content" placeholder="write something"></textarea>
 												<div class="attachments">
 													<ul>
 														<li>
-															<i class="fa fa-music"></i>
-															<label class="fileContainer">
-																<input type="file">
-															</label>
-														</li>
-														<li>
 															<i class="fa fa-image"></i>
 															<label class="fileContainer">
-																<input type="file">
+																<input type="file" name="img" onchange="previewFile(this);">
 															</label>
 														</li>
 														<li>
-															<i class="fa fa-video-camera"></i>
-															<label class="fileContainer">
-																<input type="file">
-															</label>
-														</li>
-														<li>
-															<i class="fa fa-camera"></i>
-															<label class="fileContainer">
-																<input type="file">
-															</label>
+															<i class="fa fa-video-camera" onclick="showVideo()"></i>
 														</li>
 														<li>
 															<button type="submit">Post</button>
 														</li>
 													</ul>
 												</div>
+												<br>
+												<div style="display: none;" id = "youtube_link">
+													<div class="input-group-prepend" >
+														<span class="input-group-text" id="inputGroup-sizing-lg">Youtube link</span>
+													</div>
+													<input type="text" id ="video_youtube" class="form-control" name = "video" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+												</div>
+												<img id="previewImg">	
 											</form>
 										</div>
 									</div>
 								</div><!-- add post new box -->
-								<div class="loadMore">
+								<div class="loadMore" id = "list_post">
 									{{#each post}}
 										<div class="central-meta item">
 											<div class="user-post">
@@ -176,7 +169,7 @@
 													</figure>
 													<div class="friend-name">
 														<ins><a href="time-line.html" title="">{{user.name}}</a></ins>
-														<span>published: june,2 2018 19:PM</span>
+														<span>published: {{create_date}}</span>
 													</div>
 													<div class="description">
 														<p>
@@ -184,7 +177,15 @@
 														</p>
 													</div>
 													<div class="post-meta">
-														<img src="images/resources/user-post.jpg" alt="">
+														{{#if image}}
+															<img src={{image}} alt="">
+														{{/if}}
+														{{#if youtube_url}}
+															<iframe width="420" height="315"
+																src= {{youtube_url}}
+																allow="autoplay;" allowfullscreen>
+															</iframe>
+														{{/if}}															
 														<div class="we-video-info">
 															<ul>
 																<li>

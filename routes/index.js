@@ -6,6 +6,7 @@ const saltRounds = 10;
 var User = require('../models/user');
 var Post = require('../models/post');
 var Comment = require('../models/comment');
+var Department = require("../models/department");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -24,22 +25,23 @@ router.get("/", function (req, res, next) {
       populate: [
         {
           path: "user",
-        }],
-        options: { sort: { createdAt: -1 }}
-      })
-      .then( post => {
-        User.findOne({ email: req.session.email }, (error, user) => {
-          if(error || !user) {                              
-            return res.status(404).json({ message: error })      
-          }        
-          //return res.status(200).json(post);
-          res.render("index2", {post: post, user: user});
-        })
-      })
-      .catch(error => {
-        console.log(error)
-        res.render("index2");
-      })   
+        },
+      ],
+      options: { sort: { createdAt: -1 } },
+    })
+    .then((post) => {
+      User.findOne({ email: req.session.email }, (error, user) => {
+        if (error || !user) {
+          return res.status(404).json({ message: error });
+        }
+        //return res.status(200).json(post);
+        res.render("index2", { post: post, user: user });
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.render("index2");
+    });
 });
 
 router.get("/login", function (req, res, next) {
@@ -162,12 +164,48 @@ router.get("/me", function (req, res, next) {
 });
 
 router.get("/test2", function (req, res, next) {
-  res.render("test2", { layout: 'alayout.hbs' } );
+  res.render("test2", { layout: "alayout.hbs" });
 });
 
 router.get("/posts", function (req, res, next) {
-  res.render("posts", { layout: "alayout.hbs", title:"Department Posts" });
+  res.render("posts", { layout: "alayout.hbs", title: "Department Posts" });
 });
 
+// router.get("/depost", function (req, res, next) {
+//   res.render("depost", { layout: "playout.hbs", title: "Department Posts" });
+// });
+
+router.get("/depost", function (req, res, next) {
+  // check login
+
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  Department.find(function (err, departLst) {
+    if (err) return res.status(404).json({ msg: "DB error" });
+    User.find({ $or: [{ role: 1 }, { role: 2 }] })
+      .populate("department")
+      .then((userLst) => {
+        let user_depart_lst = [];
+        let user_stu_lst = [];
+
+        userLst.forEach((user) => {
+          if (user.role == 1) user_depart_lst.push(user);
+          else user_stu_lst.push(user);
+        });
+        return res.render("depost", {
+          departlst: departLst,
+          layout: "playout",
+          title: "Department Posts",
+          user_depart_lst: user_depart_lst,
+          user_stu_lst: user_stu_lst,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.status(404).json({ msg: "DB error" });
+      });
+  });
+});
 
 module.exports = router;

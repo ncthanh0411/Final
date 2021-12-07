@@ -60,8 +60,10 @@ router.post("/newDepartment", function (req, res, next) {
     }
     Department({
       departmentName: newDep,
-    }).save();
-    return res.json({ isvalid: true });
+    }).save((err, new_depart) => {
+      if (err) return res.status(404).json({ isvalid: false, msg: err });
+      return res.json({ isvalid: true, newdepart: new_depart });
+    });
   });
 });
 
@@ -99,8 +101,20 @@ router.post("/createUser", function (req, res, next) {
       departlst.forEach((departId) => {
         newUser.department.push(departId);
       });
-      newUser.save();
-      return res.json({ isvalid: true });
+      newUser.save((err, new_user) => {
+        if (err) return res.status(404).json({ isvalid: false, msg: err });
+        console.log(new_user._id);
+        console.log(new_user.id);
+        User.findOne({ _id: new_user.id })
+        .populate('department')
+        .then(result => {
+          return res.json({ isvalid: true, newuser: result });
+        })
+        .catch(err => {
+            console.log(err);
+            return res.status(404).json({ msg: "DB error" });
+        });
+      });
     });
   });
 });
@@ -125,17 +139,14 @@ router.delete("/delUser", function (req, res, next) {
   let id = req.body.id;
   User.findByIdAndDelete(id)
     .then((result) => {
-      return res.json({
-        isvalid: true,
-        msg: "User " + result.username + " had been deleted",
-      });
+      return res.json({ isvalid: true });
     })
     .catch((err) => {
       return res.json({ isvalid: false, msg: err });
     });
 });
 
-// Update department - check
+// Update department - done
 router.put("/upDepart/:id", function (req, res, next) {
   Department.findOne({ _id: req.params.id }, (err, depart) => {
     if (err) return res.status(404).json({ isvalid: false, msg: err });
@@ -152,7 +163,7 @@ router.put("/upDepart/:id", function (req, res, next) {
       if (err) return res.status(404).json({ isvalid: false, msg: err });
       return res
         .status(200)
-        .json({ isvalid: true, msg: "Department update successfull" });
+        .json({ isvalid: true, msg: "Department update successfull", editeddepart: depart_update });
     });
   });
 });

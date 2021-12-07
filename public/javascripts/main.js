@@ -39,7 +39,6 @@ function signOut() {
 }
 
 // ------------------------- Create department, Create User -------------
-const socket = io();
 function newDepartment() {
   var newDep = $("#newDepartment").val();
   $.ajax({
@@ -49,11 +48,11 @@ function newDepartment() {
       success: function(data) {
           if(data.isvalid) {
               $('#newDepartment').val('');
-              document.getElementById('depart_table').innerHTML += '<tr id="tr{{id}}">' + 
-                '<td>{{departmentName}}</td>' +
+              document.getElementById('depart_table').innerHTML += '<tr id="tr' + data.newdepart._id + '">' + 
+                '<td>' + data.newdepart.departmentName + '</td>' +
                 '<td>' +
-                  '<button type="button" class="btn btn-light fa fa-edit"/>' +
-                  `<button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelDepart('{{id}}', '{{departmentName}}')" data-toggle="modal" data-target="#conf-del-depart"/>` +
+                  '<button type="button" class="btn btn-light fa fa-edit" onclick="editDialog(`' + data.newdepart._id + '`,  `' + data.newdepart.departmentName + '`)" data-toggle="modal" data-target="#edit-department-dialog"/>' +
+                  '<button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelDepart(`' + data.newdepart._id + '`, `' + data.newdepart.departmentName + '`)" data-toggle="modal" data-target="#conf-del-depart"/>' +
                 '</td>' +
               '</tr>';
           } else {
@@ -85,26 +84,33 @@ function createUser() {
         $("#newPassword").val("");
         $("#newConfpassword").val("");
         $(".js-example-basic-multiple").val("").trigger("change");
-        document.getElementById('departuser_table').innerHTML += 
-          '<tr id="tr{{id}}">' +
+
+        let email = '';
+        if(data.newuser.email) email = data.newuser.email;
+        let tb_html = 
+          '<tr id="tr' + data.newuser._id + '">' +
             '<td>' +
                 '<img src="/w3images/avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px">' +
-                '<span class="w3-xlarge">{{name}}</span><br>'+
+                '<span class="w3-xlarge">' + data.newuser.name + '</span><br>'+
             '</td>' +
-            '<td>{{username}}</td>' +
-            '<td>{{email}}</td>' +
-            '<td>' +
-                '{{#if department}}' +
-                    '{{#each department}}' +
-                        '<p>{{departmentName}}</p>' +
-                    '{{/each}}' +
-                '{{/if}}' +
+            '<td>' + data.newuser.username + '</td>' +
+            '<td>' + email + '</td>' +
+            '<td>';
+        
+        if(data.newuser.department) {
+          data.newuser.department.forEach(depart => {
+            tb_html += '<p>' + depart.departmentName + '</p>';
+          })
+        }
+
+        tb_html +=        
             '</td>' +
             '<td>' +
                 '<button type="button" class="btn btn-light fa fa-edit"/>' +
-                `<button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelUser('{{id}}', '{{username}}')" data-toggle="modal" data-target="#conf-del-user"/>` +
+                '<button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelUser(`' + data.newuser._id + '`, `' + data.newuser.username + '`)" data-toggle="modal" data-target="#conf-del-user"/>' +
             '</td>' +
         '</tr>';
+        document.getElementById('departuser_table').innerHTML += tb_html;
       } else {
         alert(data.msg);
       }
@@ -116,6 +122,7 @@ function createUser() {
 }
 
 function confirmDelDepart(id, name) {
+  console.log(id);
   $('#delDepartName').text(name);
   $('#delidD').val(id);
 }
@@ -123,6 +130,35 @@ function confirmDelDepart(id, name) {
 function confirmDelUser(id, name) {
   $('#delUserName').text(name);
   $('#delidU').val(id);
+}
+
+function editDialog(id, name) {
+  $('#editDepartment').val(name);
+  $('#editD').val(id);
+}
+
+function editDepart() {
+  let id = $('#editD').val();
+  let edit_name = $('#editDepartment').val();
+  
+  $.ajax({
+    url: '/admin/upDepart/' + id,
+    method: 'put',
+    data: { name: edit_name },
+    success: function (data) {
+      if (data.isvalid) {
+        $('#editDepartment').val('');
+        $('#editD').val();
+        document.getElementById('tr' + id).cells[0].innerText = data.editeddepart.departmentName;
+        alert(data.msg);
+      } else {
+        alert(data.msg);
+      }
+    },
+    error: function (xhr, sts, errr) {
+      console.log(err);
+    },
+  });
 }
 
 function delDepart() {
@@ -158,7 +194,6 @@ function delUser() {
         $('#tr' + id).remove();
         $('#delUserName').text('');
         $('#delidU').val('517H0042');
-        alert(data.msg);
       } else {
         alert(data.msg);
       }
@@ -168,8 +203,6 @@ function delUser() {
     },
   });
 }
-
-
 
 // ------------------------- Layout -------------------------------------
 

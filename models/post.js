@@ -3,6 +3,8 @@ var mongoose = require('mongoose');
 
 var postSchema = mongoose.Schema({
     content: String,
+    youtube_url: String,
+    image: String,
     user:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"

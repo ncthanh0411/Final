@@ -207,6 +207,178 @@ function delUser() {
 // ------------------------- Layout -------------------------------------
 
 //----------------------------- Post, Like, Comment ------------------------------------
+
+function addPost(post){
+  var post_id = "'" + post._id + "'"
+  var youtube_link = ''
+  var img = ''
+  if(post.image){
+    img = '<img src="' + post.image +  '" alt=""> '
+  }
+  if(post.youtube_url)
+  {
+  youtube_link = '  <iframe width="420" height="315" ' +
+                 '  src= ' + post.youtube_url          +
+                 ' allow="autoplay;" allowfullscreen> ' +
+                 ' </iframe>                         '
+  }
+  console.log(post_id)
+  var post_link = 
+  '<div class="central-meta item">' +
+    '<div class="user-post">'         +
+    '  <div class="friend-info">    ' +
+    '    <figure>                   ' +
+    '      <img src="images/resources/friend-avatar10.jpg" alt="">        ' + 
+    '    </figure>                  ' +
+    '    <div class="friend-name">  ' +
+    '      <ins><a href="time-line.html" title="">' + post.user.name + '</a></ins> ' +
+    '      <span>published: ' + post.create_date + '</span> ' +
+    '    </div>                     ' +
+    '    <div class="description">  ' +
+    '      <p>                      ' +
+              post.content +
+    '      </p>                     ' +
+    '    </div>                     ' +
+    '    <div class="post-meta">    ' +
+          img + youtube_link +            
+    '      <div class="we-video-info">  ' +
+    '        <ul>                       ' +
+    '          <li>                     ' +
+    '            <span class="like" data-toggle="tooltip" ' +
+    '              title="like">        ' +
+    '              <i class="ti-heart"></i>               ' +
+    '              <ins>0</ins>         ' +
+    '            </span>                ' +
+    '          </li>                    ' +
+    '          <li>                     ' +
+    '            <span class="comment" data-toggle="tooltip" ' +
+    '              title="Comments">    ' +
+    '              <i class="fa fa-comments-o"></i>          ' +
+    '              <ins>0</ins>         ' +
+    '            </span>                ' +
+    '          </li>                    ' +
+    '        </ul>                      ' +
+    '      </div>                       ' +
+    '    </div>                         ' +
+    '  </div>                           ' +
+    '  <div class="coment-area">        ' +
+    '    <ul class="we-comet">          ' +
+    '      <li class="post-comment">    ' +
+    '        <div class="comet-avatar"> ' +
+    '          <img src="images/resources/comet-1.jpg" alt=""> ' +
+    '        </div>                     ' +
+    '        <div class="post-comt-box"> ' +
+    '          <form method="post">      ' +
+    '            <textarea placeholder="Post your comment" ' +
+    '              id="comment_content' + post._id +'"' +
+    '              onkeypress="post_comment(event,' + post_id +')"></textarea> ' +
+    '            <div class="add-smiles">             ' +
+    '              <span class="em em-expressionless" ' +
+    '                title="add icon"></span>         ' +
+    '            </div>                               ' +
+    '            <button type="submit"></button>      ' +
+    '          </form>                                ' +
+    '        </div>                                   ' +
+    '          </li>                                  ' +
+    '    </ul>                                        ' +
+    '    <ul class="we-comet"  id = "post_comment' + post._id  + '"> ' +
+    '    </ul>                                            ' +
+    '    <ul class="we-comet">                            ' +
+    '      <li>                                           ' +
+    '        <a href="#" title="" class="showmore underline">more ' +
+    '          comments</a> ' +
+    '      </li> ' +
+    '    </ul> ' +
+    '  </div> ' +
+    '</div> ' +
+  '</div> '
+
+  return post_link;
+}
+
+//New Post
+function postForm(e) {
+  e.preventDefault();
+  var formData = new FormData(document.getElementById("formSubmit"));
+  $.ajax({
+      type: "POST",
+      url: "/post/",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(data){
+        //Clear
+        $("#content").val("")
+        $("#video_youtube").val("")
+        $("#previewImg").attr("src", "");
+        $("input[type=file]").val("")
+        $("#youtube_link").css("display", "none")
+        console.log(data)
+        $('#list_post').prepend(addPost(data))
+      },
+      error: function (err) {
+        console.log(err);
+        alert(err);
+      }
+  });  
+}
+
+// $("#postForm").submit(function (e) {
+//   console.log("asdsa")
+//   //prevent Default functionality
+//   e.preventDefault();
+//   var formData = new FormData(this);
+//   $.ajax({
+//       type: "POST",
+//       url: "/post/",
+//       data: formData,
+//       processData: false,
+//       contentType: false,
+//       success: function(data){
+ 
+//             console.log(data.post);
+//             var post = postForm(data.post,status_edit_del);
+
+//             $('#postModal').modal('hide');
+
+//             $( '#post-item' + data.post._id + '' ).html(post);
+      
+//       },
+//       error: function (post) {
+//         console.log(post);
+//         alert("Fail to Post");
+//       }
+//   });
+// });
+
+
+function previewFile(input){
+  $("#youtube_link").css("display", "none")
+  var file = $("input[type=file]").get(0).files[0];
+  if(file){
+    var reader = new FileReader();
+
+    reader.onload = function(){
+        $("#previewImg").attr("src", reader.result);
+    }
+
+    reader.readAsDataURL(file);
+    $("#video_youtube").val("")
+  }
+}
+
+function showVideo() {
+  if ( $("#youtube_link").css('display') == 'none'){
+    $("#youtube_link").css("display", "block")
+    $("#previewImg").attr("src", "");
+    $("input[type=file]").val("")
+  }
+  else {
+    $("#youtube_link").css("display", "none")
+  }
+  
+}
+
 function post_comment(e, id) {
   //Press enter event
   if (e.keyCode == 13) {

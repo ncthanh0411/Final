@@ -7,255 +7,47 @@
         <header class="w3-container" style="padding-top:22px">
             <h5><b><i class="fa fa-dashboard"></i> Create New Post</b></h5>
         </header>
-        <div class="w3-row-padding w3-margin-bottom">
-            <div class="w3-quarter">
-                <div class="w3-container w3-red w3-padding-16">
-                    <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
-                    <div class="w3-right">
-                        <h3>52</h3>
-                    </div>
-                    <div class="w3-clear"></div>
-                    <h4>Messages</h4>
-                </div>
-            </div>
-            <div class="w3-quarter">
-                <div class="w3-container w3-blue w3-padding-16">
-                    <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div>
-                    <div class="w3-right">
-                        <h3>99</h3>
-                    </div>
-                    <div class="w3-clear"></div>
-                    <h4>Views</h4>
-                </div>
-            </div>
-            <div class="w3-quarter">
-                <div class="w3-container w3-teal w3-padding-16">
-                    <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
-                    <div class="w3-right">
-                        <h3>23</h3>
-                    </div>
-                    <div class="w3-clear"></div>
-                    <h4>Shares</h4>
-                </div>
-            </div>
-            <div class="w3-quarter">
-                <div class="w3-container w3-orange w3-text-white w3-padding-16">
-                    <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
-                    <div class="w3-right">
-                        <h3>50</h3>
-                    </div>
-                    <div class="w3-clear"></div>
-                    <h4>Users</h4>
-                </div>
-            </div>
-        </div>
 
         <hr>
-        <div class="w3-container">
-            <h5>New Post</h5>
-            <form>
-                <div class="form-group">
-                    <label for="name">Department</label>
-                    <select class="js-example-basic-multiple" style="width: 100%;" name="states[]">
-                        {{#each departlst}}
-                            <option value="{{id}}">{{departmentName}}</option>
-                        {{/each}}
-                    </select>
-                </div>
-
-
-                <h6>Title</h6>
-                <textarea name="header" rows="1" cols="30"></textarea>
-                <h6>Content</h6>
-                <textarea name="content" rows="10" cols="30"></textarea>
-                <label for="myfile">Add file:</label>
-                <input type="file" id="myfile" name="myfile" multiple><br><br>
-                <button class="w3-button w3-white">Submit <i class="fa fa-share-alt w3-text-green w3-large"></i></button>
-            </form>
-        </div>
-        <hr>
-        <div class="w3-container">
-            <h5>Department List</h5>
-            <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
-                {{!-- Td: 1-12-2021 --}}
-                {{#each departlst}}
-                    <tr id="tr{{id}}">
-                        <td>{{departmentName}}</td>
-                        <td>
-                            <button type="button" class="btn btn-light fa fa-edit" />
-                            <button type="button" class="btn btn-light fa fa-minus-circle"
-                                onclick="confirmDel('{{id}}', '{{departmentName}}')" data-toggle="modal"
-                                data-target="#conf-del-depart" />
-                        </td>
-                    </tr>
-                {{/each}}
-                {{!-- End --}}
-            </table><br>
-        </div>
-        <hr>
-        <div class="w3-container">
-            <h5>Recent Users</h5>
-            <ul class="w3-ul w3-card-4 w3-white">
-                {{#each userlst}}
-                    <li class="w3-padding-16">
-                        <img src="/w3images/avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
-                        <span class="w3-xlarge">{{name}}</span><br>
-                        <span class="w3-xlarge">{{username}}</span><br>
-                    </li>
-                {{/each}}
-            </ul>
-        </div>
-        <hr>
-        <div class="w3-container">
-            <h5>Recent Comments</h5>
-            <div class="w3-row">
-                <div class="w3-col m2 text-center">
-                    <img class="w3-circle" src="/w3images/avatar3.png" style="width:96px;height:96px">
-                </div>
-                <div class="w3-col m10 w3-container">
-                    <h4>John <span class="w3-opacity w3-medium">Sep 29, 2014, 9:12 PM</span></h4>
-                    <p>Keep up the GREAT work! I am cheering for you!! Lorem ipsum dolor sit amet, consectetur
-                        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><br>
-                </div>
-            </div>
-            <div class="w3-row">
-                <div class="w3-col m2 text-center">
-                    <img class="w3-circle" src="/w3images/avatar1.png" style="width:96px;height:96px">
-                </div>
-                <div class="w3-col m10 w3-container">
-                    <h4>Bo <span class="w3-opacity w3-medium">Sep 28, 2014, 10:15 PM</span></h4>
-                    <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><br>
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="w3-container w3-dark-grey w3-padding-32">
-            <div class="w3-row">
-                <div class="w3-container w3-third">
-                    <h5 class="w3-bottombar w3-border-green">Demographic</h5>
-                    <p>Language</p>
-                    <p>Country</p>
-                    <p>City</p>
-                </div>
-                <div class="w3-container w3-third">
-                    <h5 class="w3-bottombar w3-border-red">System</h5>
-                    <p>Browser</p>
-                    <p>OS</p>
-                    <p>More</p>
-                </div>
-                <div class="w3-container w3-third">
-                    <h5 class="w3-bottombar w3-border-orange">Target</h5>
-                    <p>Users</p>
-                    <p>Active</p>
-                    <p>Geo</p>
-                    <p>Interests</p>
-                </div>
-            </div>
-        </div>
-        <!-- Footer -->
-        <footer class="w3-container w3-padding-16 w3-light-grey">
-            <h4>FOOTER</h4>
-            <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-        </footer>
-        <!-- End page content -->
-    </div>
-    <!-- New department dialog -->
-    <div class="modal fade" id="new-department-dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h4 class="modal-title">Tạo phòng ban mới</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <div class="modal-body">
+        <div class="w3-panel">
+            <div class="w3-container">
+                <h5>New Post</h5>
+                <form>
                     <div class="form-group">
-                        <label for="name">Department Name</label>
-                        <input type="text" placeholder="Department name" class="form-control" id="newDepartment" />
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="newDepartment()">Lưu</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- New user for Phòng/khoa dialog -->
-    <div class="modal fade" id="new-user-dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Tạo user mới</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" placeholder="Name" class="form-control" id="newName" />
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Userame</label>
-                        <input type="text" placeholder="Username" class="form-control" id="newUsername" />
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Password</label>
-                        <input type="password" name="password" class="form-control" placeholder="Password"
-                            id="newPassword" />
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Confirm Password</label>
-                        <input type="password" name="confpassword" class="form-control" placeholder="Password"
-                            id="newConfpassword" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="name">Chọn Phòng ban</label>
-                        <select class="js-example-basic-multiple" style="width: 100%;" name="states[]"
-                            multiple="multiple">
+                        <label for="name">Department</label>
+                        <select class="js-example-basic-multiple" style="width: 100%;" name="states[]">
                             {{#each departlst}}
                                 <option value="{{id}}">{{departmentName}}</option>
                             {{/each}}
                         </select>
                     </div>
-                </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="createUser()">Lưu</button>
-                </div>
+
+                    <h6>Title</h6>
+                    <textarea name="header" rows="1" cols="30"></textarea>
+                    <h6>Content</h6>
+                    <textarea name="content" rows="10" cols="30"></textarea>
+                    <label for="myfile">Add file:</label>
+                    <input type="file" id="myfile" name="myfile" multiple><br><br>
+                    <button class="w3-button w3-white">Post <i class="fa fa-share-alt w3-text-green w3-large"></i></button>
+                    </form>
+                    </div>
+                    <hr>
+                    <div class="w3-container">
+                <h5>Authorized</h5>
+                <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+                    {{!-- Td: 1-12-2021 --}}
+                    {{#each departlst}}
+                        <tr id="tr{{id}}">
+                            <td>{{departmentName}}</td>
+                        </tr>
+                        {{/each}}
+                        {{!-- End --}}
+                        </table><br>
+                        </div>
             </div>
-        </div>
+        <!-- End page content -->
     </div>
-
-    <!-- Confirm delete Department -->
-    <div class="modal fade" id="conf-del-depart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel">Delete Department</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    Bạn có chắc rằng muốn xóa <strong id="delDepartName">517H0042</strong>?
-                </div>
-                <input type="hidden" id="delidD" />
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="testHide()">Delete</button>
-                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <!-- End Confirm delete Department -->
 
     <script>
         // Get the Sidebar
@@ -274,9 +66,6 @@
                 overlayBg.style.display = "block";
             }
         }
-
-
-
         // Close the sidebar with the close button
         function w3_close() {
             mySidebar.style.display = "none";

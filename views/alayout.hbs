@@ -24,12 +24,9 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-        <script src="https://apis.google.com/js/platform.js" async defer></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <meta name="google-signin-client_id"
-            content="184293983150-4t91b630845pn6h5sb2m9van1o4lndrd.apps.googleusercontent.com">
         <link rel="icon" href="/images/tdt.png" type="image/png" sizes="16x16">
         <script src="/javascripts/main.js"></script>
     </head>
@@ -54,18 +51,14 @@
             <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey"
                 onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
             <span class="w3-bar-item w3-right">Admin Page</span>
+            <button class="w3-bar-item w3-button " data-toggle="modal" data-target="#edit-account"><i class="fa fa-cog fa-fw">
+                </i>
+                 Account
+                Setting</button>
 
         </div>
         <!-- Sidebar/menu -->
         <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
-            <div class="w3-container w3-row">
-                <div class="w3-col s8 w3-bar">
-                    <span>Welcome, <strong>Mike</strong></span><br>
-                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
-                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
-                    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
-                </div>
-            </div>
             <hr>
             <div class="w3-container">
                 <h5>Dashboard</h5>
@@ -73,12 +66,10 @@
             <div class="w3-bar-block">
                 <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black"
                     onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>
+                <a href="/users" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>
                     New Post</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> View Post</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i> General</a>
+                <a href="/depost" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> View Post</a>
                 <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i> My Post</a>
-                <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i> Account Settings</a>
                 <a href="#" class="w3-bar-item w3-button w3-padding" onclick="signOut()"><i class="ti-power-off"></i>
                     Log
                     Out</a>
@@ -90,6 +81,36 @@
         <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer"
             title="close side menu" id="myOverlay"></div>
         {{{body}}}
+        <!-- New department dialog -->
+        <div class="modal fade" id="edit-account">
+            <div class="modal-dialog">
+                <div class="modal-content">
+        
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Account</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+        
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" placeholder="Enter new name" class="form-control" id="name" />
+                            <label for="name">Current password</label>
+                            <input type="password" placeholder="Enter current password" class="form-control" id="currpass" />
+                            <label for="name">New password</label>
+                            <input type="password" placeholder="At least 8 characters long" class="form-control" id="newpass" />
+                            <label for="name">Confirm new password</label>
+                            <input type="password" placeholder="Re-enter new password" class="form-control" id="newpass2" />
+                        </div>
+                    </div>
+        
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="#">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
+    
 
 </html>

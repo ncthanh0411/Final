@@ -57,6 +57,7 @@ router.get("/logout", function (req, res, next) {
     delete req.session.user;
     delete req.session.email;
   }
+  
   res.status(200).redirect("/login");
 });
 
@@ -209,4 +210,7 @@ router.get("/depost", function (req, res, next) {
   });
 });
 
+router.get("/detail", function (req, res, next) {
+  res.render("detail", { layout: "playout.hbs", title: "Detail Posts" });
+});
 module.exports = router;

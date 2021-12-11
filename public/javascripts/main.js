@@ -132,7 +132,7 @@ function confirmDelUser(id, name) {
   $('#delidU').val(id);
 }
 
-function editDialog(id, name) {
+function editDepartDialog(id, name) {
   $('#editDepartment').val(name);
   $('#editD').val(id);
 }
@@ -153,6 +153,47 @@ function editDepart() {
         alert(data.msg);
       } else {
         alert(data.msg);
+      }
+    },
+    error: function (xhr, sts, errr) {
+      console.log(err);
+    },
+  });
+}
+
+function editDUserDialog(id, username, name) {
+  $(".js-editDU-basic-multiple").select2();
+  $('#editUD_hidden').val(id);
+  $('#editUserDepart').text(username);
+  $('#editUDName').val(name);
+  var lst_p = document.getElementById('td_depart_' + id).getElementsByTagName('p');
+  var departLst = [];
+  for (var i = 0; i < lst_p.length; i++) {
+    departLst.push(lst_p[i].id.replace('DU_', ''));
+  }
+  $(".js-editDU-basic-multiple").val(departLst).trigger('change');
+}
+
+function editDUser() {
+  var id = $('#editUD_hidden').val();
+  var departlst = $(".js-editDU-basic-multiple").select2("val");
+  $.ajax({
+    url: "/admin/editDUser/" + id,
+    method: "put",
+    data: {
+      name: $('#editUDName').val(),
+      password: $("#editNewPassword").val(),
+      confpassword: $("#editNewConfpassword").val(),
+      department: JSON.stringify(departlst),
+    },
+    success: function (data) {
+      if (data.isvalid) {
+        alert(data.msg);
+      } else {
+        console.lo
+        $('#edit-userdepart-dialog').on('hidden.bs.modal', function() {
+          alert(data.msg);
+        });
       }
     },
     error: function (xhr, sts, errr) {

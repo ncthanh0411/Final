@@ -83,6 +83,11 @@ router.post("/createUser", function (req, res, next) {
       isvalid: false,
       msg: "Confirm password không trùng khớp ",
     });
+  if(departlst.length == 0)
+    return res.json({
+      isvalid: false,
+      msg: "Vui lòng chọn Phòng ban",
+    });
 
   User.findOne({ username: username }, (error, user) => {
     if (error || user) {
@@ -168,21 +173,29 @@ router.put("/upDepart/:id", function (req, res, next) {
   });
 });
 
-// Update User - update
-router.put("/upUser/:id", function (req, res, next) {
-  User.findOne({ _id: req.params.id }, (err, user) => {
-    if (err) return res.status(404).json({ isvalid: false, msg: err });
-    if (!user)
-      return res.status(404).json({ isvalid: false, msg: "User not found!" });
-    // ....check some value must enter
-
-    user.save((err, user_update) => {
-      if (err) return res.status(404).json({ isvalid: false, msg: err });
-      return res
-        .status(200)
-        .json({ isvalid: true, msg: "User update successfull" });
-    });
+// Edit User - update
+router.put("/editDUser/:id", function (req, res, next) {
+  console.log(JSON.parse(req.body.department));
+  if(JSON.parse(req.body.department).length == 0) console.log('run now');
+  return res.json({
+    isvalid: false,
+    msg: "Test",
   });
+
+  // User.findOne({ _id: req.params.id }, (err, user) => {
+  //   if (err) return res.status(404).json({ isvalid: false, msg: err });
+  //   if (!user)
+  //     return res.status(404).json({ isvalid: false, msg: "User not found!" });
+    
+  //   // ....check some value must enter
+
+  //   user.save((err, user_update) => {
+  //     if (err) return res.status(404).json({ isvalid: false, msg: err });
+  //     return res
+  //       .status(200)
+  //       .json({ isvalid: true, msg: "User update successfull" });
+  //   });
+  // });
 });
 
 module.exports = router;

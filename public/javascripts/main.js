@@ -48,11 +48,11 @@ function newDepartment() {
       success: function(data) {
           if(data.isvalid) {
               $('#newDepartment').val('');
-              document.getElementById('depart_table').innerHTML += '<tr id="tr' + data.newdepart._id + '">' + 
+              document.getElementById('depart_table').innerHTML += '<tr id="tr_depart' + data.newdepart._id + '">' + 
                 '<td>' + data.newdepart.departmentName + '</td>' +
                 '<td>' +
-                  '<button type="button" class="btn btn-light fa fa-edit" onclick="editDialog(`' + data.newdepart._id + '`,  `' + data.newdepart.departmentName + '`)" data-toggle="modal" data-target="#edit-department-dialog"/>' +
-                  '<button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelDepart(`' + data.newdepart._id + '`, `' + data.newdepart.departmentName + '`)" data-toggle="modal" data-target="#conf-del-depart"/>' +
+                  '<button type="button" class="btn btn-light fa fa-edit" onclick="editDepartDialog(`' + data.newdepart._id + '`)" data-toggle="modal" data-target="#edit-department-dialog"/>' +
+                  '<button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelDepart(`' + data.newdepart._id + '`)" data-toggle="modal" data-target="#conf-del-depart"/>' +
                 '</td>' +
               '</tr>';
           } else {
@@ -88,25 +88,25 @@ function createUser() {
         let email = '';
         if(data.newuser.email) email = data.newuser.email;
         let tb_html = 
-          '<tr id="tr' + data.newuser._id + '">' +
+          '<tr id="tr_user' + data.newuser._id + '">' +
             '<td>' +
                 '<img src="/w3images/avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px">' +
                 '<span class="w3-xlarge">' + data.newuser.name + '</span><br>'+
             '</td>' +
             '<td>' + data.newuser.username + '</td>' +
             '<td>' + email + '</td>' +
-            '<td>';
+            '<td id="td_depart_' + data.newuser._id + '">';
         
         if(data.newuser.department) {
           data.newuser.department.forEach(depart => {
-            tb_html += '<p>' + depart.departmentName + '</p>';
+            tb_html += '<p id="DU_' + depart._id + '">' + depart.departmentName + '</p>';
           })
         }
 
         tb_html +=        
             '</td>' +
             '<td>' +
-                '<button type="button" class="btn btn-light fa fa-edit"/>' +
+                '<button type="button" class="btn btn-light fa fa-edit" onclick="editDUserDialog(`' + data.newuser._id + '`, `' + data.newuser.username + '`)" data-toggle="modal" data-target="#edit-userdepart-dialog"/>' +
                 '<button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelUser(`' + data.newuser._id + '`, `' + data.newuser.username + '`)" data-toggle="modal" data-target="#conf-del-user"/>' +
             '</td>' +
         '</tr>';
@@ -121,9 +121,8 @@ function createUser() {
   });
 }
 
-function confirmDelDepart(id, name) {
-  console.log(id);
-  $('#delDepartName').text(name);
+function confirmDelDepart(id) {
+  $('#delDepartName').text(document.getElementById('tr_depart' + id).cells[0].innerText);
   $('#delidD').val(id);
 }
 
@@ -132,8 +131,8 @@ function confirmDelUser(id, name) {
   $('#delidU').val(id);
 }
 
-function editDepartDialog(id, name) {
-  $('#editDepartment').val(name);
+function editDepartDialog(id) {
+  $('#editDepartment').val(document.getElementById('tr_depart' + id).cells[0].innerText);
   $('#editD').val(id);
 }
 
@@ -149,7 +148,7 @@ function editDepart() {
       if (data.isvalid) {
         $('#editDepartment').val('');
         $('#editD').val();
-        document.getElementById('tr' + id).cells[0].innerText = data.editeddepart.departmentName;
+        document.getElementById('tr_depart' + id).cells[0].innerText = data.editeddepart.departmentName;
         alert(data.msg);
       } else {
         alert(data.msg);
@@ -161,11 +160,11 @@ function editDepart() {
   });
 }
 
-function editDUserDialog(id, username, name) {
+function editDUserDialog(id, username) {
   $(".js-editDU-basic-multiple").select2();
   $('#editUD_hidden').val(id);
   $('#editUserDepart').text(username);
-  $('#editUDName').val(name);
+  $('#editUDName').val(document.getElementById('tr_user' + id).cells[0].children[1].innerText);
   var lst_p = document.getElementById('td_depart_' + id).getElementsByTagName('p');
   var departLst = [];
   for (var i = 0; i < lst_p.length; i++) {
@@ -182,18 +181,60 @@ function editDUser() {
     method: "put",
     data: {
       name: $('#editUDName').val(),
-      password: $("#editNewPassword").val(),
-      confpassword: $("#editNewConfpassword").val(),
+      password: $("#newDUPassword").val(),
+      confpassword: $("#newDUPasswordConf").val(),
       department: JSON.stringify(departlst),
     },
     success: function (data) {
       if (data.isvalid) {
+        document.getElementById('tr_user' + id).cells[0].children[1].innerText = data.useredit.name;
+        var departHtml = '';
+        data.useredit.department.forEach(depart => {
+          departHtml += '<p id="DU_' + depart._id + '">'+ depart.departmentName + '</p>';
+        });
+        document.getElementById('td_depart_' + id).innerHTML = departHtml;
         alert(data.msg);
       } else {
-        console.lo
-        $('#edit-userdepart-dialog').on('hidden.bs.modal', function() {
-          alert(data.msg);
-        });
+        alert(data.msg);
+      }
+    },
+    error: function (xhr, sts, errr) {
+      console.log(err);
+    },
+  });
+}
+
+function editSUserDialog(id, email) {
+  $(".js-editSU-basic-single").select2();
+  $('#editSU_hidden').val(id);
+  $('#editUserStu').text(email);
+  $('#editSUName').val(document.getElementById('tr_user' + id).cells[0].children[1].innerText);
+  $('#editSUClass').val(document.getElementById('tr_user' + id).cells[2].innerText);
+  var departid = document.getElementById('td_stu_' + id).getElementsByTagName('span');
+  if(departid.length != 0) {
+    $(".js-editSU-basic-single").val(departid[0].id.replace('SU_', '')).trigger('change');
+  }
+}
+
+function editSUser() {
+  var id = $('#editSU_hidden').val();
+  var depart = $(".js-editSU-basic-single").select2("val");
+  $.ajax({
+    url: "/admin/editSUser/" + id,
+    method: "put",
+    data: {
+      name: $('#editSUName').val(),
+      stuclass: $('#editSUClass').val(),
+      department: depart,
+    },
+    success: function (data) {
+      if (data.isvalid) {
+        document.getElementById('tr_user' + id).cells[0].children[1].innerText = data.useredit.name;
+        document.getElementById('tr_user' + id).cells[2].innerText = data.useredit.class;
+        document.getElementById('td_stu_' + id).innerHTML = '<span id="SU_' + data.useredit.department[0]._id + '">'+ data.useredit.department[0].departmentName + '</span>';
+        alert(data.msg);
+      } else {
+        alert(data.msg);
       }
     },
     error: function (xhr, sts, errr) {
@@ -210,7 +251,7 @@ function delDepart() {
     data: { id: id },
     success: function (data) {
       if (data.isvalid) {
-        $("#tr" + id).remove();
+        $("#tr_depart" + id).remove();
         $("#delDepartName").text("");
         $("#delidD").val("517H0042");
         alert(data.msg);
@@ -232,7 +273,7 @@ function delUser() {
     data: { id: id },
     success: function (data) {
       if (data.isvalid) {
-        $('#tr' + id).remove();
+        $('#tr_user' + id).remove();
         $('#delUserName').text('');
         $('#delidU').val('517H0042');
       } else {

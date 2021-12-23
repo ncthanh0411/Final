@@ -48,6 +48,9 @@ mongoose.connect(
 
 var app = express();
 
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
@@ -87,4 +90,8 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
-module.exports = app;
+io.on("connection", (socket) => {
+  console.log('user connect: ', socket.id);
+});
+
+module.exports = { app: app, server: server };

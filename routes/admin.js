@@ -251,4 +251,31 @@ router.put("/editSUser/:id", function (req, res, next) {
   });
 });
 
+router.get("/update", function (req, res, next) {
+  // check login
+
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  Department.find(function (err, departLst) {
+    if (err) return res.status(404).json({ msg: "DB error" });
+    User.find({ $or: [{ role: 1 }, { role: 2 }] })
+      .populate("department")
+      .then((userLst) => {
+        return res.render("update", {
+          departlst: departLst,
+          layout: "alayout",
+          title: "Edit Account",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.status(404).json({ msg: "DB error" });
+      });
+  });
+});
+
+router.get("/test2", function (req, res, next) {
+  res.render("test2", { layout: "alayout.hbs" });
+});
 module.exports = router;

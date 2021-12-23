@@ -9,6 +9,13 @@ a {
   color: #00B7FF;
 }
 
+#previewImgEdit{
+  object-fit:contain;
+  margin-left: auto;
+  margin-right: auto;
+  width:200px;
+  height:300px;
+}
 /* TD css */
 .collapse.show {
   visibility: visible;

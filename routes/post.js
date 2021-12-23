@@ -44,17 +44,6 @@ router.get('/', function(req, res, next) {
 
 
 //New post
-
-// SET STORAGE
-// var storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, './public/images/posts/')
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, file.fieldname + '-' + Date.now())
-//   }
-// })
-
 var upload = multer({ dest: './public/images/posts/' })
 router.post('/', upload.single('img'),function(req, res, next) {
 
@@ -100,8 +89,18 @@ router.post('/', upload.single('img'),function(req, res, next) {
   })
 });
 
+//Edit Post
+var upload = multer({ dest: './public/images/posts/' })
+router.put('/', upload.single('img'),function(req, res, next) {
+  console.log(req.body)
+  console.log(req.file)
+
+  return res.status(200).json({ data: 'test' }) 
+});
+
+
 //New Comment
-router.post('/comment/:id', function(req, res, next) {
+router.post('/comment', function(req, res, next) {
   User.findOne({ email: req.session.email }, (error, user) => {
     if(error || !user) {                              
       return res.status(404).json({ message: error })      
@@ -137,6 +136,7 @@ router.post('/comment/:id', function(req, res, next) {
             return res.status(404).json({ error: 'DB Error, please login again'})             
           }       
           comment_respond ={
+            id: comment._id,
             content: comment_content,
             user_id: user._id,
             user_name: user.name,
@@ -151,4 +151,63 @@ router.post('/comment/:id', function(req, res, next) {
   })
 });
 
+//Edit Comment
+router.post('/comment/:id', function(req, res, next) {
+  User.findOne({ email: req.session.email }, (error, user) => {
+    if(error || !user) {                              
+      return res.status(404).json({ message: error })      
+    }
+    //Get data from body
+    let id_comment = req.body.id;
+    let content = req.body.comment; 
+    console.log(id_comment)
+    Comment.findOne({_id: id_comment }, (error, comment) => {
+      if(error || !comment) {                              
+        return res.status(404).json({ message: error })      
+      }
+      console.log(comment.user)
+      console.log(user._id)
+      if(String(comment.user) != String(user._id))
+      {
+        return res.status(404).json({ message: "You are not have permission to edit comment" })
+      }
+      comment.content = content;
+      comment.save();
+      return res.status(200).json({ message: "Comment edit succesfull" }) 
+    })        
+  })
+});
+
+
+
+//Delete Comment
+router.delete('/comment/:id', function(req, res, next) {
+  User.findOne({ email: req.session.email }, (error, user) => {
+    if(error || !user) {                              
+      return res.status(404).json({ message: error })      
+    }
+    let id = req.params.id;
+    //post
+    Comment.findOne({_id: id }, (error, comment) => {
+      if(error || !comment) {                              
+        return res.status(404).json({ message: error })      
+      }
+      if(String(comment.user) != String(user._id))
+      {
+        return res.status(404).json({ message: "You are not have permission to delete" })
+      }
+      comment.remove(function(error){
+        if(error) {                              
+          return res.status(404).json({ message: error })      
+        }
+        Post.findOne({_id: comment.post }, (error, post) => {
+          post.comment.pull(id)
+          post.save()
+          return res.status(200).json({ message: "Delete comment succesfull" })
+        })     
+      })
+   
+    })       
+  })
+});
 module.exports = router;

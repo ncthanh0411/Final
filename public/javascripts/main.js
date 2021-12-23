@@ -307,6 +307,27 @@ function postForm(e) {
       processData: false,
       contentType: false,
       success: function(data){
+        console.log(data)
+      },
+      error: function (err) {
+        console.log(err);
+        alert(err);
+      }
+  });  
+}
+
+//edit Post
+function putForm(e) {
+  console.log("test")
+  e.preventDefault();
+  var formData = new FormData(document.getElementById("formSubmitEdit"));
+  $.ajax({
+      type: "PUT",
+      url: "/post/",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(data){
         //Clear
         $("#content").val("")
         $("#video_youtube").val("")
@@ -366,6 +387,49 @@ function previewFile(input){
     $("#video_youtube").val("")
   }
 }
+//Show Post need to edit
+function showPost(id) {
+  //Refresh data
+  $("#previewImgEdit").attr("src", "");
+  $("#previewImgEdit").css("display", "none")
+  $("#youtube_link_edit").css("display", "none")
+
+  //Content
+  let content = $("#contentPost" + id).text()
+  console.log(content)
+  $("#edit_post").val(content)
+
+
+  if($("#imgPost" + id).length != 0)
+  {
+    //Image
+    $("#previewImgEdit").css("display", "block")
+    let img = $("#imgPost" + id).attr('src');
+    $("#previewImgEdit").attr("src", img);
+  }
+
+  if($("#videoPost" + id).length != 0){
+    //Video
+    let video_link = $("#videoPost" + id).text()
+    $("#youtube_link_edit").css("display", "block")
+    $("#video_youtube_edit").val(video_link)
+  }
+
+}
+
+
+function previewFileEdit(input){
+ 
+  var file = $("input[type=file]").get(0).files[0];
+  if(file){
+    var reader = new FileReader();
+
+    reader.onload = function(){
+        $("#previewImgEdit").attr("src", reader.result);
+    }
+    reader.readAsDataURL(file);
+  }
+}
 
 function showVideo() {
   if ( $("#youtube_link").css('display') == 'none'){
@@ -379,6 +443,7 @@ function showVideo() {
   
 }
 
+//New Comment
 function post_comment(e, id) {
   //Press enter event
   if (e.keyCode == 13) {
@@ -391,26 +456,34 @@ function post_comment(e, id) {
       comment: comment_content.val(),
     };
     $.ajax({
-      url: "/post/comment/" + id,
+      url: "/post/comment",
       method: "post",
       data: comment,
       success: function (comment) {
+        var comment_id = "'" + comment.id + "'"
         var comment_HTML =
-          "	<li>" +
+          "<li id = 'commentLi" + comment.id  + "'>" +
           '<div class="comet-avatar">' +
-          '<img src="images/resources/comet-1.jpg" alt=""></div>' +
+            '<img src="images/resources/comet-1.jpg" alt="">' +
+          '</div>' +
           '<div class="we-comment">' +
-          '<div class="coment-head">' +
-          '<h5><a href="time-line.html" title="">' +
-          comment.user_name +
-          "</a></h5>" +
-          "<span>" +
-          comment.create_date +
-          "</span></div>" +
-          "<p>" +
-          comment.content +
-          "</p></div>" +
-          "</li>";
+            '<div class="coment-head">' +
+              '<h5><a href="time-line.html" title="">' +
+              comment.user_name +
+              '</a></h5>' +
+              '<span>' +
+              comment.create_date +
+              "</span>" +
+            "</div>" +
+            '<p id = "content_comment' + comment.id + '">' +
+            comment.content +
+            "</p>" +
+            '<i class="fa fa-edit" style="cursor: pointer;" data-toggle="modal"'  +
+            'data-target="#editComment" onclick="showComment(' + comment_id +')"></i>' +
+            '<i class="fa fa-remove" style="cursor: pointer;" data-toggle="modal"' +
+            'data-target="#deleteComment" onclick="showDelComment(' + comment_id +')"></i>' +
+          "</div>" +
+          "</li>";         
         post_comment.prepend(comment_HTML);
         comment_content.val("");
       },
@@ -421,6 +494,68 @@ function post_comment(e, id) {
     });
   }
 }
+
+//Show Comment need to edit
+function showComment(id) {
+  
+  $('#commentEdit').val(id)
+  let content = $("#content_comment" + id).text();
+  $("#edit_comment").val(content);
+
+}
+function showDelComment(id) {
+
+  $('#commentDelete').val(id);
+}
+
+//Edit Comment
+function editComment() {
+
+    let id = $("#commentEdit").val(); 
+    //Get content of comment
+    let content = $("#edit_comment");
+    var comment = {
+      id: id,
+      comment: content.val(),
+    };
+    $.ajax({
+      url: "/post/comment/" + id,
+      method: "post",
+      data: comment,
+      success: function (comment) {
+        let content_update = $("#content_comment" + id);
+        content_update.text(content.val());
+      },
+      error: function (err) {
+        console.log(err.responseJSON);
+        alert(err.responseJSON.message);
+      },
+    });
+ 
+}
+
+//Delete Comment
+function deleteComment() {
+
+  let id = $("#commentDelete").val(); 
+  var commentDelete = $('#commentLi' + id);
+  var comment = {
+    id: id,
+  };
+  $.ajax({
+      url: "/post/comment/" + id,
+      method: "DELETE",
+      success: function(data){
+        //Clear
+        commentDelete.remove();
+      },
+      error: function (err) {
+        console.log(err.responseJSON.message);
+        alert(err.responseJSON.message);
+      }
+  });  
+}
+
 
 //----------------------------- Layout ------------------------------------
 if ($("#map-canvas").length) {

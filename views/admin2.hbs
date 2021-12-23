@@ -6,156 +6,48 @@
                 <header class="w3-container" style="padding-top:22px">
                     <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
                 </header>
-                <div class="w3-row-padding w3-margin-bottom">
-                    <div class="w3-quarter">
-                        <div class="w3-container w3-red w3-padding-16">
-                            <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
-                            <div class="w3-right">
-                                <h3>52</h3>
-                            </div>
-                    <div class="w3-clear"></div>
-                    <h4>Messages</h4>
-                    </div>
-                    </div>
-                    <div class="w3-quarter">
-                        <div class="w3-container w3-blue w3-padding-16">
-                            <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div>
-                            <div class="w3-right">
-                                <h3>99</h3>
-                            </div>
-                    <div class="w3-clear"></div>
-                    <h4>Views</h4>
-                    </div>
-                    </div>
-                    <div class="w3-quarter">
-                        <div class="w3-container w3-teal w3-padding-16">
-                            <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
-                            <div class="w3-right">
-                                <h3>23</h3>
-                            </div>
-                    <div class="w3-clear"></div>
-                    <h4>Shares</h4>
-                    </div>
-            </div>
-            <div class="w3-quarter">
-                <div class="w3-container w3-orange w3-text-white w3-padding-16">
-                    <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
-                    <div class="w3-right">
-                        <h3>50</h3>
-                    </div>
-                    <div class="w3-clear"></div>
-                    <h4>Users</h4>
-                    </div>
-                    </div>
-                    </div>
             
             <div class="w3-panel">
-                <div class="w3-row-padding" style="margin:0 -16px">
-                    <div class="w3-third">
-                        <h5>Regions</h5>
-                        <img src="/w3images/region.jpg" style="width:50px" alt="Google Regional Map">
-                    </div>
-                <div class="w3-twothird">
-                    <h5>Feeds</h5>
-                    <table class="w3-table w3-striped w3-white">
-                        <tr>
-                            <td><i class="fa fa-user w3-text-blue w3-large"></i></td>
-                            <td>New record, over 90 views.</td>
-                            <td><i>10 mins</i></td>
-                            </tr>
-                            <tr>
-                            <td><i class="fa fa-bell w3-text-red w3-large"></i></td>
-                            <td>Database error.</td>
-                            <td><i>15 mins</i></td>
-                            </tr>
-                            <tr>
-                            <td><i class="fa fa-users w3-text-yellow w3-large"></i></td>
-                            <td>New record, over 40 users.</td>
-                            <td><i>17 mins</i></td>
-                            </tr>
-                            <tr>
-                            <td><i class="fa fa-comment w3-text-red w3-large"></i></td>
-                            <td>New comments.</td>
-                            <td><i>25 mins</i></td>
-                            </tr>
-                            <tr>
-                            <td><i class="fa fa-bookmark w3-text-blue w3-large"></i></td>
-                            <td>Check transactions.</td>
-                            <td><i>28 mins</i></td>
-                            </tr>
-                            <tr>
-                            <td><i class="fa fa-laptop w3-text-red w3-large"></i></td>
-                            <td>CPU overload.</td>
-                            <td><i>35 mins</i></td>
-                            </tr>
-                            <tr>
-                            <td><i class="fa fa-share-alt w3-text-green w3-large"></i></td>
-                            <td>New shares.</td>
-                            <td><i>39 mins</i></td>
-                            </tr>
-                    </table>
-                    </div>
-                </div>
-                </div>
-                <hr>
-                <div class="w3-container">
-                    <h5>Action</h5>
-                    <p>New Visitors</p>
-                    <div class="w3-grey">
-                        <div class="w3-container w3-center w3-padding w3-green" style="width:25%">+25%</div>
-                    </div>
-                    <p>New Users</p>
-                    <div class="w3-grey">
-                        <div class="w3-container w3-center w3-padding w3-orange" style="width:50%">50%</div>
-                </div>
-                <p>Bounce Rate</p>
-                <div class="w3-grey">
-                    <div class="w3-container w3-center w3-padding w3-red" style="width:75%">75%</div>
-                </div>
-                </div>
-                <hr>
+                
                 <div class="w3-container">
                     <h5>Department List</h5>
                     <table id="depart_table" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
-                        {{!-- Td: 1-12-2021 --}}
                         {{#each departlst}}
-                            <tr id="tr{{id}}">
+                            <tr id="tr_depart{{id}}">
                                 <td>{{departmentName}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-light fa fa-edit" onclick="editDialog('{{id}}',  '{{departmentName}}')" data-toggle="modal" data-target="#edit-department-dialog"/>
-                                    <button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelDepart('{{id}}', '{{departmentName}}')" data-toggle="modal" data-target="#conf-del-depart"/>
+                                    <button type="button" class="btn btn-light fa fa-edit" onclick="editDepartDialog('{{id}}')" data-toggle="modal" data-target="#edit-department-dialog"/>
+                                    <button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelDepart('{{id}}')" data-toggle="modal" data-target="#conf-del-depart"/>
                                 </td>
                             </tr>
                         {{/each}}
-                        {{!-- End --}}
                     </table><br>
                     <button type="button" class="btn btn-light border" data-toggle="modal" data-target="#new-department-dialog">
                         <i class="fa fa-file"></i> Create New Department
                     </button>
                 </div>
                 <hr>
-                {{!-- Td: 2-12-2021 --}}
                 {{#if user_depart_lst}}
                     <div class="w3-container">
                     <h5>Department Users</h5>
                     <table id="departuser_table" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
                         {{#each user_depart_lst}}
-                            <tr id="tr{{id}}">
+                            <tr id="tr_user{{id}}">
                                 <td>
                                     <img src="/w3images/avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
                                     <span class="w3-xlarge">{{name}}</span><br>
                                 </td>
                                 <td>{{username}}</td>
                                 <td>{{email}}</td>
-                                <td>
+                                <td id="td_depart_{{id}}">
                                     {{#if department}}
                                         {{#each department}}
-                                            <p>{{departmentName}}</p>
+                                            <p id="DU_{{_id}}">{{departmentName}}</p>
                                         {{/each}}
                                     {{/if}}
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-light fa fa-edit" onclick="" data-toggle="modal" data-target="#edit-userdepart-dialog"/>
+                                    <button type="button" class="btn btn-light fa fa-edit" onclick="editDUserDialog('{{id}}', '{{username}}')" data-toggle="modal" data-target="#edit-userdepart-dialog"/>
                                     <button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelUser('{{id}}', '{{username}}')" data-toggle="modal" data-target="#conf-del-user"/>
                                 </td>
                             </tr>
@@ -173,20 +65,22 @@
                     <h5>Student Users</h5>
                     <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
                         {{#each user_stu_lst}}
-                            <tr id="tr{{id}}">
+                            <tr id="tr_user{{id}}">
                                 <td>
                                     <img src="/w3images/avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
                                     <span class="w3-xlarge">{{name}}</span><br>
                                 </td>
                                 <td>{{email}}</td>
                                 <td>{{class}}</td>
-                                <td>
+                                <td id="td_stu_{{id}}">
                                     {{#if department}}
-                                        {{departmentName}}
+                                        {{#each department}}
+                                            <span id="SU_{{_id}}">{{departmentName}}</span>
+                                        {{/each}}
                                     {{/if}}
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-light fa fa-edit"/>
+                                    <button type="button" class="btn btn-light fa fa-edit" onclick="editSUserDialog('{{id}}', '{{email}}', '{{name}}', '{{class}}')" data-toggle="modal" data-target="#edit-userstu-dialog"/>
                                     <button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelUser('{{id}}', '{{email}}')" data-toggle="modal" data-target="#conf-del-user"/>
                                 </td>
                             </tr>
@@ -195,61 +89,6 @@
                     </div>
                     <hr>
                 {{/if}}
-                {{!-- End --}}
-        <hr>
-        <div class="w3-container">
-            <h5>Recent Comments</h5>
-            <div class="w3-row">
-                <div class="w3-col m2 text-center">
-                    <img class="w3-circle" src="/w3images/avatar3.png" style="width:96px;height:96px">
-                </div>
-                <div class="w3-col m10 w3-container">
-                    <h4>John <span class="w3-opacity w3-medium">Sep 29, 2014, 9:12 PM</span></h4>
-                    <p>Keep up the GREAT work! I am cheering for you!! Lorem ipsum dolor sit amet, consectetur
-                        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><br>
-                </div>
-                        </div>
-                        <div class="w3-row">
-                            <div class="w3-col m2 text-center">
-                                <img class="w3-circle" src="/w3images/avatar1.png" style="width:96px;height:96px">
-                            </div>
-                            <div class="w3-col m10 w3-container">
-                                <h4>Bo <span class="w3-opacity w3-medium">Sep 28, 2014, 10:15 PM</span></h4>
-                                <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><br>
-                            </div>
-                    </div>
-                    </div>
-                    <br>
-                    <div class="w3-container w3-dark-grey w3-padding-32">
-                        <div class="w3-row">
-                            <div class="w3-container w3-third">
-                                <h5 class="w3-bottombar w3-border-green">Demographic</h5>
-                                <p>Language</p>
-                                <p>Country</p>
-                                <p>City</p>
-                            </div>
-                <div class="w3-container w3-third">
-                    <h5 class="w3-bottombar w3-border-red">System</h5>
-                    <p>Browser</p>
-                    <p>OS</p>
-                    <p>More</p>
-                </div>
-                    <div class="w3-container w3-third">
-                        <h5 class="w3-bottombar w3-border-orange">Target</h5>
-                        <p>Users</p>
-                        <p>Active</p>
-                        <p>Geo</p>
-                        <p>Interests</p>
-                    </div>
-                    </div>
-                    </div>
-                    <!-- Footer -->
-                    <footer class="w3-container w3-padding-16 w3-light-grey">
-                        <h4>FOOTER</h4>
-                        <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-                    </footer>
-                    <!-- End page content -->
-                    </div>
 
 <!-- New department dialog -->
 <div class="modal fade" id="new-department-dialog">
@@ -346,7 +185,7 @@
     </div>
 </div>
 
-<!-- New user for Phòng/khoa dialog -->
+<!-- Edit user for Phòng/khoa dialog -->
 <div class="modal fade" id="edit-userdepart-dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -358,31 +197,70 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" placeholder="Name" class="form-control" id="newName" />
+                    <input type="text" placeholder="Name" class="form-control" id="editUDName" />
                 </div>
                 <div class="form-group">
-                    <label for="name">Password</label>
+                    <label for="name">New Password</label>
                     <input type="password" name="password" class="form-control" placeholder="Password"
-                        id="newPassword" />
+                        id="newDUPassword" />
                 </div>
                 <div class="form-group">
-                    <label for="name">Confirm Password</label>
+                    <label for="name">Confirm New Password</label>
                     <input type="password" name="confpassword" class="form-control" placeholder="Password"
-                        id="newConfpassword" />
+                        id="newDUPasswordConf" />
                 </div>
 
                 <div class="form-group">
                     <label for="name">Chọn Phòng ban</label>
-                    <select class="js-example-basic-multiple" style="width: 100%;" name="states[]" multiple="multiple">
+                    <select class="js-editDU-basic-multiple" style="width: 100%;" name="states[]" multiple="multiple">
                         {{#each departlst}}
-                            <option value="{{id}}">{{departmentName}}</option>
+                            <option id="edit_user_{{id}}" value="{{id}}">{{departmentName}}</option>
                         {{/each}}
                     </select>
                 </div>
+                <input type="hidden" id="editUD_hidden"/>
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" onclick="createUser()">Lưu</button>
+                <button id="edit-userdepart-btn" type="button" class="btn btn-success" onclick="editDUser()" data-dismiss="modal">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit user for Student dialog -->
+<div class="modal fade" id="edit-userstu-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit student - <strong id="editUserStu">517H0042</strong></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" placeholder="Name" class="form-control" id="editSUName" />
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Class</label>
+                    <input type="text" placeholder="Name" class="form-control" id="editSUClass" />
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Chọn Phòng ban</label>
+                    <select class="js-editSU-basic-single" style="width: 100%;" name="states">
+                        {{#each departlst}}
+                            <option id="edit_user_{{id}}" value="{{id}}">{{departmentName}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <input type="hidden" id="editSU_hidden"/>
+            </div>
+
+            <div class="modal-footer">
+                <button id="edit-userdepart-btn" type="button" class="btn btn-success" onclick="editSUser()" data-dismiss="modal">Lưu</button>
             </div>
         </div>
     </div>
@@ -414,7 +292,6 @@
   </div>
 <!-- End Confirm delete Department -->
 
-{{!-- TD: 5-12-2021 --}}
 <!-- Confirm delete User -->
 <div class="modal fade" id="conf-del-user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -440,7 +317,7 @@
     </div>
   </div>
 <!-- End Confirm delete User -->
-{{!-- TD end: 5-12-2021 --}}
+
 
 <script>
     // Get the Sidebar

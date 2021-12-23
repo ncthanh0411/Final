@@ -165,9 +165,17 @@ router.get("/me", function (req, res, next) {
     });
 });
 
-router.get("/test2", function (req, res, next) {
-  res.render("test2", { layout: "alayout.hbs" });
+// CongP 23.12.21 Update
+router.get("/edit", function (req, res, next) {
+  console.log("session1" + req.session.user);
+  console.log("session2" + req.session.email);
+
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  res.render("edit");
 });
+
 
 router.get("/posts", function (req, res, next) {
   res.render("posts", { layout: "alayout.hbs", title: "Department Posts" });
@@ -210,4 +218,16 @@ router.get("/depost", function (req, res, next) {
   });
 });
 
+router.get("/detail", function (req, res, next) {
+  res.render("detail", { layout: "playout.hbs", title: "Detail Posts" });
+});
+
+router.get('/:id', function(req, res, next) {
+  User.findOne({ _id: req.params.id }, (error, user) => {
+    if (error || !user) {
+      return res.status(404).json({ message: error });
+    }
+    
+  });
+});
 module.exports = router;

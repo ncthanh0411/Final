@@ -11,13 +11,12 @@ var Department = require("../models/department");
 
 router.get('/', function (req, res, next) {
     // check login
-
     if (!req.session.user && !req.session.email) {
         return res.redirect("/login");
     }
-    // if(req.session.role != 0) {
-    //     return res.redirect('/');
-    // }
+    if(req.session.role != 0) {
+        return res.redirect('/');
+    }
     Department.find(function (err, departLst) {
         if (err) return res.status(404).json({ msg: "DB error" });
         User.find({ $or: [{ role: 1 }, { role: 2 }] })
@@ -82,6 +81,11 @@ router.post("/createUser", function (req, res, next) {
     return res.json({
       isvalid: false,
       msg: "Confirm password không trùng khớp ",
+    });
+  if(departlst.length == 0)
+    return res.json({
+      isvalid: false,
+      msg: "Vui lòng chọn Phòng ban",
     });
 
   User.findOne({ username: username }, (error, user) => {
@@ -168,21 +172,110 @@ router.put("/upDepart/:id", function (req, res, next) {
   });
 });
 
-// Update User - update
-router.put("/upUser/:id", function (req, res, next) {
+// Edit Depart User - done
+router.put("/editDUser/:id", function (req, res, next) {
   User.findOne({ _id: req.params.id }, (err, user) => {
     if (err) return res.status(404).json({ isvalid: false, msg: err });
     if (!user)
       return res.status(404).json({ isvalid: false, msg: "User not found!" });
-    // ....check some value must enter
+    
+    let departlst = JSON.parse(req.body.department);
+
+    if (!req.body.name)
+      return res.json({ isvalid: false, msg: "Vui lòng nhập tên " });
+    if(departlst.length == 0)
+      return res.json({
+        isvalid: false,
+        msg: "Vui lòng chọn Phòng ban",
+      });
+    if(req.body.password) {
+      if(req.body.password != req.body.confpassword)
+        return res.json({
+          isvalid: false,
+          msg: "Confirm password không trùng khớp ",
+        });
+      user.password = req.body.password;
+    };
+
+    let lst = [];
+    departlst.forEach((departId) => {
+      lst.push(departId);
+    });
+
+    user.name = req.body.name;
+    user.department = lst;
 
     user.save((err, user_update) => {
       if (err) return res.status(404).json({ isvalid: false, msg: err });
-      return res
-        .status(200)
-        .json({ isvalid: true, msg: "User update successfull" });
+      user_update.populate('department')
+        .then(user => {
+          return res.status(200).json({ isvalid: true, msg: "User update successfull" , useredit: user});
+        })
+        .catch(err => {
+          return res.status(404).json({ isvalid: false, msg: err });
+        });
     });
   });
 });
 
+// Edit Student User - done
+router.put("/editSUser/:id", function (req, res, next) {
+  User.findOne({ _id: req.params.id }, (err, user) => {
+    if (err) return res.status(404).json({ isvalid: false, msg: err });
+    if (!user)
+      return res.status(404).json({ isvalid: false, msg: "User not found!" });
+
+    if (!req.body.name)
+      return res.json({ isvalid: false, msg: "Vui lòng nhập tên " });
+    if(!req.body.department)
+      return res.json({
+        isvalid: false,
+        msg: "Vui lòng chọn Phòng ban",
+      });
+    // ???check class for student???
+
+    user.name = req.body.name;
+    user.class = req.body.stuclass;
+    user.department = req.body.department;
+
+    user.save((err, user_update) => {
+      if (err) return res.status(404).json({ isvalid: false, msg: err });
+      user_update.populate('department')
+        .then(user => {
+          return res.status(200).json({ isvalid: true, msg: "User update successfull" , useredit: user});
+        })
+        .catch(err => {
+          return res.status(404).json({ isvalid: false, msg: err });
+        });
+    });
+  });
+});
+
+router.get("/update", function (req, res, next) {
+  // check login
+
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  Department.find(function (err, departLst) {
+    if (err) return res.status(404).json({ msg: "DB error" });
+    User.find({ $or: [{ role: 1 }, { role: 2 }] })
+      .populate("department")
+      .then((userLst) => {
+        return res.render("update", {
+          departlst: departLst,
+          layout: "alayout",
+          title: "Edit Account",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.status(404).json({ msg: "DB error" });
+      });
+  });
+});
+
+router.get("/test2", function (req, res, next) {
+  res.render("test2", { layout: "alayout.hbs" });
+});
 module.exports = router;

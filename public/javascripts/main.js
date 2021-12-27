@@ -389,7 +389,14 @@ function postForm(e) {
       processData: false,
       contentType: false,
       success: function(data){
+        //Clear
+        $("#content").val("")
+        $("#video_youtube").val("")
+        $("#previewImg").attr("src", "");
+        $("input[type=file]").val("")
+        $("#youtube_link").css("display", "none")
         console.log(data)
+        $('#list_post').prepend(addPost(data))
       },
       error: function (err) {
         console.log(err);
@@ -410,14 +417,15 @@ function putForm(e) {
       processData: false,
       contentType: false,
       success: function(data){
-        //Clear
-        $("#content").val("")
-        $("#video_youtube").val("")
-        $("#previewImg").attr("src", "");
-        $("input[type=file]").val("")
-        $("#youtube_link").css("display", "none")
+        var id = data._id
         console.log(data)
-        $('#list_post').prepend(addPost(data))
+        $('#contentPost' + id).text(data.content)
+        let img = $("#previewImgEdit").attr("src");
+
+        $("#imgPost" + id).attr('src', img);
+        $("#if_frame" + id).attr('src', data.youtube_url);  
+        $("#videoPost" + id).text(data.youtube_url);
+        document.getElementById("close_post").click()
       },
       error: function (err) {
         console.log(err);
@@ -425,35 +433,6 @@ function putForm(e) {
       }
   });  
 }
-
-// $("#postForm").submit(function (e) {
-//   console.log("asdsa")
-//   //prevent Default functionality
-//   e.preventDefault();
-//   var formData = new FormData(this);
-//   $.ajax({
-//       type: "POST",
-//       url: "/post/",
-//       data: formData,
-//       processData: false,
-//       contentType: false,
-//       success: function(data){
- 
-//             console.log(data.post);
-//             var post = postForm(data.post,status_edit_del);
-
-//             $('#postModal').modal('hide');
-
-//             $( '#post-item' + data.post._id + '' ).html(post);
-      
-//       },
-//       error: function (post) {
-//         console.log(post);
-//         alert("Fail to Post");
-//       }
-//   });
-// });
-
 
 function previewFile(input){
   $("#youtube_link").css("display", "none")
@@ -481,6 +460,8 @@ function showPost(id) {
   console.log(content)
   $("#edit_post").val(content)
 
+  //Send ID
+  $("#postEdit").val(id)
 
   if($("#imgPost" + id).length != 0)
   {
@@ -488,6 +469,11 @@ function showPost(id) {
     $("#previewImgEdit").css("display", "block")
     let img = $("#imgPost" + id).attr('src');
     $("#previewImgEdit").attr("src", img);
+
+
+    //icon
+    $("#image_edit_icon").show()
+    $("#video_edit_icon").hide()
   }
 
   if($("#videoPost" + id).length != 0){
@@ -495,17 +481,20 @@ function showPost(id) {
     let video_link = $("#videoPost" + id).text()
     $("#youtube_link_edit").css("display", "block")
     $("#video_youtube_edit").val(video_link)
+
+    //icon
+    $("#image_edit_icon").hide()
+    $("#video_edit_icon").show()   
   }
 
 }
 
 
 function previewFileEdit(input){
- 
-  var file = $("input[type=file]").get(0).files[0];
+  console.log($("#file_edit"))
+  var file = $("#file_edit").get(0).files[0];
   if(file){
     var reader = new FileReader();
-
     reader.onload = function(){
         $("#previewImgEdit").attr("src", reader.result);
     }

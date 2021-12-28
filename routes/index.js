@@ -222,12 +222,12 @@ router.get("/detail", function (req, res, next) {
   res.render("detail", { layout: "playout.hbs", title: "Detail Posts" });
 });
 
-router.get('/:id', function(req, res, next) {
-  User.findOne({ _id: req.params.id }, (error, user) => {
-    if (error || !user) {
-      return res.status(404).json({ message: error });
-    }
+// router.get('/:id', function(req, res, next) {
+//   User.findOne({ _id: req.params.id }, (error, user) => {
+//     if (error || !user) {
+//       return res.status(404).json({ message: error });
+//     }
     
-  });
-});
+//   });
+// });
 module.exports = router;

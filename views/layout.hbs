@@ -3,42 +3,41 @@
 
   <head>
     <title>{{title}}</title>
+    {{!-- Init  --}}
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="" />
-    <meta name="keywords" content="" />
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    {{!-- <link rel='stylesheet' href='/stylesheets/style2.css' /> --}}
+    <meta name="keywords" content="" />{{!-- CongP update 24.11 Start --}}
+    <meta name="google-signin-client_id" content="184293983150-4t91b630845pn6h5sb2m9van1o4lndrd.apps.googleusercontent.com">
+    <link rel="icon" href="/images/tdt.png" type="image/png" sizes="16x16">
+    
+    {{!-- CSS --}}
+    <link rel="stylesheet" href="/stylesheets/main.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/color.css">
+    <link rel="stylesheet" href="/stylesheets/responsive.css">
     {{!-- CongP update 28.11 Start --}}
-
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js" integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" crossorigin="anonymous"></script>
-{{!-- CongP update 24.11 Start --}}
-<meta name="google-signin-client_id" content="184293983150-4t91b630845pn6h5sb2m9van1o4lndrd.apps.googleusercontent.com">
-<link rel="icon" href="/images/tdt.png" type="image/png" sizes="16x16">
-{{!-- <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"> </script>--}}
-
-{{!-- CongP update 24.11 End --}}
-{{!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> --}}
-
-    <script src="/javascripts/main.js"></script>
-    {{!-- CongP update 30.11 End --}}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {{!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
+    {{!-- Scripts --}}
+    {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.mmenu/6.1.0/jquery.mmenu.all.js"></script> --}}
+    {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
+    {{!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                                                                                              integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
     <script src="/javascripts/main.min.js"></script>
-    {{!-- <script src="/javascripts/script.js"></script>
-                <script src="/javascripts/map-init.js"></script> --}}
-    {{!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8c55_YHLvDHGACkQscgbGLtLRdxBDCfI"></script> --}}
-    {{!-- CongP update 30.11 End --}}
+    <script src="/javascripts/main.js"></script>
+    <script src="/javascripts/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    {{!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"
+      integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" crossorigin="anonymous"></script>
   </head>
+
   <body>
     <div class="responsive-header">
       <div class="mh-head first Sticky">
@@ -46,7 +45,7 @@
           <a class="" href="#menu"><i class="fa fa-align-justify"></i></a>
         </span>
         <span class="mh-text">
-          <a href="/" title=""><img src="images/logo2.png" alt=""></a>
+          <a href="/" title=""><img src="images/tdt.png" alt="" style="width: 50px;"></a>
         </span>
         <span class="mh-btns-right">
           <a class="fa fa-sliders" href="#shoppingbag"></a>
@@ -58,6 +57,29 @@
           <a href="#/" class="fa fa-search"></a>
         </form>
       </div>
+      <nav id="menu" class="res-menu">
+        <ul>
+          <li><span>Home</span>
+            <ul>
+              <li><a href="/" title="">Home Page</a></li>
+              <li><a href="/depost" title="">Department Post</a></li>
+            </ul>
+          </li>
+          <li><span>Time Line</span>
+            <ul>
+              <li><a href="/me" title="">My Timeline</a></li>
+              <li><a href="/photos" title="">Timeline Photos</a></li>
+              <li><a href="/edit" title="">Edit Account</a></li>
+            </ul>
+          </li>
+          <li><span>Support & Help</span>
+            <ul>
+              <li><a href="https://www.facebook.com/C0ngPham" title="">Support & Help</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
       <nav id="shoppingbag">
         <div>
           <div class="">
@@ -136,22 +158,15 @@
             <a href="/" title="">Home</a>
             <ul>
               <li><a href="/" title="">Home page</a></li>
-              <li><a href="index-2.html" title="">Department Posts</a></li>
+              <li><a href="/depost" title="">Department Posts</a></li>
             </ul>
           </li>
           <li>
-            <a href="#" title="">timeline</a>
+            <a href="/me" title="">timeline</a>
             <ul>
               <li><a href="/me" title="">My Timeline</a></li>
-              <li><a href="timeline-photos.html" title="">Photos</a></li>
-              <li><a href="timeline-videos.html" title="">About</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="#" title="">Account Settings</a>
-            <ul>
+              <li><a href="/photos" title="">Photos</a></li>
               <li><a href="/edit" title="">Edit Account</a></li>
-              <li><a href="notifications.html" title="">Delete Account</a></li>
             </ul>
           </li>
           <li>

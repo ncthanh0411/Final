@@ -129,7 +129,7 @@ router.post("/login", function (req, res, next) {
 // CongP 02.12.21 Update
 
 router.get("/test", function (req, res, next) {
-  res.render("test");
+  res.render("edit");
 });
 
 // CongP 06.12.21 Update

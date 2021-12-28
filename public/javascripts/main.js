@@ -358,6 +358,11 @@ function avatarRemove() {
   }); 
 }
 
+function notiSubmit() {
+  var formData = new FormData(document.getElementById("userNotiForm"));
+  console.log(formData);
+}
+
 // ------------------------- Layout -------------------------------------
 
 //----------------------------- Post, Like, Comment ------------------------------------

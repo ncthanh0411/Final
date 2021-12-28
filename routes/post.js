@@ -6,6 +6,7 @@ var Post = require('../models/post');
 var Comment = require('../models/comment');
 const { populate } = require('../models/user');
 const multer = require('multer');
+const { contentType } = require('express/lib/response');
 
 /* GET users listing. */
 /* GET post listing. */
@@ -92,10 +93,44 @@ router.post('/', upload.single('img'),function(req, res, next) {
 //Edit Post
 var upload = multer({ dest: './public/images/posts/' })
 router.put('/', upload.single('img'),function(req, res, next) {
-  console.log(req.body)
-  console.log(req.file)
 
-  return res.status(200).json({ data: 'test' }) 
+
+  var you_url = req.body.video.replace('watch?v=', "embed/");
+  var img = ''
+  if(req.file){
+    img = '/images/posts/' + req.file.filename;
+  }
+  console.log(req.body)
+
+  User.findOne({ email: req.session.email }, (error, user) => {
+    if(error || !user) {                              
+      return res.status(404).json({ message: error })      
+    }
+
+
+    //Date
+    var datetime = new Date();
+    var u_date  = moment(datetime).format('YYYY-MM-DD h:mm:ss');
+    //Post
+
+    Post.findOne({_id: req.body.id }, (err, post) => {
+      if(err || !post) return res.status(404).json({ message: error }) 
+
+      if(you_url)
+      {
+        post.youtube_url = you_url
+      }
+      post.content = req.body.content
+      post.update_date = u_date
+      if(req.file){
+        post.image = img
+      }
+      post.save(function (err, post) {
+        if(err || !post) return res.status(404).json({ message: error }) 
+        return res.status(200).json(post)
+      }); 
+    })
+  })
 });
 
 

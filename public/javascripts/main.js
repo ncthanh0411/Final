@@ -594,15 +594,18 @@ function post_comment(e, id) {
     let post_comment = $("#post_comment" + id);
     //Get content of comment
     let comment_content = $("#comment_content" + id);
+    console.log(comment_content.val())
     var comment = {
       id_post: id,
       comment: comment_content.val(),
     };
+  
     $.ajax({
       url: "/post/comment",
       method: "post",
       data: comment,
       success: function (comment) {
+        console.log(comment)
         var comment_id = "'" + comment.id + "'"
         var comment_HTML =
           "<li id = 'commentLi" + comment.id  + "'>" +

@@ -68,6 +68,10 @@ function newDepartment() {
   });
 }
 
+function setCreate() {
+  $(".js-example-basic-multiple").select2();
+}
+
 function createUser() {
   var departlst = $(".js-example-basic-multiple").select2("val");
   $.ajax({

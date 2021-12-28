@@ -257,22 +257,19 @@ router.get("/update", function (req, res, next) {
   if (!req.session.user && !req.session.email) {
     return res.redirect("/login");
   }
-  Department.find(function (err, departLst) {
-    if (err) return res.status(404).json({ msg: "DB error" });
-    User.find({ $or: [{ role: 1 }, { role: 2 }] })
-      .populate("department")
-      .then((userLst) => {
-        return res.render("update", {
-          departlst: departLst,
-          layout: "alayout",
-          title: "Edit Account",
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        return res.status(404).json({ msg: "DB error" });
-      });
-  });
+  if(req.session.role != 0) {
+    return res.redirect('/');
+  } else {
+    User.findOne({ role: 0 })
+    .populate('department')
+    .then(user => {
+      return res.render('update', { layout: "alayout", user: user });
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(404).json({ msg: "DB error" });
+    });
+  }
 });
 
 router.get("/test2", function (req, res, next) {

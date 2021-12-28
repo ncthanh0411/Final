@@ -15,8 +15,8 @@
                 <form>
                     <div class="form-group">
                         <label for="name">Department</label>
-                        <select class="js-example-basic-multiple" style="width: 100%;" name="states[]">
-                            {{#each departlst}}
+                        <select class="js-example-basic-multiple" style="width: 100%;" name="states">
+                            {{#each user.department}}
                                 <option value="{{id}}">{{departmentName}}</option>
                             {{/each}}
                         </select>
@@ -37,15 +37,15 @@
                 <h5>Authorized</h5>
                 <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
                     {{!-- Td: 1-12-2021 --}}
-                    {{#each departlst}}
+                    {{#each user.department}}
                         <tr id="tr{{id}}">
                             <td>{{departmentName}}</td>
                         </tr>
-                        {{/each}}
-                        {{!-- End --}}
-                        </table><br>
-                        </div>
+                    {{/each}}
+                    {{!-- End --}}
+                </table><br>
             </div>
+        </div>
         <!-- End page content -->
     </div>
 

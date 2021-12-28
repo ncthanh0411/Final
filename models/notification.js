@@ -1,8 +1,8 @@
 // Mongoose db Connection
 var mongoose = require('mongoose');
 var notificationSchema = mongoose.Schema({
+    title: String,
     content: String,
-    body: String,
     department: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Department"

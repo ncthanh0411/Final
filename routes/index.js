@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
+const multer = require('multer');
+var upload = multer({ dest: './public/images/avatars/' });
+const fs = require('fs');
 
 var User = require('../models/user');
 var Post = require('../models/post');
@@ -165,17 +168,78 @@ router.get("/me", function (req, res, next) {
     });
 });
 
-// CongP 23.12.21 Update
-router.get("/edit", function (req, res, next) {
-  console.log("session1" + req.session.user);
-  console.log("session2" + req.session.email);
-
+router.get("/edit/:id", function (req, res, next) {
   if (!req.session.user && !req.session.email) {
     return res.redirect("/login");
   }
-  res.render("edit");
+
+  User.findOne({ _id: req.params.id })
+    .populate('department')
+    .then(user => {
+      if(user.role == 2 && user.email == req.session.email) {
+        return res.render('edit', { user });
+      } else {
+        return res.redirect('/');
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(404).redirect('/404');
+    })
 });
 
+router.put("/edit/:id", upload.single('edit_upload_img'), function (req, res, next) {
+  var dataform = req.body;
+  var imgfile = req.file;
+  console.log(imgfile);
+  // fs.unlinkSync('../images/avatars/576e04ef0e071322dfae480299a183d0');
+  User.findOne({ _id: req.params.id })
+    .populate('department')
+    .then(user => {
+      // if(dataform.edit_user_pw || dataform.edit_user_newpw || dataform.edit_user_confnewpw) {
+      //   if(!dataform.edit_user_pw) return res.json({ isvalid: false, msg: 'Please enter your old password' });
+      //   var checkpass = bcrypt.hashSync(dataform.edit_user_pw, saltRounds);
+      //   if(checkpass != user.password) return res.json({ isvalid: false, msg: 'Your old password wrong' });
+      //   if(!dataform.edit_user_newpw) return res.json({ isvalid: false, msg: 'Please enter your new password' });
+      //   if(!dataform.edit_user_confnewpw) return res.json({ isvalid: false, msg: 'Please enter confirm new password' });
+      //   if(dataform.edit_user_newpw != dataform.edit_user_confnewpw) return res.json({ isvalid: false, msg: 'Wrong confirm new password' });
+      //   user.password = dataform.edit_user_newpw;
+      // }
+      user.name = dataform.edit_user_name;
+      if(imgfile) {
+        if(user.image_url) fs.unlinkSync('public' + user.image_url);
+        user.image_url = '/images/avatars/' + imgfile.filename;
+      }
+
+      user.save((err, update_user) => {
+        console.log('user update: ', update_user);
+        if (err) return res.status(404).json({ isvalid: false, msg: err });
+        return res.json({ isvalid: true, msg: 'Update success' });
+      })
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(404).redirect('/404');
+    })
+});
+
+router.post('/avatarRm/:id', function(req, res) {
+  var id = req.params.id;
+  User.findOne({ _id: req.params.id })
+    .then(user => {
+      if(user.image_url) fs.unlinkSync('public' + user.image_url);
+      user.image_url = '';
+
+      user.save((err, update_user) => {
+        if (err) return res.status(404).json({ isvalid: false, msg: err });
+        return res.json({ isvalid: true, msg: 'Update success' });
+      })
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(404).redirect('/404');
+    })
+});
 
 router.get("/posts", function (req, res, next) {
   res.render("posts", { layout: "alayout.hbs", title: "Department Posts" });
@@ -220,14 +284,5 @@ router.get("/depost", function (req, res, next) {
 
 router.get("/detail", function (req, res, next) {
   res.render("detail", { layout: "playout.hbs", title: "Detail Posts" });
-});
-
-router.get('/:id', function(req, res, next) {
-  User.findOne({ _id: req.params.id }, (error, user) => {
-    if (error || !user) {
-      return res.status(404).json({ message: error });
-    }
-    
-  });
 });
 module.exports = router;

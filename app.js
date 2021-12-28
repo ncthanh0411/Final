@@ -35,15 +35,24 @@ mongoose.connect(
 );
 
 // var User = require("./models/user");
+// var Department = require("./models/department");
 // bcrypt.hash('admin', 10).then(function(hash) {
-//   var newUser = new User({
-//     username: 'admin',
-//     email: '',
-//     password: hash,
-//     role: 0,
-//     id_gg: ''
+//   Department.find(function (err, departLst) {
+//     if (err) return res.status(404).json({ msg: "DB error" });
+//     var lst = [];
+//     departLst.forEach(depart => {
+//       lst.push(depart.id)
+//     })
+//     var newUser = new User({
+//       username: 'admin',
+//       email: '',
+//       password: hash,
+//       role: 0,
+//       id_gg: '',
+//       department: lst
+//     });
+//     newUser.save();
 //   });
-//   newUser.save();
 // })
 
 var app = express();
@@ -92,6 +101,11 @@ app.use(function (err, req, res, next) {
 
 io.on("connection", (socket) => {
   console.log('user connect: ', socket.id);
+  
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
 });
 
 module.exports = { app: app, server: server };

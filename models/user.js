@@ -1,7 +1,7 @@
 // Mongoose db Connection
 var mongoose = require('mongoose');
 var userSchema = mongoose.Schema({
-    username: String,
+    username: { type: String, lowercase: true, unique: true },
     name: String,
     email: String,
     password: String,

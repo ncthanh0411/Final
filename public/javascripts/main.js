@@ -3,6 +3,9 @@ window.onload = function () {
     gapi.auth2.init();
   });
 };
+
+const socket = io('/');
+
 $(document).ready(function () {
   if ($(".js-example-basic-multiple").length != 0)
     $(".js-example-basic-multiple").select2();
@@ -284,6 +287,71 @@ function delUser() {
       console.log(err);
     },
   });
+}
+
+function previewEditAvatar(input) {
+  var imgfile = $("#edit_upload_img").get(0).files[0];
+  if(imgfile){
+    var reader = new FileReader();
+
+    reader.onload = function(){
+        $("#edit_user_avatar").attr("src", reader.result);
+    }
+    reader.readAsDataURL(imgfile);
+  }
+}
+
+function closeEditError() {
+  document.getElementById('edit_user_div_error').className = 
+    document.getElementById('edit_user_div_error').className.replace( /(?:^|\s)show(?!\S)/g , '' );
+  $('#edit_user_error').text('OMG ERROR');
+}
+
+function editUser(event) {
+  event.preventDefault();
+  var id = $('#edit_hidden_id').val();
+  var formData = new FormData(document.getElementById("formEditUser"));
+  $.ajax({
+      type: "PUT",
+      url: "/edit/" + id,
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(data){
+        if (data.isvalid) {
+          console.log(data.msg);
+          window.location.reload();
+          // ??????
+        } else {
+          $('#edit_user_error').text(data.msg);
+          document.getElementById('edit_user_div_error').classList.add('show');
+        }
+      },
+      error: function (err) {
+        console.log(err);
+        alert(err);
+      }
+  });  
+}
+
+function avatarRemove() {
+  var id = $('#edit_hidden_id').val();
+  $.ajax({
+    type: "POST",
+    url: "/avatarRm/" + id,
+    success: function(data){
+      if (data.isvalid) {
+        // ??????
+      } else {
+        $('#edit_user_error').text(data.msg);
+        document.getElementById('edit_user_div_error').classList.add('show');
+      }
+    },
+    error: function (err) {
+      console.log(err);
+      alert(err);
+    }
+  }); 
 }
 
 // ------------------------- Layout -------------------------------------

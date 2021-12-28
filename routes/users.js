@@ -12,34 +12,22 @@ router.get("/", function (req, res, next) {
   if (!req.session.user && !req.session.email) {
     return res.redirect("/login");
   }
-  // if(req.session.role != 0) {
-  //     return res.redirect('/');
-  // }
-  Department.find(function (err, departLst) {
-    if (err) return res.status(404).json({ msg: "DB error" });
-    User.find({ $or: [{ role: 1 }, { role: 2 }] })
-      .populate("department")
-      .then((userLst) => {
-        let user_depart_lst = [];
-        let user_stu_lst = [];
-
-        userLst.forEach((user) => {
-          if (user.role == 1) user_depart_lst.push(user);
-          else user_stu_lst.push(user);
-        });
-        return res.render("user", {
-          departlst: departLst,
-          layout: "alayout",
-          title: "Users Page",
-          user_depart_lst: user_depart_lst,
-          user_stu_lst: user_stu_lst,
-        });
+  if(req.session.role == 2 || !req.session.user) {
+      return res.redirect('/');
+  }
+  User.findOne({ username: req.session.user })
+    .populate("department")
+    .then(user => {
+      return res.render('user', {
+        layout: "alayout",
+        title: "Users Page",
+        user: user
       })
-      .catch((err) => {
-        console.log(err);
-        return res.status(404).json({ msg: "DB error" });
-      });
-  });
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(404).json({ msg: "DB error" });
+    })
 });
 
 module.exports = router;

@@ -148,14 +148,14 @@ if ($.isFunction($.fn.userincr)) {
 }	
 	
 if ($.isFunction($.fn.loadMoreResults)) {	
-	$('.loadMore').loadMoreResults({
-		displayedItems: 3,
-		showItems: 1,
-		button: {
-		  'class': 'btn-load-more',
-		  'text': 'Load More'
-		}
-	});	
+	$(".loadMore").loadMoreResults({
+    displayedItems: 5,
+    showItems: 5,
+    button: {
+      class: "btn-load-more",
+      text: "Load More",
+    },
+  });	
 }
 	//===== owl carousel  =====//
 	if ($.isFunction($.fn.owlCarousel)) {

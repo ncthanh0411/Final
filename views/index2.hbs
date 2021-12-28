@@ -103,6 +103,7 @@
 															<iframe width="420" height="315"
 																src= {{youtube_url}}
 																allow="autoplay;" allowfullscreen
+																id = "if_frame{{id}}"
 																>
 															</iframe >
 														{{/if}}															
@@ -128,7 +129,6 @@
 												</div>
 
 												<!-- The Modal Post -->
-												
 												<div class="modal fade" id="editPost">
 													<form id="formSubmitEdit" method="post" onsubmit="putForm(event)" enctype="multipart/form-data">
 														<div class="modal-dialog">
@@ -148,14 +148,14 @@
 																<div class="attachments">
 																	<b><hr></b>
 																	<ul>
-																		<li>
-																			<i class="fa fa-image"></i>
+																		<li id = "image_edit_icon">
+																			<i class="fa fa-image" ></i>
 																			<label class="fileContainer">
-																				<input type="file" name="img" accept="image/*" onchange="previewFileEdit(this);">
+																				<input id="file_edit" type="file" name="img" accept="image/*" onchange="previewFileEdit(this);">
 																			</label>
 																		</li>
-																		<li>
-																			<i class="fa fa-video-camera" onclick="showVideoEdit()"></i>
+																		<li id = "video_edit_icon">
+																			<i class="fa fa-video-camera"></i>
 																		</li>
 																	</ul>
 																</div>
@@ -169,8 +169,8 @@
 															</div>
 															<!-- Modal footer -->
 															<div class="modal-footer">
-																<button type="submit" class="btn" data-dismiss="modal" >Confirm</button>
-																<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+																<button type="submit" class="btn" >Confirm</button>
+																<button type="button" class="btn btn-danger" data-dismiss="modal" id ="close_post">Close</button>
 															</div>
 															</div>
 														</div>
@@ -278,87 +278,24 @@
 							<div class="col-lg-3">
 								<aside class="sidebar static right">
 									<div class="widget">
-										<h4 class="widget-title">Your page</h4>
-										<div class="your-page">
-											<figure>
-												<a href="#" title=""><img src="images/resources/friend-avatar9.jpg"
-														alt=""></a>
-											</figure>
-											<div class="page-meta">
-												<a href="/me" title="" class="underline">My page</a>
-												<span><i class="ti-comment"></i><a href="insight.html" title="">Messages
-														<em>9</em></a></span>
-												<span><i class="ti-bell"></i><a href="insight.html"
-														title="">Notifications <em>2</em></a></span>
+										<div class="banner medium-opacity bluesh">
+											<div class="bg-image" style="background-image: url(images/TDTU.png)">
 											</div>
-											<div class="page-likes">
-												<ul class="nav nav-tabs likes-btn">
-													<li class="nav-item"><a class="active" href="#link1"
-															data-toggle="tab">likes</a></li>
-													<li class="nav-item"><a class="" href="#link2"
-															data-toggle="tab">views</a></li>
-												</ul>
-												<!-- Tab panes -->
-												<div class="tab-content">
-													<div class="tab-pane active fade show " id="link1">
-														<span><i class="ti-heart"></i>884</span>
-														<a href="#" title="weekly-likes">35 new likes this week</a>
-														<div class="users-thumb-list">
-															<a href="#" title="Anderw" data-toggle="tooltip">
-																<img src="images/resources/userlist-1.jpg" alt="">
-															</a>
-															<a href="#" title="frank" data-toggle="tooltip">
-																<img src="images/resources/userlist-2.jpg" alt="">
-															</a>
-															<a href="#" title="Sara" data-toggle="tooltip">
-																<img src="images/resources/userlist-3.jpg" alt="">
-															</a>
-															<a href="#" title="Amy" data-toggle="tooltip">
-																<img src="images/resources/userlist-4.jpg" alt="">
-															</a>
-															<a href="#" title="Ema" data-toggle="tooltip">
-																<img src="images/resources/userlist-5.jpg" alt="">
-															</a>
-															<a href="#" title="Sophie" data-toggle="tooltip">
-																<img src="images/resources/userlist-6.jpg" alt="">
-															</a>
-															<a href="#" title="Maria" data-toggle="tooltip">
-																<img src="images/resources/userlist-7.jpg" alt="">
-															</a>
-														</div>
-													</div>
-													<div class="tab-pane fade" id="link2">
-														<span><i class="ti-eye"></i>440</span>
-														<a href="#" title="weekly-likes">440 new views this week</a>
-														<div class="users-thumb-list">
-															<a href="#" title="Anderw" data-toggle="tooltip">
-																<img src="images/resources/userlist-1.jpg" alt="">
-															</a>
-															<a href="#" title="frank" data-toggle="tooltip">
-																<img src="images/resources/userlist-2.jpg" alt="">
-															</a>
-															<a href="#" title="Sara" data-toggle="tooltip">
-																<img src="images/resources/userlist-3.jpg" alt="">
-															</a>
-															<a href="#" title="Amy" data-toggle="tooltip">
-																<img src="images/resources/userlist-4.jpg" alt="">
-															</a>
-															<a href="#" title="Ema" data-toggle="tooltip">
-																<img src="images/resources/userlist-5.jpg" alt="">
-															</a>
-															<a href="#" title="Sophie" data-toggle="tooltip">
-																<img src="images/resources/userlist-6.jpg" alt="">
-															</a>
-															<a href="#" title="Maria" data-toggle="tooltip">
-																<img src="images/resources/userlist-7.jpg" alt="">
-															</a>
-														</div>
-													</div>
-												</div>
+											<div class="baner-top">
+												<span><img alt="" src="images/tdt.png"></span>
+												<i class="fa fa-ellipsis-h"></i>
 											</div>
-										</div>
-									</div><!-- page like widget -->
-									<div class="widget stick-widget">
+											<div class="banermeta">
+												<p>
+													See what news from TDTU
+												</p>
+												<span>Update news</span>
+												<a data-ripple="" title="" href="https://www.tdtu.edu.vn/">Check
+													now</a>
+											</div>
+											</div>
+											</div>
+									<div class="widget friend-list stick-widget">
 										<h4 class="widget-title">Department Posts <i class="fa fa-bell w3-text-red w3-large"></i></h4>
 										<ul class="short-profile">
 											<li>
@@ -381,24 +318,6 @@
 											</li>
 											<li><a href="/depost">See more</a></li>
 										</ul>
-									</div>
-									<div class="widget">
-										<div class="banner medium-opacity bluesh">
-											<div class="bg-image" style="background-image: url(images/TDTU.png)">
-											</div>
-											<div class="baner-top">
-												<span><img alt="" src="images/tdt.png"></span>
-												<i class="fa fa-ellipsis-h"></i>
-											</div>
-											<div class="banermeta">
-												<p>
-													See what news from TDTU
-												</p>
-												<span>Update news</span>
-												<a data-ripple="" title="" href="https://www.tdtu.edu.vn/">Check
-													now</a>
-												</div>
-												</div>
 									</div>
 								</aside>
 							</div><!-- sidebar -->

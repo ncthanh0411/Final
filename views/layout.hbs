@@ -23,15 +23,20 @@
     {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
     {{!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
-    <script src="/javascripts/main.min.js"></script>
-    <script src="/javascripts/main.js"></script>
-    <script src="/javascripts/script.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
       integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js" 
+      integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" 
+      crossorigin="anonymous"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script src="/javascripts/main.min.js"></script>
+    <script src="/javascripts/main.js"></script>
+    <script src="/javascripts/script.js"></script>
   </head>
   
   <body>
@@ -146,6 +151,15 @@
     <div class="topbar stick is_stuck" style="position: fixed; top: 0px; width: 100%;">
       <div class="logo">
         <a title="" href="/"><img src="images/logo.png" alt=""></a>
+      </div>
+
+      <div style="position: fixed; text-align: center; width: 100%;">
+          <div id="myFlashMsg" class="alert alert-success alert-dismissible fade" style="display: inline-block;" role="alert">
+              <strong id="flashDepart">Holy OMG</strong> Vừa có thông báo mới.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
       </div>
     
       <div class="top-area">
@@ -337,7 +351,6 @@
           </div>
         </div>
         <span class="ti-menu main-menu" data-ripple=""></span>
-    
       </div>
     </div><!-- topbar -->
     

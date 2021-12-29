@@ -6,10 +6,6 @@ window.onload = function () {
 
 // const socket = io('/');
 
-$(document).ready(function () {
-  if ($(".js-example-basic-multiple").length != 0)
-    $(".js-example-basic-multiple").select2();
-});
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
   console.log("test");
@@ -358,6 +354,42 @@ function avatarRemove() {
   }); 
 }
 
+function notiSubmit() {
+  var id = $('#userHidden').val();
+  var depart = $('#user_selected_depart').find(':selected').val();
+  var title = $('#user_noti_title').val();
+  var content = $('#user_noti_content').val();
+  $.ajax({
+    type: "POST",
+    url: "/users/notiPost",
+    data: {
+      id: id,
+      depart: depart,
+      title: title,
+      content: content
+    },
+    success: function(data){
+      if (data.isvalid) {
+        socket.emit('showFlash', data.departName);
+        $('#user_noti_title').val('');
+        $('#user_noti_content').val('');
+        alert('Đăng thông báo thành công!');
+      } else {
+        alert(data.msg);
+      }
+    },
+    error: function (err) {
+      console.log(err);
+      alert(err);
+    }
+  }); 
+}
+
+socket.on('showFlash', departName => {
+  document.getElementById('myFlashMsg').classList.add('show');
+  $('#flashDepart').text(departName);
+});
+
 // ------------------------- Layout -------------------------------------
 
 //----------------------------- Post, Like, Comment ------------------------------------
@@ -591,15 +623,18 @@ function post_comment(e, id) {
     let post_comment = $("#post_comment" + id);
     //Get content of comment
     let comment_content = $("#comment_content" + id);
+    console.log(comment_content.val())
     var comment = {
       id_post: id,
       comment: comment_content.val(),
     };
+  
     $.ajax({
       url: "/post/comment",
       method: "post",
       data: comment,
       success: function (comment) {
+        console.log(comment)
         var comment_id = "'" + comment.id + "'"
         var comment_HTML =
           "<li id = 'commentLi" + comment.id  + "'>" +

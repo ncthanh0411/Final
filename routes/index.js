@@ -168,6 +168,49 @@ router.get("/me", function (req, res, next) {
     });
 });
 
+router.get("/me/:id", function (req, res, next) {
+  console.log("session1" + req.session.user);
+  console.log("session2" + req.session.email);
+
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  console.log("role: ", req.session.role);
+
+  User.findOne({ email: req.session.email })
+      .then((user) => {
+        console.log(req.params.id)
+        User.findOne({ _id: req.params.id })
+            .populate({
+              path:"post",
+              populate:
+              [
+                { path: "user"},
+                [{
+                  path: "comment",
+                  populate: 
+                    {
+                      path: "user"
+                    }
+                }]
+              ]
+            })        
+            .then((user_show) => {
+              res.json(user_show)
+
+            })
+            .catch((error) => {
+              console.log(error);
+              res.render("me");
+            });  
+      })
+      .catch((error) => {
+        console.log(error);
+        res.render("me");
+      }); 
+     
+});
+
 router.get("/edit/:id", function (req, res, next) {
   if (!req.session.user && !req.session.email) {
     return res.redirect("/login");

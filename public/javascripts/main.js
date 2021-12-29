@@ -28,6 +28,7 @@ function onSignIn(googleUser) {
   });
 }
 function signOut() {
+  console.log("logging out");
   gapi.auth2
     .getAuthInstance()
     .signOut()

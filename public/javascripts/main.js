@@ -4,7 +4,7 @@ window.onload = function () {
   });
 };
 
-const socket = io('/');
+// const socket = io('/');
 
 $(document).ready(function () {
   if ($(".js-example-basic-multiple").length != 0)
@@ -575,17 +575,14 @@ function previewFileEdit(input){
 }
 
 function showVideo() {
-  if ( $("#youtube_link").css('display') == 'none'){
-    $("#youtube_link").css("display", "block")
+  if ($("#youtube_link").css("display") == "none") {
+    $("#youtube_link").css("display", "block");
     $("#previewImg").attr("src", "");
-    $("input[type=file]").val("")
+    $("input[type=file]").val("");
+  } else {
+    $("#youtube_link").css("display", "none");
   }
-  else {
-    $("#youtube_link").css("display", "none")
-  }
-  
 }
-
 //New Comment
 function post_comment(e, id) {
   //Press enter event

@@ -61,7 +61,16 @@ router.post("/newDepartment", function (req, res, next) {
       departmentName: newDep,
     }).save((err, new_depart) => {
       if (err) return res.status(404).json({ isvalid: false, msg: err });
-      return res.json({ isvalid: true, newdepart: new_depart });
+      User.findById('61c9c45f6eeee637df103f89')
+          .then(adUser => {
+            adUser.department.push(new_depart.id);
+            adUser.save();
+            return res.json({ isvalid: true, newdepart: new_depart });
+          })
+          .catch(err => {
+            console.log(err);
+            return res.status(404).json({ msg: "DB error" });
+          })
     });
   });
 });

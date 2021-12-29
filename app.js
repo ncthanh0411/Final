@@ -77,6 +77,12 @@ app.use(
 );
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(function(req, res, next) {
+  res.locals.flash = req.session.flash;
+  delete req.session.flash;
+  next();
+})
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/post", postRouter);
@@ -101,7 +107,9 @@ app.use(function (err, req, res, next) {
 
 io.on("connection", (socket) => {
   console.log('user connect: ', socket.id);
-  
+  socket.on('showFlash', departName => {
+    socket.broadcast.emit('showFlash', departName);
+  });
 
   socket.on('disconnect', () => {
     console.log('user disconnected');

@@ -6,10 +6,6 @@ window.onload = function () {
 
 const socket = io('/');
 
-$(document).ready(function () {
-  if ($(".js-example-basic-multiple").length != 0)
-    $(".js-example-basic-multiple").select2();
-});
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
   console.log("test");
@@ -359,9 +355,40 @@ function avatarRemove() {
 }
 
 function notiSubmit() {
-  var formData = new FormData(document.getElementById("userNotiForm"));
-  console.log(formData);
+  var id = $('#userHidden').val();
+  var depart = $('#user_selected_depart').find(':selected').val();
+  var title = $('#user_noti_title').val();
+  var content = $('#user_noti_content').val();
+  $.ajax({
+    type: "POST",
+    url: "/users/notiPost",
+    data: {
+      id: id,
+      depart: depart,
+      title: title,
+      content: content
+    },
+    success: function(data){
+      if (data.isvalid) {
+        socket.emit('showFlash', data.departName);
+        $('#user_noti_title').val('');
+        $('#user_noti_content').val('');
+        alert('Đăng thông báo thành công!');
+      } else {
+        alert(data.msg);
+      }
+    },
+    error: function (err) {
+      console.log(err);
+      alert(err);
+    }
+  }); 
 }
+
+socket.on('showFlash', departName => {
+  document.getElementById('myFlashMsg').classList.add('show');
+  $('#flashDepart').text(departName);
+});
 
 // ------------------------- Layout -------------------------------------
 

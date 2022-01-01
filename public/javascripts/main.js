@@ -4,7 +4,7 @@ window.onload = function () {
   });
 };
 
-const socket = io('/');
+// const socket = io('/');
 
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
@@ -28,6 +28,7 @@ function onSignIn(googleUser) {
   });
 }
 function signOut() {
+  console.log("logging out");
   gapi.auth2
     .getAuthInstance()
     .signOut()
@@ -608,17 +609,14 @@ function previewFileEdit(input){
 }
 
 function showVideo() {
-  if ( $("#youtube_link").css('display') == 'none'){
-    $("#youtube_link").css("display", "block")
+  if ($("#youtube_link").css("display") == "none") {
+    $("#youtube_link").css("display", "block");
     $("#previewImg").attr("src", "");
-    $("input[type=file]").val("")
+    $("input[type=file]").val("");
+  } else {
+    $("#youtube_link").css("display", "none");
   }
-  else {
-    $("#youtube_link").css("display", "none")
-  }
-  
 }
-
 //New Comment
 function post_comment(e, id) {
   //Press enter event

@@ -12,6 +12,7 @@ var usersRouter = require('./routes/users');
 var postRouter = require('./routes/post');
 var adminRouter = require('./routes/admin');
 var notificationRouter = require('./routes/notification');
+var depostRouter = require("./routes/depost");
 const { localsAsTemplateData } = require("hbs");
 
 // Add helper here
@@ -87,6 +88,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/post", postRouter);
 app.use("/admin", adminRouter);
+app.use("/depost", depostRouter);
 app.use("/notification", notificationRouter);
 
 // catch 404 and forward to error handler

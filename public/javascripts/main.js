@@ -358,8 +358,8 @@ function avatarRemove() {
 function notiSubmit() {
   var id = $('#userHidden').val();
   var depart = $('#user_selected_depart').find(':selected').val();
-  var title = $('#user_noti_title').val();
-  var content = $('#user_noti_content').val();
+  var title = $('#user_noti_title').val().replace(/\n/g, '<br/>');
+  var content = $('#user_noti_content').val().replace(/\n/g, '<br/>');
   $.ajax({
     type: "POST",
     url: "/users/notiPost",
@@ -387,6 +387,7 @@ function notiSubmit() {
 }
 
 socket.on('showFlash', departName => {
+  document.getElementById('myFlashMsg').style.display = 'inline-block';
   document.getElementById('myFlashMsg').classList.add('show');
   $('#flashDepart').text(departName);
 });

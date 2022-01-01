@@ -5,11 +5,13 @@ const saltRounds = 10;
 const multer = require('multer');
 var upload = multer({ dest: './public/images/avatars/' });
 const fs = require('fs');
+var moment= require('moment') 
 
 var User = require('../models/user');
 var Post = require('../models/post');
 var Comment = require('../models/comment');
 var Department = require("../models/department");
+var Notification = require('../models/notification');
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -325,7 +327,42 @@ router.get("/posts", function (req, res, next) {
 //   });
 // });
 
-router.get("/detail", function (req, res, next) {
-  res.render("detail", { layout: "playout.hbs", title: "Detail Posts" });
+router.get("/detail/:id", function (req, res, next) {
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  Notification.findOne({ _id: req.params.id })
+    .populate('department')
+    .then(myNoti => {
+      var mapNoti = {
+        id: myNoti.id,
+        title: myNoti.title,
+        content: myNoti.content,
+        department:  myNoti.department._id,
+        departmentName: myNoti.department.departmentName,
+        user: myNoti.user,
+        date: moment(myNoti.updatedAt).format('DD/MM/YYYY')
+      };
+      return res.render('detail', {
+        layout: 'playout.hbs',
+        title: "Detail Posts",
+        noti: mapNoti
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(404).json({ msg: "DB error" });
+    });
 });
+
+router.delete('/depost/delete/:id', (req, res, next) => {
+  Notification.findByIdAndDelete(req.params.id)
+    .then((result) => {
+      return res.json({ isvalid: true, msg: result._id + ' had been deleted!!!' });
+    })
+    .catch((err) => {
+      return res.json({ isvalid: false, msg: err });
+    });
+});
+
 module.exports = router;

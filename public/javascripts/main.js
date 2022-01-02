@@ -4,7 +4,7 @@ window.onload = function () {
   });
 };
 
-// const socket = io('/');
+const socket = io('/');
 
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
@@ -41,15 +41,23 @@ function signOut() {
 // ------------------------- Create department, Create User -------------
 function newDepartment() {
   var newDep = $("#newDepartment").val();
+  var depart_radio = document.getElementsByName('radio_depart');
+  var departType;
+  depart_radio.forEach(type => {
+    if(type.checked) {
+      departType = type.value;
+    }
+  });
   $.ajax({
       url: '/admin/newDepartment',
       method: 'post',
-      data: {department: newDep},
+      data: {department: newDep, departType: departType},
       success: function(data) {
           if(data.isvalid) {
               $('#newDepartment').val('');
+              document.getElementsByName('radio_depart')[0].checked = true;
               document.getElementById('depart_table').innerHTML += '<tr id="tr_depart' + data.newdepart._id + '">' + 
-                '<td>' + data.newdepart.departmentName + '</td>' +
+                '<td id="depart_role_' + data.newdepart.role + '">' + data.newdepart.departmentName + '</td>' +
                 '<td>' +
                   '<button type="button" class="btn btn-light fa fa-edit" onclick="editDepartDialog(`' + data.newdepart._id + '`)" data-toggle="modal" data-target="#edit-department-dialog"/>' +
                   '<button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelDepart(`' + data.newdepart._id + '`)" data-toggle="modal" data-target="#conf-del-depart"/>' +
@@ -138,21 +146,36 @@ function confirmDelUser(id, name) {
 function editDepartDialog(id) {
   $('#editDepartment').val(document.getElementById('tr_depart' + id).cells[0].innerText);
   $('#editD').val(id);
+  var role = document.getElementById('tr_depart' + id).cells[0].id.replace('depart_role_', '');
+  var depart_radio = document.getElementsByName('radio_edit_depart');
+  depart_radio.forEach(type => {
+    if(type.value == role) {
+      type.checked = true;
+    }
+  });
 }
 
 function editDepart() {
   let id = $('#editD').val();
   let edit_name = $('#editDepartment').val();
-  
+  var depart_radio = document.getElementsByName('radio_edit_depart');
+  var departType;
+  depart_radio.forEach(type => {
+    if(type.checked) {
+      departType = type.value;
+    }
+  });
   $.ajax({
     url: '/admin/upDepart/' + id,
     method: 'put',
-    data: { name: edit_name },
+    data: { name: edit_name, departType: departType },
     success: function (data) {
       if (data.isvalid) {
         $('#editDepartment').val('');
         $('#editD').val();
+        document.getElementsByName('radio_edit_depart')[0].checked = true;
         document.getElementById('tr_depart' + id).cells[0].innerText = data.editeddepart.departmentName;
+        document.getElementById('tr_depart' + id).cells[0].id = 'depart_role_' + data.editeddepart.role;
         alert(data.msg);
       } else {
         alert(data.msg);
@@ -371,7 +394,7 @@ function notiSubmit() {
     },
     success: function(data){
       if (data.isvalid) {
-        socket.emit('showFlash', data.departName);
+        socket.emit('showFlash', { depart: data.mydepartName, noti: data.mynotiId });
         $('#user_noti_title').val('');
         $('#user_noti_content').val('');
         alert('Đăng thông báo thành công!');
@@ -386,10 +409,11 @@ function notiSubmit() {
   }); 
 }
 
-socket.on('showFlash', departName => {
+socket.on('showFlash', ({ depart, noti }) => {
   document.getElementById('myFlashMsg').style.display = 'inline-block';
+  document.getElementById('flash_link').href = '/detail/' + noti;
+  $('#flashDepart').text(depart);
   document.getElementById('myFlashMsg').classList.add('show');
-  $('#flashDepart').text(departName);
 });
 
 // ------------------------- Layout -------------------------------------

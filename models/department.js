@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 
 var departmentSchema = mongoose.Schema({
     departmentName: String,
+    role: Number,
     notification: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Notification"

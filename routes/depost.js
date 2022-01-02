@@ -41,4 +41,14 @@ router.get("/", function (req, res, next) {
   });
 });
 
+router.delete('/depost/delete/:id', (req, res, next) => {
+    Notification.findByIdAndDelete(req.params.id)
+        .then((result) => {
+            return res.json({ isvalid: true, msg: result._id + ' had been deleted!!!' });
+        })
+        .catch((err) => {
+            return res.json({ isvalid: false, msg: err });
+        });
+});
+
 module.exports = router;

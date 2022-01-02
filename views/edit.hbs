@@ -103,7 +103,20 @@
                                                     class="mtrl-select"></i>
                                             </div>
                                             {{#ifEquals user.role 2}}
-                                                
+                                                <div class="form-group">
+                                                    <input type="text" name="edit_user_class" required="required" value="{{user.class}}"/>
+                                                    <label class="control-label" for="input">Class</label><i
+                                                        class="mtrl-select"></i>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="name">Chọn Khoa</label>
+                                                    <select class="js-editSU-basic-single" style="width: 100%;" name="states">
+                                                        <option id="edit_user_depart_{{userDepart.id}}" value="{{userDepart.id}}">{{userDepart.departmentName}}</option>
+                                                        {{#each departLst}}
+                                                            <option id="edit_user_depart_{{id}}" value="{{id}}">{{departmentName}}</option>
+                                                        {{/each}}
+                                                    </select>
+                                                </div>
                                             {{else}}
                                                 <div class="form-group">
                                                     <input type="text" required="required" />

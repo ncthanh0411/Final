@@ -11,7 +11,6 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var postRouter = require('./routes/post');
 var adminRouter = require('./routes/admin');
-var notificationRouter = require('./routes/notification');
 var depostRouter = require("./routes/depost");
 const { localsAsTemplateData } = require("hbs");
 
@@ -89,7 +88,6 @@ app.use("/users", usersRouter);
 app.use("/post", postRouter);
 app.use("/admin", adminRouter);
 app.use("/depost", depostRouter);
-app.use("/notification", notificationRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -109,8 +107,8 @@ app.use(function (err, req, res, next) {
 
 io.on("connection", (socket) => {
   console.log('user connect: ', socket.id);
-  socket.on('showFlash', departName => {
-    socket.broadcast.emit('showFlash', departName);
+  socket.on('showFlash', ({ depart, noti }) => {
+    socket.broadcast.emit('showFlash', { depart: depart, noti: noti });
   });
 
   socket.on('disconnect', () => {

@@ -55,7 +55,7 @@ router.post('/notiPost', (req, res, next) => {
               .then(mydepart => {
                 mydepart.notification.push(notification.id);
                 mydepart.save();
-                return res.json({ isvalid: true, departName: mydepart.departmentName });
+                return res.json({ isvalid: true, mydepartName: mydepart.departmentName, mynotiId: notification.id });
               })
               .catch(err => {
                 console.log(err);

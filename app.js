@@ -13,10 +13,18 @@ var postRouter = require('./routes/post');
 var adminRouter = require('./routes/admin');
 var notificationRouter = require('./routes/notification');
 var depostRouter = require("./routes/depost");
+var app = express();
+
+app.use(express.static(__dirname + "/public"));
+
 const { localsAsTemplateData } = require("hbs");
+
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
 
 // Add helper here
 hbs.registerHelper("ifEquals", function (firstVal, secondVal, options) {
+  console.log(firstVal, secondVal);
   return firstVal == secondVal ? options.fn(this) : options.inverse(this);
 });
 
@@ -56,10 +64,6 @@ mongoose.connect(
 //   });
 // })
 
-var app = express();
-
-const server = require("http").Server(app);
-const io = require("socket.io")(server);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

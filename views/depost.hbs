@@ -6,7 +6,7 @@
                         <input type="post" placeholder="Search post">
                         <button><i class="ti-search"></i></button>
                     </form>
-                    <div class="purify">
+                    <div class="container">
                         <form>
                             <div class="form-group">
                                 <select style="width: 100%;" name="states[]">
@@ -21,52 +21,39 @@
 
                         </form>
                     </div>
+                    {{#each depost_list}}
                     <div class="l-post">
                         <figure>
-                            <img src="images/resources/bloglist-1.jpg" alt="">
+                            <img src="/images/bloglist-1.jpg" alt="">
                         </figure>
                         <div class="l-post-meta">
-                            <h4><a href="/detail" title="">Thông Báo Về Việc Nộp Học Phí Học Kỳ 1 Năm Học
-                                    2021-2022 Đợt 3 (Đợt Cứu Xét Cho Các Trường Hợp Trễ Hạn)</a></h4>
+                            <h4><a href="/detail/{{id}}" title="">{{{title}}}</a></h4>
                             <div class="l-post-ranking">
-                                <a class="admin" href="#" title="">Phòng Đại học</a>
-                                <a class="pdate" href="#" title="">03/12/2021</a>
+                                <a class="admin" href="#" title="">{{department.departmentName}}</a>
+                                <a class="pdate" href="#" title="">{{create_date}}</a>
                             </div>
                         </div>
                     </div>
+                        <div value="{{id}}"></div>
+                    {{/each}}
 
-                    <div class="l-post">
-                        <figure>
-                            <img src="images/resources/bloglist-1.jpg" alt="">
-                        </figure>
-                        <div class="l-post-meta">
-                            <h4><a href="/detail" title="">Lịch Thi Và Danh Sách Thi Cuối Kỳ
-                                    HKdt1/2021-2022</a></h4>
-                            <div class="l-post-ranking">
-                                <a class="admin" href="#" title="">Phòng Đại học</a>
-                                <a class="pdate" href="#" title="">17/11/2021</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="l-post">
-                        <figure>
-                            <img src="images/resources/bloglist-1.jpg" alt="">
-                        </figure>
-                        <div class="l-post-meta">
-                            <h4><a href="/detail" title="">THÔNG BÁO V/V Đăng Ký Môn Học Trong HK2/2021-2022
-                                    Dành Cho Sinh Viên Các Lớp Tiêu Chuẩn, Chất Lượng Cao, Đại Học Bằng
-                                    Tiếng Anh Từ Khóa Tuyển Sinh 2020 Trở Về Trước</a></h4>
-                            <div class="l-post-ranking">
-                                <a class="admin" href="#" title="">Phòng Đại học</a>
-                                <a class="pdate" href="#" title="">10/11/2021</a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+                <!-- pagination -->
+                <div class="pagination">
+                    <a href="/depost/page/1">&laquo;</a>
+                    {{#each pagearray}}
+                        {{#ifEquals ../current this }}
+                            <a href="#" class="active">
+                        {{else}}
+                            <a href="/depost/page/{{this}}">
+                        {{/ifEquals}}
 
-                <button class="btn-view btn-load-more">Load More</button>
+                        {{this}}</a>
+                    {{/each}}
+                    <a href="/depost/page/{{pages}}">&raquo;</a>
+                </div>
+                </div>
             </div>
     </div>
-    </div>
+</div>
     

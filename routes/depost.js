@@ -1,43 +1,77 @@
 var express = require("express");
 var router = express.Router();
 var Depost = require("../models/Depost");
+var Notification = require("../models/notification");
+
+var hbs = require("hbs");
 var User = require("../models/user");
 var Department = require("../models/department");
-const { contentType } = require("express/lib/response");
-
-/* GET users listing. */
-/* GET post listing. */
+const { contentType, redirect } = require("express/lib/response");
+//Register Helper
 
 router.get("/", function (req, res, next) {
+  res.redirect('/depost/page/1');
+});
+// Get list post pagination
+router.get("/page/:page", function (req, res, next) {
   // check login
 
   if (!req.session.user && !req.session.email) {
     return res.redirect("/login");
   }
+    let perPage = 10; // số lượng thông báo xuất hiện trên 1 page
+    let page = req.params.page || 1; 
+    let pagearray = []
   Department.find(function (err, departLst) {
+    console.log('get depart list')
     if (err) return res.status(404).json({ msg: "DB error" });
-    User.find({ $or: [{ role: 1 }, { role: 2 }] })
+    Notification.find()
+      .skip(perPage * page - perPage) // Trong page đầu tiên sẽ bỏ qua giá trị là 0
+      .limit(perPage)
+      .sort({ createdAt: -1 })
       .populate("department")
-      .then((userLst) => {
-        let user_depart_lst = [];
-        let user_stu_lst = [];
+      .exec((err, depost_list) => {
+        Notification.countDocuments((err, count) => {
+          if (err) return next(err);
+          // đếm để tính có bao nhiêu trang
+          let pages = Math.ceil(count / perPage);
 
-        userLst.forEach((user) => {
-          if (user.role == 1) user_depart_lst.push(user);
-          else user_stu_lst.push(user);
-        });
-        return res.render("depost", {
-          departlst: departLst,
-          layout: "playout",
-          title: "Department Posts",
-          user_depart_lst: user_depart_lst,
-          user_stu_lst: user_stu_lst,
-        });
+          for (i = 1; i <= pages; i++){
+            if (pagearray < 10)
+              pagearray.push(i);
+          } 
+          console.log(pagearray);
+          return res.render("depost", {
+            departlst: departLst,
+            layout: "playout",
+            title: "Department Posts",
+            depost_list: depost_list,
+            current: page, // page hiện tại
+            pages: pages, // tổng số các page
+            pagearray: pagearray,
+          });
+        })
       })
-      .catch((err) => {
-        console.log(err);
-        return res.status(404).json({ msg: "DB error" });
-      });
+
+      // .then((depost_list) => {
+      //   // if (!depost_list.img) {
+
+      //   //   depost_list.img = "bloglist-1.jpg";
+      //   // }
+      //     return res.render("depost", {
+      //       departlst: departLst,
+      //       layout: "playout",
+      //       title: "Department Posts",
+      //       depost_list: depost_list,
+      //       current: page, // page hiện tại
+      //       pages: Math.ceil(count / perPage), // tổng số các page
+      //     });
+      // })
+      // .catch((err) => {
+      //   console.log(err);
+      //   return res.status(404).json({ msg: "DB error" });
+      // });
+
   });
 });
 

@@ -19,15 +19,15 @@
     {{!-- CongP update 28.11 Start --}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js" 
+        integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" 
+        crossorigin="anonymous"></script>
     {{!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
     {{!-- Scripts --}}
     {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.mmenu/6.1.0/jquery.mmenu.all.js"></script> --}}
     {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
     {{!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
                                                                                                       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
-    <script src="/javascripts/main.min.js"></script>
-    <script src="/javascripts/main.js"></script>
-    <script src="/javascripts/script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
@@ -39,19 +39,34 @@
     <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"
         integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj"
         crossorigin="anonymous"></script>
+
+    <script src="/javascripts/main.min.js"></script>
+    <script src="/javascripts/main.js"></script>
+    <script src="/javascripts/script.js"></script>
     </head>
 
     <body>
-        <div class="theme-layout">
+
             <div class="topbar transparent">
                 <div class="logo">
                     <a title="" href="/"><img src="images/tdt.png" width="300px" alt=""></a>
                 </div>
             </div><!-- topbar transparent header -->
-        
+
             <section>
+                <div style="position: fixed; text-align: center; width: 100%;z-index: 1000;">
+                <div id="myFlashMsg" class="alert alert-success alert-dismissible fade" style="display: none;" role="alert">
+                    <a href="#" id="flash_link" style="text-decoration: none;">
+                        <strong id="flashDepart">Holy OMG</strong> Vừa có thông báo mới.
+                    </a>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
                 <div class="ext-gap bluesh low-opacity">
-                    <div class="content-bg-wrap" style="background: url(images/TDTU.png)"></div>
+                    <div class="content-bg-wrap" style="background: url(/images/TDTU.png)"></div>
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-lg-12">
@@ -67,6 +82,7 @@
                 </div>
             </section><!-- top area animated -->
             <section>
+
                 <div class="gap gray-bg">
                     <div class="container-fluid">
                         <div class="row" id="page-contents">
@@ -90,11 +106,11 @@
                                     </div><!-- Shortcuts -->
                                 </aside>
                             </div>
-        {{{body}}}
-        </div>
-        </div>
-        </div>
-        </section>
+                            {{{body}}}
+                        </div>
+                    </div>
+                </div>
+            </section>
         
         </div>
         <footer>

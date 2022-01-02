@@ -5,11 +5,13 @@ const saltRounds = 10;
 const multer = require('multer');
 var upload = multer({ dest: './public/images/avatars/' });
 const fs = require('fs');
+var moment= require('moment') 
 
 var User = require('../models/user');
 var Post = require('../models/post');
 var Comment = require('../models/comment');
 var Department = require("../models/department");
+var Notification = require('../models/notification');
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -215,24 +217,35 @@ router.get("/edit/:id", function (req, res, next) {
   if (!req.session.user && !req.session.email) {
     return res.redirect("/login");
   }
-
-  User.findOne({ _id: req.params.id })
-    .populate('department')
-    .then(user => {
-      if(user.role == 2 && user.email == req.session.email) {
-        return res.render('edit', { user });
-      } else {
-        return res.redirect('/');
-      }
+  Department.find({ role: 1 })
+    .then(departLst => {
+      let mydepartLst = [];
+      User.findOne({ _id: req.params.id })
+        .populate('department')
+        .then(user => {
+          if(user.role == 2 && user.email == req.session.email) {
+            departLst.forEach(depart => {
+              if(depart.id != user.department[0].id) mydepartLst.push(depart)
+            })
+            return res.render('edit', { user: user, departLst: mydepartLst, userDepart: user.department[0] });
+          } else {
+            return res.redirect('/');
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          return res.status(404).redirect('/404');
+        })
     })
     .catch(err => {
       console.log(err);
-      return res.status(404).redirect('/404');
-    })
+      return res.status(404).json({ msg: "DB error" });
+    });
 });
 
 router.put("/edit/:id", upload.single('edit_upload_img'), function (req, res, next) {
   var dataform = req.body;
+  console.log(dataform)
   var imgfile = req.file;
   console.log(imgfile);
   // fs.unlinkSync('../images/avatars/576e04ef0e071322dfae480299a183d0');
@@ -249,6 +262,8 @@ router.put("/edit/:id", upload.single('edit_upload_img'), function (req, res, ne
       //   user.password = dataform.edit_user_newpw;
       // }
       user.name = dataform.edit_user_name;
+      user.class = dataform.edit_user_class;
+      user.department = dataform.states;
       if(imgfile) {
         if(user.image_url) fs.unlinkSync('public' + user.image_url);
         user.image_url = '/images/avatars/' + imgfile.filename;
@@ -288,44 +303,33 @@ router.get("/posts", function (req, res, next) {
   res.render("posts", { layout: "alayout.hbs", title: "Department Posts" });
 });
 
-// router.get("/depost", function (req, res, next) {
-//   res.render("depost", { layout: "playout.hbs", title: "Department Posts" });
-// });
 
-router.get("/depost", function (req, res, next) {
-  // check login
-
+router.get("/detail/:id", function (req, res, next) {
   if (!req.session.user && !req.session.email) {
     return res.redirect("/login");
   }
-  Department.find(function (err, departLst) {
-    if (err) return res.status(404).json({ msg: "DB error" });
-    User.find({ $or: [{ role: 1 }, { role: 2 }] })
-      .populate("department")
-      .then((userLst) => {
-        let user_depart_lst = [];
-        let user_stu_lst = [];
-
-        userLst.forEach((user) => {
-          if (user.role == 1) user_depart_lst.push(user);
-          else user_stu_lst.push(user);
-        });
-        return res.render("depost", {
-          departlst: departLst,
-          layout: "playout",
-          title: "Department Posts",
-          user_depart_lst: user_depart_lst,
-          user_stu_lst: user_stu_lst,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        return res.status(404).json({ msg: "DB error" });
+  Notification.findOne({ _id: req.params.id })
+    .populate('department')
+    .then(myNoti => {
+      var mapNoti = {
+        id: myNoti.id,
+        title: myNoti.title,
+        content: myNoti.content,
+        department:  myNoti.department._id,
+        departmentName: myNoti.department.departmentName,
+        user: myNoti.user,
+        date: moment(myNoti.updatedAt).format('DD/MM/YYYY')
+      };
+      return res.render('detail', {
+        layout: 'playout.hbs',
+        title: "Detail Posts",
+        noti: mapNoti
       });
-  });
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(404).json({ msg: "DB error" });
+    });
 });
 
-router.get("/detail", function (req, res, next) {
-  res.render("detail", { layout: "playout.hbs", title: "Detail Posts" });
-});
 module.exports = router;

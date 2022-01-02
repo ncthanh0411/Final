@@ -19,6 +19,10 @@ router.get('/', function (req, res, next) {
     }
     Department.find(function (err, departLst) {
         if (err) return res.status(404).json({ msg: "DB error" });
+        let stu_departLst = [];
+        departLst.forEach(depart => {
+          if(depart.role == 1) stu_departLst.push(depart);
+        })
         User.find({ $or: [{ role: 1 }, { role: 2 }] })
             .populate('department')
             .then(userLst => {
@@ -32,6 +36,7 @@ router.get('/', function (req, res, next) {
                         user_stu_lst.push(user);
                 });
                 return res.render("admin2", {
+                    stu_departLst: stu_departLst,
                     departlst: departLst,
                     layout: "alayout",
                     title: "Admin Page",
@@ -48,6 +53,7 @@ router.get('/', function (req, res, next) {
 
 router.post("/newDepartment", function (req, res, next) {
   let newDep = req.body.department;
+  let departRole = req.body.departType;
   if (!newDep)
     return res.json({ isvalid: false, msg: "Chưa nhập tên phòng ban " });
   Department.findOne({ departmentName: newDep }, (error, user) => {
@@ -59,9 +65,19 @@ router.post("/newDepartment", function (req, res, next) {
     }
     Department({
       departmentName: newDep,
+      role: departRole
     }).save((err, new_depart) => {
       if (err) return res.status(404).json({ isvalid: false, msg: err });
-      return res.json({ isvalid: true, newdepart: new_depart });
+      User.findById('61c9c45f6eeee637df103f89')
+          .then(adUser => {
+            adUser.department.push(new_depart.id);
+            adUser.save();
+            return res.json({ isvalid: true, newdepart: new_depart });
+          })
+          .catch(err => {
+            console.log(err);
+            return res.status(404).json({ msg: "DB error" });
+          })
     });
   });
 });
@@ -163,6 +179,7 @@ router.put("/upDepart/:id", function (req, res, next) {
     else {
       depart.departmentName = req.body.name;
     }
+    depart.role = req.body.departType;
     depart.save((err, depart_update) => {
       if (err) return res.status(404).json({ isvalid: false, msg: err });
       return res

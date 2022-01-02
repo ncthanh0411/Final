@@ -6,10 +6,6 @@ window.onload = function () {
 
 const socket = io('/');
 
-$(document).ready(function () {
-  if ($(".js-example-basic-multiple").length != 0)
-    $(".js-example-basic-multiple").select2();
-});
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
   console.log("test");
@@ -32,6 +28,7 @@ function onSignIn(googleUser) {
   });
 }
 function signOut() {
+  console.log("logging out");
   gapi.auth2
     .getAuthInstance()
     .signOut()
@@ -44,15 +41,23 @@ function signOut() {
 // ------------------------- Create department, Create User -------------
 function newDepartment() {
   var newDep = $("#newDepartment").val();
+  var depart_radio = document.getElementsByName('radio_depart');
+  var departType;
+  depart_radio.forEach(type => {
+    if(type.checked) {
+      departType = type.value;
+    }
+  });
   $.ajax({
       url: '/admin/newDepartment',
       method: 'post',
-      data: {department: newDep},
+      data: {department: newDep, departType: departType},
       success: function(data) {
           if(data.isvalid) {
               $('#newDepartment').val('');
+              document.getElementsByName('radio_depart')[0].checked = true;
               document.getElementById('depart_table').innerHTML += '<tr id="tr_depart' + data.newdepart._id + '">' + 
-                '<td>' + data.newdepart.departmentName + '</td>' +
+                '<td id="depart_role_' + data.newdepart.role + '">' + data.newdepart.departmentName + '</td>' +
                 '<td>' +
                   '<button type="button" class="btn btn-light fa fa-edit" onclick="editDepartDialog(`' + data.newdepart._id + '`)" data-toggle="modal" data-target="#edit-department-dialog"/>' +
                   '<button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelDepart(`' + data.newdepart._id + '`)" data-toggle="modal" data-target="#conf-del-depart"/>' +
@@ -141,21 +146,36 @@ function confirmDelUser(id, name) {
 function editDepartDialog(id) {
   $('#editDepartment').val(document.getElementById('tr_depart' + id).cells[0].innerText);
   $('#editD').val(id);
+  var role = document.getElementById('tr_depart' + id).cells[0].id.replace('depart_role_', '');
+  var depart_radio = document.getElementsByName('radio_edit_depart');
+  depart_radio.forEach(type => {
+    if(type.value == role) {
+      type.checked = true;
+    }
+  });
 }
 
 function editDepart() {
   let id = $('#editD').val();
   let edit_name = $('#editDepartment').val();
-  
+  var depart_radio = document.getElementsByName('radio_edit_depart');
+  var departType;
+  depart_radio.forEach(type => {
+    if(type.checked) {
+      departType = type.value;
+    }
+  });
   $.ajax({
     url: '/admin/upDepart/' + id,
     method: 'put',
-    data: { name: edit_name },
+    data: { name: edit_name, departType: departType },
     success: function (data) {
       if (data.isvalid) {
         $('#editDepartment').val('');
         $('#editD').val();
+        document.getElementsByName('radio_edit_depart')[0].checked = true;
         document.getElementById('tr_depart' + id).cells[0].innerText = data.editeddepart.departmentName;
+        document.getElementById('tr_depart' + id).cells[0].id = 'depart_role_' + data.editeddepart.role;
         alert(data.msg);
       } else {
         alert(data.msg);
@@ -357,6 +377,44 @@ function avatarRemove() {
     }
   }); 
 }
+
+function notiSubmit() {
+  var id = $('#userHidden').val();
+  var depart = $('#user_selected_depart').find(':selected').val();
+  var title = $('#user_noti_title').val().replace(/\n/g, '<br/>');
+  var content = $('#user_noti_content').val().replace(/\n/g, '<br/>');
+  $.ajax({
+    type: "POST",
+    url: "/users/notiPost",
+    data: {
+      id: id,
+      depart: depart,
+      title: title,
+      content: content
+    },
+    success: function(data){
+      if (data.isvalid) {
+        socket.emit('showFlash', { depart: data.mydepartName, noti: data.mynotiId });
+        $('#user_noti_title').val('');
+        $('#user_noti_content').val('');
+        alert('Đăng thông báo thành công!');
+      } else {
+        alert(data.msg);
+      }
+    },
+    error: function (err) {
+      console.log(err);
+      alert(err);
+    }
+  }); 
+}
+
+socket.on('showFlash', ({ depart, noti }) => {
+  document.getElementById('myFlashMsg').style.display = 'inline-block';
+  document.getElementById('flash_link').href = '/detail/' + noti;
+  $('#flashDepart').text(depart);
+  document.getElementById('myFlashMsg').classList.add('show');
+});
 
 // ------------------------- Layout -------------------------------------
 
@@ -575,17 +633,14 @@ function previewFileEdit(input){
 }
 
 function showVideo() {
-  if ( $("#youtube_link").css('display') == 'none'){
-    $("#youtube_link").css("display", "block")
+  if ($("#youtube_link").css("display") == "none") {
+    $("#youtube_link").css("display", "block");
     $("#previewImg").attr("src", "");
-    $("input[type=file]").val("")
+    $("input[type=file]").val("");
+  } else {
+    $("#youtube_link").css("display", "none");
   }
-  else {
-    $("#youtube_link").css("display", "none")
-  }
-  
 }
-
 //New Comment
 function post_comment(e, id) {
   //Press enter event

@@ -2,71 +2,69 @@
     <div class="blog-sec right-pading">
             <div class="blog-sec right-pading">
                 <div class="post-filter-sec">
-                    <form method="post" class="filter-form">
+                    <form method="post" class="filter-form" action="">
                         <input type="post" placeholder="Search post">
                         <button><i class="ti-search"></i></button>
                     </form>
-                    <div class="purify">
-                        <form>
+                    <div class="container">
+                        <form action="/depost/filter" method="post">
                             <div class="form-group">
-                                <select style="width: 100%;" name="states[]">
-                                    <option>All Department</option>
+                                <select style="width: 100%;" name="select">
+                                    {{#if select}}<option>{{select}}</option>
+                                    {{else}}<option>All Department</option>
+                                    {{/if}}
+
                                     {{#each departlst}}
+                                        {{#ifEquals departmentName ../select}}
+                                        {{else}}
                                         <option value="{{id}}">{{departmentName}}</option>
+                                        {{/ifEquals}}
                                     {{/each}}
                                 </select>
-                                <button type="button" onclick="#" class="btn btn-outline-info"><i class="ti-filter"></i></i>
+                                <button type="submit" class="btn btn-outline-info"><i class="ti-filter"></i></i>
                                     Filter</button>
                             </div>
 
                         </form>
                     </div>
-                    <div class="l-post">
-                        <figure>
-                            <img src="images/resources/bloglist-1.jpg" alt="">
-                        </figure>
-                        <div class="l-post-meta">
-                            <h4><a href="/detail" title="">Thông Báo Về Việc Nộp Học Phí Học Kỳ 1 Năm Học
-                                    2021-2022 Đợt 3 (Đợt Cứu Xét Cho Các Trường Hợp Trễ Hạn)</a></h4>
-                            <div class="l-post-ranking">
-                                <a class="admin" href="#" title="">Phòng Đại học</a>
-                                <a class="pdate" href="#" title="">03/12/2021</a>
+                    {{#if depost_list}}
+                        {{#each depost_list}}
+                        <div class="l-post">
+                            <figure>
+                                <img src="/images/bloglist-1.jpg" alt="">
+                            </figure>
+                            <div class="l-post-meta">
+                                <h4><a href="/detail/{{id}}" title="">{{{title}}}</a></h4>
+                                <div class="l-post-ranking">
+                                    <a class="admin" href="/depost/filter/{{department}}/1" title="">{{departmentName}}</a>
+                                    <a class="pdate" href="#" title="">{{date}}</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                            <div value="{{id}}"></div>
+                        {{/each}}
+                    {{else}}
+                        <p>No post yet</p>
+                    {{/if}}
 
-                    <div class="l-post">
-                        <figure>
-                            <img src="images/resources/bloglist-1.jpg" alt="">
-                        </figure>
-                        <div class="l-post-meta">
-                            <h4><a href="/detail" title="">Lịch Thi Và Danh Sách Thi Cuối Kỳ
-                                    HKdt1/2021-2022</a></h4>
-                            <div class="l-post-ranking">
-                                <a class="admin" href="#" title="">Phòng Đại học</a>
-                                <a class="pdate" href="#" title="">17/11/2021</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="l-post">
-                        <figure>
-                            <img src="images/resources/bloglist-1.jpg" alt="">
-                        </figure>
-                        <div class="l-post-meta">
-                            <h4><a href="/detail" title="">THÔNG BÁO V/V Đăng Ký Môn Học Trong HK2/2021-2022
-                                    Dành Cho Sinh Viên Các Lớp Tiêu Chuẩn, Chất Lượng Cao, Đại Học Bằng
-                                    Tiếng Anh Từ Khóa Tuyển Sinh 2020 Trở Về Trước</a></h4>
-                            <div class="l-post-ranking">
-                                <a class="admin" href="#" title="">Phòng Đại học</a>
-                                <a class="pdate" href="#" title="">10/11/2021</a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
-                <button class="btn-view btn-load-more">Load More</button>
+                <!-- pagination -->
+                {{#if depost_list}}
+                    <div class="pagination">
+                        <a href="/depost/{{filter}}/1">&laquo;</a>
+                        {{#each pagearray}}
+                            {{#ifEquals ../current this }}
+                                <a href="#" class="active">
+                            {{else}}
+                                <a href="/depost/{{../filter}}/{{this}}">
+                            {{/ifEquals}}
+                            {{this}}</a>
+                        {{/each}}
+                        <a href="/depost/{{filter}}/{{pages}}">&raquo;</a>
+                    </div>
+                {{/if}}
+                </div>
             </div>
     </div>
-    </div>
+</div>
     

@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var notificationSchema = mongoose.Schema({
     title: String,
     content: String,
+    img: String,
     department: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Department"

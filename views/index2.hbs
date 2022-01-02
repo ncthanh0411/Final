@@ -48,7 +48,7 @@
 										</figure>
 										<div class="newpst-input">
 											<form id="formSubmit" method="post" onsubmit="postForm(event)" enctype="multipart/form-data">
-												<textarea rows="2" id = "content" name="content" placeholder="write something"></textarea>
+												<textarea rows="3" id="content" name="content" placeholder="write something"></textarea>
 												<div class="attachments">
 													<ul>
 														<li>
@@ -209,10 +209,13 @@
 																	<h5><a href="time-line.html" >{{user.name}}</a>
 																	</h5>
 																	<span>{{create_date}}</span>
+																	<i class="fa fa-remove" style="cursor: pointer;float: right;margin-right:10px;" data-toggle="modal"
+																		data-target="#deleteComment" onclick="showDelComment('{{id}}')"></i>
+																	
+																	<i class="fa fa-edit" style="cursor: pointer;float: right;margin-right:10px;" data-toggle="modal"
+																		data-target="#editComment" onclick="showComment('{{id}}')"> </i>
 																</div>
-																<p id = "content_comment{{id}}">{{content}}</p>
-																<i class="fa fa-edit" style="cursor: pointer;" data-toggle="modal" data-target="#editComment" onclick="showComment('{{id}}')" ></i>
-																<i class="fa fa-remove" style="cursor: pointer;" data-toggle="modal" data-target="#deleteComment" onclick="showDelComment('{{id}}')"></i>
+																<p id="content_comment{{id}}">{{content}}</p>
 															</div>
 														</li>																														
 														{{/each}}

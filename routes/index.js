@@ -193,11 +193,11 @@ router.get("/me/:id", function (req, res, next) {
                       path: "user"
                     }
                 }]
-              ]
+              ],
+              options: { sort: { createdAt: -1 } }
             })        
             .then((user_show) => {
-              res.json(user_show)
-
+              res.render("me", { post: user_show.post, user: user });
             })
             .catch((error) => {
               console.log(error);

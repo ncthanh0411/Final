@@ -217,24 +217,35 @@ router.get("/edit/:id", function (req, res, next) {
   if (!req.session.user && !req.session.email) {
     return res.redirect("/login");
   }
-
-  User.findOne({ _id: req.params.id })
-    .populate('department')
-    .then(user => {
-      if(user.role == 2 && user.email == req.session.email) {
-        return res.render('edit', { user });
-      } else {
-        return res.redirect('/');
-      }
+  Department.find({ role: 1 })
+    .then(departLst => {
+      let mydepartLst = [];
+      User.findOne({ _id: req.params.id })
+        .populate('department')
+        .then(user => {
+          if(user.role == 2 && user.email == req.session.email) {
+            departLst.forEach(depart => {
+              if(depart.id != user.department[0].id) mydepartLst.push(depart)
+            })
+            return res.render('edit', { user: user, departLst: mydepartLst, userDepart: user.department[0] });
+          } else {
+            return res.redirect('/');
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          return res.status(404).redirect('/404');
+        })
     })
     .catch(err => {
       console.log(err);
-      return res.status(404).redirect('/404');
-    })
+      return res.status(404).json({ msg: "DB error" });
+    });
 });
 
 router.put("/edit/:id", upload.single('edit_upload_img'), function (req, res, next) {
   var dataform = req.body;
+  console.log(dataform)
   var imgfile = req.file;
   console.log(imgfile);
   // fs.unlinkSync('../images/avatars/576e04ef0e071322dfae480299a183d0');
@@ -251,6 +262,8 @@ router.put("/edit/:id", upload.single('edit_upload_img'), function (req, res, ne
       //   user.password = dataform.edit_user_newpw;
       // }
       user.name = dataform.edit_user_name;
+      user.class = dataform.edit_user_class;
+      user.department = dataform.states;
       if(imgfile) {
         if(user.image_url) fs.unlinkSync('public' + user.image_url);
         user.image_url = '/images/avatars/' + imgfile.filename;
@@ -316,16 +329,6 @@ router.get("/detail/:id", function (req, res, next) {
     .catch(err => {
       console.log(err);
       return res.status(404).json({ msg: "DB error" });
-    });
-});
-
-router.delete('/depost/delete/:id', (req, res, next) => {
-  Notification.findByIdAndDelete(req.params.id)
-    .then((result) => {
-      return res.json({ isvalid: true, msg: result._id + ' had been deleted!!!' });
-    })
-    .catch((err) => {
-      return res.json({ isvalid: false, msg: err });
     });
 });
 

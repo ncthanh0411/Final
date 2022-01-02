@@ -111,8 +111,8 @@ app.use(function (err, req, res, next) {
 
 io.on("connection", (socket) => {
   console.log('user connect: ', socket.id);
-  socket.on('showFlash', departName => {
-    socket.broadcast.emit('showFlash', departName);
+  socket.on('showFlash', ({ depart, noti }) => {
+    socket.broadcast.emit('showFlash', { depart: depart, noti: noti });
   });
 
   socket.on('disconnect', () => {

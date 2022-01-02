@@ -60,7 +60,9 @@
             
             <div style="position: fixed; text-align: center; width: 100%;">
                 <div id="myFlashMsg" class="alert alert-success alert-dismissible fade" style="display: none;" role="alert">
-                    <strong id="flashDepart">Holy OMG</strong> Vừa có thông báo mới.
+                    <a href="#" id="flash_link" style="text-decoration: none;">
+                        <strong id="flashDepart">Holy OMG</strong> Vừa có thông báo mới.
+                    </a>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -105,8 +107,6 @@
         
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" placeholder="Enter new name" class="form-control" id="name" />
                             <label for="name">Current password</label>
                             <input type="password" placeholder="Enter current password" class="form-control" id="currpass" />
                             <label for="name">New password</label>

@@ -2,16 +2,12 @@
     <div class="blog-sec right-pading">
             <div class="blog-sec right-pading">
                 <div class="post-filter-sec">
-                    <form method="post" class="filter-form" action="">
-                        <input type="post" placeholder="Search post">
-                        <button><i class="ti-search"></i></button>
-                    </form>
                     <div class="container">
                         <form action="/depost/filter" method="post">
                             <div class="form-group">
                                 <select style="width: 100%;" name="select">
                                     {{#if select}}<option>{{select}}</option>
-                                    {{else}}<option>All Department</option>
+                                    {{else}}<option value="">All Department</option>
                                     {{/if}}
 
                                     {{#each departlst}}
@@ -36,8 +32,8 @@
                             <div class="l-post-meta">
                                 <h4><a href="/detail/{{id}}" title="">{{{title}}}</a></h4>
                                 <div class="l-post-ranking">
-                                    <a class="admin" href="/depost/filter/{{department}}/1" title="">{{departmentName}}</a>
-                                    <a class="pdate" href="#" title="">{{date}}</a>
+                                    <a class="admin" href="/depost/filter/{{department}}/1" title=""><p>{{departmentName}}</p></a>
+                                    <p class="pdate" href="#" title="">Ngày đăng {{date}}</p>
                                 </div>
                             </div>
                         </div>

@@ -133,6 +133,33 @@ router.put('/', upload.single('img'),function(req, res, next) {
   })
 });
 
+//Delete Post
+router.delete('/:id', function(req, res, next) {
+  User.findOne({ email: req.session.email }, (error, user) => {
+    if(error || !user) {                              
+      return res.status(404).json({ message: error })      
+    }
+    let id = req.params.id;
+    //post
+    Post.findOne({_id: id }, (error, post) => {
+      if(error || !post) {                              
+        return res.status(404).json({ message: error })      
+      }
+      if(String(post.user) != String(user._id))
+      {
+        return res.status(404).json({ message: "You are not have permission to delete" })
+      }
+      post.remove(function(error){
+        if(error) {                              
+          return res.status(404).json({ message: error })      
+        }
+        user.post.pull(id)
+        user.save()
+        return res.status(200).json({ message: "Delete comment succesfull" })
+      })
+    })       
+  })
+});
 
 //New Comment
 router.post('/comment', function(req, res, next) {

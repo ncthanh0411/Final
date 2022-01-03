@@ -619,6 +619,30 @@ function showPost(id) {
 
 }
 
+function showDelPost(id) {
+
+  $('#postDelete').val(id);
+}
+
+//Delete Post
+function deletePost() {
+
+  let id = $("#postDelete").val(); 
+  var postDelete = $('#postDiv' + id);
+
+  $.ajax({
+      url: "/post/" + id,
+      method: "DELETE",
+      success: function(data){
+        //Clear
+        postDelete.remove();
+      },
+      error: function (err) {
+        console.log(err.responseJSON.message);
+        alert(err.responseJSON.message);
+      }
+  });  
+}
 
 function previewFileEdit(input){
   console.log($("#file_edit"))

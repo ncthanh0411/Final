@@ -10106,4 +10106,7 @@ aside.sidebar.full-style {
     text-transform: uppercase;
 }
 
-
+.edit_user_avatar {
+    max-width: 400px;
+    max-height: 300px;
+}

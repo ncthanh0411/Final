@@ -3,9 +3,16 @@ var router = express.Router();
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
 const multer = require('multer');
-var upload = multer({ dest: './public/images/avatars/' });
+var upload = multer({ 
+  dest: './public/images/avatars/',
+  limits: {
+    fileSize: 4 * 1024 * 1024,
+  }
+});
 const fs = require('fs');
-var moment= require('moment') 
+var moment= require('moment');
+const sharp = require('sharp');
+const path = require('path');
 
 var User = require('../models/user');
 var Post = require('../models/post');
@@ -266,7 +273,7 @@ router.get("/edit/:id", function (req, res, next) {
     });
 });
 
-router.put("/edit/:id", upload.single('edit_upload_img'), function (req, res, next) {
+router.put("/edit/:id", upload.single('edit_upload_img'),   function (req, res, next) {
   var dataform = req.body;
   console.log(dataform)
   var imgfile = req.file;
@@ -274,7 +281,7 @@ router.put("/edit/:id", upload.single('edit_upload_img'), function (req, res, ne
   // fs.unlinkSync('../images/avatars/576e04ef0e071322dfae480299a183d0');
   User.findOne({ _id: req.params.id })
     .populate('department')
-    .then(user => {
+    .then(async user => {
       // if(dataform.edit_user_pw || dataform.edit_user_newpw || dataform.edit_user_confnewpw) {
       //   if(!dataform.edit_user_pw) return res.json({ isvalid: false, msg: 'Please enter your old password' });
       //   var checkpass = bcrypt.hashSync(dataform.edit_user_pw, saltRounds);
@@ -288,8 +295,14 @@ router.put("/edit/:id", upload.single('edit_upload_img'), function (req, res, ne
       user.class = dataform.edit_user_class;
       user.department = dataform.states;
       if(imgfile) {
-        if(user.image_url) fs.unlinkSync('public' + user.image_url);
-        user.image_url = '/images/avatars/' + imgfile.filename;
+        if(user.image_url && fs.existsSync('public' + user.image_url)) fs.unlinkSync('public' + user.image_url);
+
+        await sharp(req.file.path)
+          .resize(720, 720)
+          .jpeg({quality: 80})
+          .toFile(req.file.destination + 'avatar_' + imgfile.filename);
+        fs.unlinkSync(req.file.path);
+        user.image_url = '/images/avatars/avatar_' + imgfile.filename;
       }
 
       user.save((err, update_user) => {
@@ -308,7 +321,7 @@ router.post('/avatarRm/:id', function(req, res) {
   var id = req.params.id;
   User.findOne({ _id: req.params.id })
     .then(user => {
-      if(user.image_url) fs.unlinkSync('public' + user.image_url);
+      if(user.image_url && fs.existsSync('public' + user.image_url)) fs.unlinkSync('public' + user.image_url);
       user.image_url = '';
 
       user.save((err, update_user) => {

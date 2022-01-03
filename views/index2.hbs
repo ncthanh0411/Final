@@ -36,7 +36,11 @@
 								<div class="central-meta">
 									<div class="new-postbox">
 										<figure>
-											<img src="images/resources/admin2.jpg" alt="">
+											{{#if user.image_url}}
+												<img src="{{user.image_url}}" alt="">
+											{{else}}
+												<img src="images/resources/admin2.jpg" alt="">
+											{{/if}}
 										</figure>
 										<div class="newpst-input">
 											<form id="formSubmit" method="post" onsubmit="postForm(event)" enctype="multipart/form-data">

@@ -41,49 +41,51 @@
 								</aside>
 							</div><!-- sidebar -->
 							<div class="col-lg-6">
-								<div class="central-meta">
-									<div class="new-postbox">
-										<figure>
-											<img src="images/resources/admin2.jpg" alt="">
-										</figure>
-										<div class="newpst-input">
-											<form id="formSubmit" method="post" onsubmit="postForm(event)" enctype="multipart/form-data">
-												<textarea rows="3" id="content" name="content" placeholder="write something"></textarea>
-												<div class="attachments">
-													<ul>
-														<li>
-															<i class="fa fa-image"></i>
-															<label class="fileContainer">
-																<input type="file" name="img" accept="image/*" onchange="previewFile(this);">
-															</label>
-														</li>
-														<li>
-															<i class="fa fa-video-camera" onclick="showVideo()"></i>
-														</li>
-														<li>
-															<button type="submit">Post</button>
-														</li>
-													</ul>
-												</div>
-												<br>
-												<div style="display: none;" id = "youtube_link">
-													<div class="input-group-prepend" >
-														<span class="input-group-text" id="inputGroup-sizing-lg">Youtube link</span>
+								{{#ifEquals user.role 2}}
+									<div class="central-meta">
+										<div class="new-postbox">
+											<figure>
+												<img src="/images/resources/admin2.jpg" alt="">
+											</figure>
+											<div class="newpst-input">
+												<form id="formSubmit" method="post" onsubmit="postForm(event)" enctype="multipart/form-data">
+													<textarea rows="3" id="content" name="content" placeholder="write something"></textarea>
+													<div class="attachments">
+														<ul>
+															<li>
+																<i class="fa fa-image"></i>
+																<label class="fileContainer">
+																	<input type="file" name="img" accept="image/*" onchange="previewFile(this);">
+																</label>
+															</li>
+															<li>
+																<i class="fa fa-video-camera" onclick="showVideo()"></i>
+															</li>
+															<li>
+																<button type="submit">Post</button>
+															</li>
+														</ul>
 													</div>
-													<input type="text" id ="video_youtube" class="form-control" name = "video" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
-												</div>
-												<img id="previewImg">	
-											</form>
+													<br>
+													<div style="display: none;" id = "youtube_link">
+														<div class="input-group-prepend" >
+															<span class="input-group-text" id="inputGroup-sizing-lg">Youtube link</span>
+														</div>
+														<input type="text" id ="video_youtube" class="form-control" name = "video" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+													</div>
+													<img id="previewImg">	
+												</form>
+											</div>
 										</div>
-									</div>
-								</div><!-- add post new box -->
+									</div><!-- add post new box -->
+								{{/ifEquals}}	
 								<div class="loadMore" id = "list_post">
 									{{#each post}}
 										<div class="central-meta item" id = "postDiv{{id}}">
 											<div class="user-post">
 												<div class="friend-info">
 													<figure>
-														<img src="images/resources/friend-avatar10.jpg" alt="">
+														<img src="/images/resources/friend-avatar10.jpg" alt="">
 													</figure>
 													<div class="friend-name">
 														<ins><a href="/me/{{user._id}}" title="">{{user.name}}</a>
@@ -137,7 +139,7 @@
 													<ul class="we-comet">
 														<li class="post-comment">
 															<div class="comet-avatar">
-																<img src="images/resources/comet-1.jpg" alt="">
+																<img src="/images/resources/comet-1.jpg" alt="">
 															</div>
 															<div class="post-comt-box">
 																<form method="post">
@@ -157,7 +159,7 @@
 														{{#each comment}}	
 														<li id ="commentLi{{id}}">
 															<div class="comet-avatar">
-																<img src="images/resources/comet-1.jpg">
+																<img src="/images/resources/comet-1.jpg">
 															</div>
 															<div class="we-comment">
 																<div class="coment-head">
@@ -315,7 +317,7 @@
 											<div class="bg-image" style="background-image: url(images/TDTU.png)">
 											</div>
 											<div class="baner-top">
-												<span><img alt="" src="images/tdt.png"></span>
+												<span><img alt="" src="/images/tdt.png"></span>
 												<i class="fa fa-ellipsis-h"></i>
 											</div>
 											<div class="banermeta">

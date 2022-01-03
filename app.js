@@ -24,7 +24,7 @@ const io = require("socket.io")(server);
 // Add helper here
 hbs.registerHelper("ifEquals", function (firstVal, secondVal, options) {
   console.log(firstVal, secondVal);
-  return firstVal == secondVal ? options.fn(this) : options.inverse(this);
+  return String(firstVal) == String(secondVal) ? options.fn(this) : options.inverse(this);
 });
 
 console.log(process.env.MONGO_URL);

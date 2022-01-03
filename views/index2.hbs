@@ -88,6 +88,7 @@
 													<div class="friend-name">
 														<ins><a href="/me/{{user._id}}" title="">{{user.name}}</a>
 															<i class="fa fa-edit" style="cursor: pointer;" data-toggle="modal" data-target="#editPost" onclick="showPost('{{id}}')" ></i>
+															<i class="fa fa-remove" style="cursor: pointer" data-toggle="modal" data-target="#deletePost" onclick="showDelPost('{{id}}')"></i>
 														</ins>
 														<span>published: {{create_date}}</span>
 													</div>
@@ -127,57 +128,6 @@
 														</div>
 													</div>
 												</div>
-
-												<!-- The Modal Post -->
-												<div class="modal fade" id="editPost">
-													<form id="formSubmitEdit" method="post" onsubmit="putForm(event)" enctype="multipart/form-data">
-														<div class="modal-dialog">
-															<div class="modal-content">
-															<input id="postEdit" name = "id" type="hidden">	
-															<!-- Modal Header -->
-															<div class="modal-header">
-																<h4 class="modal-title">Edit Post</h4>
-																<button type="button" class="close" data-dismiss="modal">&times;</button>
-															</div>
-															<!-- Modal body -->
-															<div class="modal-body">
-																<textarea placeholder="Edit your post"
-																	id="edit_post"
-																	name="content"
-																></textarea>
-																<div class="attachments">
-																	<b><hr></b>
-																	<ul>
-																		<li id = "image_edit_icon">
-																			<i class="fa fa-image" ></i>
-																			<label class="fileContainer">
-																				<input id="file_edit" type="file" name="img" accept="image/*" onchange="previewFileEdit(this);">
-																			</label>
-																		</li>
-																		<li id = "video_edit_icon">
-																			<i class="fa fa-video-camera"></i>
-																		</li>
-																	</ul>
-																</div>
-																<img style="display: none;" id="previewImgEdit">	
-																<div style="display: none;" id = "youtube_link_edit">
-																	<div class="input-group-prepend" >
-																		<span class="input-group-text" id="inputGroup-sizing-lg">Youtube link</span>
-																	</div>
-																	<input type="text" id ="video_youtube_edit" class="form-control" name = "video" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
-																</div>																													
-															</div>
-															<!-- Modal footer -->
-															<div class="modal-footer">
-																<button type="submit" class="btn" >Confirm</button>
-																<button type="button" class="btn btn-danger" data-dismiss="modal" id ="close_post">Close</button>
-															</div>
-															</div>
-														</div>
-													</form>	
-												</div>
-												
-
 												<div class="coment-area">
 													<ul class="we-comet">
 														<li class="post-comment">
@@ -218,53 +168,7 @@
 																<p id="content_comment{{id}}">{{content}}</p>
 															</div>
 														</li>																														
-														{{/each}}
-														<!-- The Modal Delete -->
-														<div class="modal fade" id="deleteComment">
-															<div class="modal-dialog">
-																<div class="modal-content">
-																	<input id="commentDelete" type="hidden">
-																	<!-- Modal Header -->
-																	<div class="modal-header">
-																		<h4 class="modal-title">Delete comment</h4>
-																		<button type="button" class="close" data-dismiss="modal">&times;</button>
-																	</div>
-																	<!-- Modal body -->
-																	<div class="modal-body">
-																		Do you want to delete comment?
-																	</div>
-																	<!-- Modal footer -->
-																	<div class="modal-footer">
-																		<button type="button" class="btn" data-dismiss="modal" onclick="deleteComment()">Confirm</button>
-																		<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-																	</div>
-																</div>
-															</div>
-														</div>
-														<!-- The Modal Edit -->
-														<div class="modal fade" id="editComment">
-															<div class="modal-dialog">
-																<div class="modal-content">
-																<input id="commentEdit" type="hidden">	
-																<!-- Modal Header -->
-																<div class="modal-header">
-																	<h4 class="modal-title">Edit comment</h4>
-																	<button type="button" class="close" data-dismiss="modal">&times;</button>
-																</div>
-																<!-- Modal body -->
-																<div class="modal-body">
-																	<textarea placeholder="Edit your comment"
-																		id="edit_comment"></textarea>
-																</div>
-																<!-- Modal footer -->
-																<div class="modal-footer">
-																	<button type="button" class="btn" data-dismiss="modal" onclick="editComment()">Confirm</button>
-																	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-																</div>
-
-																</div>
-															</div>
-														</div>														
+														{{/each}}													
 													</ul>
 													<ul class="we-comet">
 														<li>
@@ -278,6 +182,122 @@
 									{{/each}}
 								</div>
 							</div><!-- centerl meta -->
+
+							<!-- The Modal Post -->
+							<div class="modal fade" id="editPost">
+								<form id="formSubmitEdit" method="post" onsubmit="putForm(event)" enctype="multipart/form-data">
+									<div class="modal-dialog">
+										<div class="modal-content">
+										<input id="postEdit" name = "id" type="hidden">	
+										<!-- Modal Header -->
+										<div class="modal-header">
+											<h4 class="modal-title">Edit Post</h4>
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+										</div>
+										<!-- Modal body -->
+										<div class="modal-body">
+											<textarea placeholder="Edit your post"
+												id="edit_post"
+												name="content"
+											></textarea>
+											<div class="attachments">
+												<b><hr></b>
+												<ul>
+													<li id = "image_edit_icon">
+														<i class="fa fa-image" ></i>
+														<label class="fileContainer">
+															<input id="file_edit" type="file" name="img" accept="image/*" onchange="previewFileEdit(this);">
+														</label>
+													</li>
+													<li id = "video_edit_icon">
+														<i class="fa fa-video-camera"></i>
+													</li>
+												</ul>
+											</div>
+											<img style="display: none;" id="previewImgEdit">	
+											<div style="display: none;" id = "youtube_link_edit">
+												<div class="input-group-prepend" >
+													<span class="input-group-text" id="inputGroup-sizing-lg">Youtube link</span>
+												</div>
+												<input type="text" id ="video_youtube_edit" class="form-control" name = "video" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+											</div>																													
+										</div>
+										<!-- Modal footer -->
+										<div class="modal-footer">
+											<button type="submit" class="btn" >Confirm</button>
+											<button type="button" class="btn btn-danger" data-dismiss="modal" id ="close_post">Close</button>
+										</div>
+										</div>
+									</div>
+								</form>	
+							</div>			
+							<!-- The Modal Delete -->
+							<div class="modal fade" id="deletePost">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<input id="postDelete" type="hidden">
+										<!-- Modal Header -->
+										<div class="modal-header">
+											<h4 class="modal-title">Delete Post</h4>
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+										</div>
+										<!-- Modal body -->
+										<div class="modal-body">
+											Do you want to delete comment?
+										</div>
+										<!-- Modal footer -->
+										<div class="modal-footer">
+											<button type="button" class="btn" data-dismiss="modal" onclick="deletePost()">Confirm</button>
+											<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>											
+							<!-- The Modal Delete -->
+							<div class="modal fade" id="deleteComment">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<input id="commentDelete" type="hidden">
+										<!-- Modal Header -->
+										<div class="modal-header">
+											<h4 class="modal-title">Delete comment</h4>
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+										</div>
+										<!-- Modal body -->
+										<div class="modal-body">
+											Do you want to delete comment?
+										</div>
+										<!-- Modal footer -->
+										<div class="modal-footer">
+											<button type="button" class="btn" data-dismiss="modal" onclick="deleteComment()">Confirm</button>
+											<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- The Modal Edit -->
+							<div class="modal fade" id="editComment">
+								<div class="modal-dialog">
+									<div class="modal-content">
+									<input id="commentEdit" type="hidden">	
+									<!-- Modal Header -->
+									<div class="modal-header">
+										<h4 class="modal-title">Edit comment</h4>
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+									</div>
+									<!-- Modal body -->
+									<div class="modal-body">
+										<textarea placeholder="Edit your comment"
+											id="edit_comment"></textarea>
+									</div>
+									<!-- Modal footer -->
+									<div class="modal-footer">
+										<button type="button" class="btn" data-dismiss="modal" onclick="editComment()">Confirm</button>
+										<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+									</div>
+									</div>
+								</div>
+							</div>								
 							<div class="col-lg-3">
 								<aside class="sidebar static right">
 									<div class="widget">

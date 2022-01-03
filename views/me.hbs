@@ -85,69 +85,36 @@
                                     </aside>
                                 </div><!-- sidebar -->
                                 <div class="col-lg-6">
-                                    <div class="central-meta">
-                                        <div class="new-postbox">
-                                            <figure>
-                                                <img src="images/resources/admin2.jpg" alt="">
-                                            </figure>
-                                            <div class="newpst-input">
-                                                <form method="post">
-                                                    <textarea rows="2" placeholder="write something"></textarea>
-                                                    <div class="attachments">
-                                                        <ul>
-                                                            <li>
-                                                                <i class="fa fa-music"></i>
-                                                                <label class="fileContainer">
-                                                                    <input type="file">
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <i class="fa fa-image"></i>
-                                                                <label class="fileContainer">
-                                                                    <input type="file">
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <i class="fa fa-video-camera"></i>
-                                                                <label class="fileContainer">
-                                                                    <input type="file">
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <i class="fa fa-camera"></i>
-                                                                <label class="fileContainer">
-                                                                    <input type="file">
-                                                                </label>
-                                                            </li>
-                                                            <li>
-                                                                <button type="submit">Post</button>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div><!-- add post new box -->
-                                    <div class="loadMore">
+                                    <div class="loadMore" id = "list_post">
                                         {{#each post}}
-                                            <div class="central-meta item">
+                                            <div class="central-meta item" id = "postDiv{{id}}">
                                                 <div class="user-post">
                                                     <div class="friend-info">
                                                         <figure>
                                                             <img src="images/resources/friend-avatar10.jpg" alt="">
                                                         </figure>
                                                         <div class="friend-name">
-                                                            <ins><a href="time-line.html"
-                                                                    title="">{{user.name}}</a></ins>
-                                                            <span>published: june,2 2018 19:PM</span>
+                                                            <ins><a href="/me/{{user._id}}" title="">{{user.name}}</a>
+                                                                <i class="fa fa-edit" style="cursor: pointer;" data-toggle="modal" data-target="#editPost" onclick="showPost('{{id}}')" ></i>
+                                                            </ins>
+                                                            <span>published: {{create_date}}</span>
                                                         </div>
                                                         <div class="description">
-                                                            <p>
-                                                                {{content}}
-                                                            </p>
+                                                            <p id = "contentPost{{id}}">{{content}}</p>
                                                         </div>
                                                         <div class="post-meta">
-                                                            <img src="images/resources/user-post.jpg" alt="">
+                                                            {{#if image}}
+                                                                <img src={{image}} alt="" id = "imgPost{{id}}">
+                                                            {{/if}}
+                                                            {{#if youtube_url}}
+                                                                <p id = "videoPost{{id}}" hidden>{{youtube_url}}</p>
+                                                                <iframe width="420" height="315"
+                                                                    src= {{youtube_url}}
+                                                                    allow="autoplay;" allowfullscreen
+                                                                    id = "if_frame{{id}}"
+                                                                    >
+                                                                </iframe >
+                                                            {{/if}}															
                                                             <div class="we-video-info">
                                                                 <ul>
                                                                     <li>
@@ -168,6 +135,57 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    <!-- The Modal Post -->
+                                                    <div class="modal fade" id="editPost">
+                                                        <form id="formSubmitEdit" method="post" onsubmit="putForm(event)" enctype="multipart/form-data">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                <input id="postEdit" name = "id" type="hidden">	
+                                                                <!-- Modal Header -->
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title">Edit Post</h4>
+                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                </div>
+                                                                <!-- Modal body -->
+                                                                <div class="modal-body">
+                                                                    <textarea placeholder="Edit your post"
+                                                                        id="edit_post"
+                                                                        name="content"
+                                                                    ></textarea>
+                                                                    <div class="attachments">
+                                                                        <b><hr></b>
+                                                                        <ul>
+                                                                            <li id = "image_edit_icon">
+                                                                                <i class="fa fa-image" ></i>
+                                                                                <label class="fileContainer">
+                                                                                    <input id="file_edit" type="file" name="img" accept="image/*" onchange="previewFileEdit(this);">
+                                                                                </label>
+                                                                            </li>
+                                                                            <li id = "video_edit_icon">
+                                                                                <i class="fa fa-video-camera"></i>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <img style="display: none;" id="previewImgEdit">	
+                                                                    <div style="display: none;" id = "youtube_link_edit">
+                                                                        <div class="input-group-prepend" >
+                                                                            <span class="input-group-text" id="inputGroup-sizing-lg">Youtube link</span>
+                                                                        </div>
+                                                                        <input type="text" id ="video_youtube_edit" class="form-control" name = "video" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+                                                                    </div>																													
+                                                                </div>
+                                                                <!-- Modal footer -->
+                                                                <div class="modal-footer">
+                                                                    <button type="submit" class="btn" >Confirm</button>
+                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal" id ="close_post">Close</button>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>	
+                                                    </div>
+                                                    
+
                                                     <div class="coment-area">
                                                         <ul class="we-comet">
                                                             <li class="post-comment">
@@ -188,22 +206,73 @@
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                        <ul class="we-comet" id="post_comment{{id}}">
-                                                            {{#each comment}}
-                                                                <li>
-                                                                    <div class="comet-avatar">
-                                                                        <img src="images/resources/comet-1.jpg">
+                                                        <ul class="we-comet"  id = "post_comment{{id}}">
+                                                            {{#each comment}}	
+                                                            <li id ="commentLi{{id}}">
+                                                                <div class="comet-avatar">
+                                                                    <img src="images/resources/comet-1.jpg">
+                                                                </div>
+                                                                <div class="we-comment">
+                                                                    <div class="coment-head">
+                                                                        <h5><a href="time-line.html" >{{user.name}}</a>
+                                                                        </h5>
+                                                                        <span>{{create_date}}</span>
+                                                                        <i class="fa fa-remove" style="cursor: pointer;float: right;margin-right:10px;" data-toggle="modal"
+                                                                            data-target="#deleteComment" onclick="showDelComment('{{id}}')"></i>
+                                                                        
+                                                                        <i class="fa fa-edit" style="cursor: pointer;float: right;margin-right:10px;" data-toggle="modal"
+                                                                            data-target="#editComment" onclick="showComment('{{id}}')"> </i>
                                                                     </div>
-                                                                    <div class="we-comment">
-                                                                        <div class="coment-head">
-                                                                            <h5><a
-                                                                                    href="time-line.html">{{user.name}}</a>
-                                                                            </h5>
-                                                                            <span>{{create_date}}</span>
-                                                                        </div>
-                                                                        <p>{{content}}</p>
-                                                                </li>
+                                                                    <p id="content_comment{{id}}">{{content}}</p>
+                                                                </div>
+                                                            </li>																														
                                                             {{/each}}
+                                                            <!-- The Modal Delete -->
+                                                            <div class="modal fade" id="deleteComment">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <input id="commentDelete" type="hidden">
+                                                                        <!-- Modal Header -->
+                                                                        <div class="modal-header">
+                                                                            <h4 class="modal-title">Delete comment</h4>
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+                                                                        <!-- Modal body -->
+                                                                        <div class="modal-body">
+                                                                            Do you want to delete comment?
+                                                                        </div>
+                                                                        <!-- Modal footer -->
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn" data-dismiss="modal" onclick="deleteComment()">Confirm</button>
+                                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- The Modal Edit -->
+                                                            <div class="modal fade" id="editComment">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                    <input id="commentEdit" type="hidden">	
+                                                                    <!-- Modal Header -->
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title">Edit comment</h4>
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+                                                                    <!-- Modal body -->
+                                                                    <div class="modal-body">
+                                                                        <textarea placeholder="Edit your comment"
+                                                                            id="edit_comment"></textarea>
+                                                                    </div>
+                                                                    <!-- Modal footer -->
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn" data-dismiss="modal" onclick="editComment()">Confirm</button>
+                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                                    </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>														
                                                         </ul>
                                                         <ul class="we-comet">
                                                             <li>
@@ -213,7 +282,7 @@
                                                         </ul>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>									
                                         {{/each}}
                                     </div>
                                 </div><!-- centerl meta -->

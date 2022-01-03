@@ -19,7 +19,11 @@
                         <div class="col-lg-2 col-sm-3">
                             <div class="user-avatar">
                                 <figure>
-                                    <img src="images/resources/user-avatar.jpg" alt="">
+                                    {{#if user.image_url}}
+                                        <img src="{{user.image_url}}" alt="">
+                                    {{else}}
+                                        <img src="images/resources/user-avatar.jpg" alt="">
+                                    {{/if}}
                                     <form class="edit-phto">
                                         <i class="fa fa-camera-retro"></i>
                                         <label class="fileContainer">
@@ -38,7 +42,7 @@
                                         <span>Group Admin</span>
                                     </li>
                                     <li>
-                                        <a class="active" href="/me" title="" data-ripple="">time
+                                        <a class="active" href="/me/{{user._id}}" title="" data-ripple="">time
                                             line</a>
                                         <a class="" href="timeline-photos.html" title="" data-ripple="">Photos</a>
                                         <a class="" href="/edit/{{user._id}}" title="" data-ripple="">Edit Account</a>
@@ -72,7 +76,7 @@
                                                 </li>
                                                 <li>
                                                     <i class="fa fa-edit"></i>
-                                                    <a href="/edit" title="">Edit account</a>
+                                                    <a href="/edit/{{user._id}}" title="">Edit account</a>
                                                 </li>
                                                 <li>
                                                     <i class="ti-image"></i>

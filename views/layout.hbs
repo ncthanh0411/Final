@@ -18,11 +18,6 @@
     <link rel="stylesheet" href="/stylesheets/responsive.css">
     {{!-- CongP update 28.11 Start --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    {{!-- Scripts --}}
-    {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.mmenu/6.1.0/jquery.mmenu.all.js"></script> --}}
-    {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
-    {{!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
       integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -69,7 +64,7 @@
           </li>
           <li><span>Time Line</span>
             <ul>
-              <li><a href="/me" title="">My Timeline</a></li>
+              <li><a href="/me/{{user._id}}" title="">My Timeline</a></li>
               <li><a href="/photos" title="">Timeline Photos</a></li>
               <li><a href="/edit" title="">Edit Account</a></li>
             </ul>
@@ -175,9 +170,9 @@
             </ul>
           </li>
           <li>
-            <a href="/me" title="">timeline</a>
+            <a href="/me/{{user._id}}" title="">timeline</a>
             <ul>
-              <li><a href="/me" title="">My Timeline</a></li>
+              <li><a href="/me/{{user._id}}" title="">My Timeline</a></li>
               <li><a href="/photos" title="">Photos</a></li>
               <li><a href="/edit" title="">Edit Account</a></li>
             </ul>
@@ -191,16 +186,6 @@
           </li>
         </ul>
         <ul class="setting-area">
-          <li>
-            <a href="/" title="Home" data-ripple=""><i class="ti-search"></i></a>
-            <div class="searched">
-              <form method="post" class="form-search">
-                <input type="text" placeholder="Search Friend">
-                <button data-ripple><i class="ti-search"></i></button>
-              </form>
-            </div>
-          </li>
-          <li><a href="/" title="Home"><i class="ti-home"></i></a></li>
           <li>
             <a href="#" title="Notification" data-ripple="">
               <i class="ti-bell"></i><span>20</span>
@@ -267,76 +252,6 @@
               <a href="notifications.html" title="" class="more-mesg">view more</a>
             </div>
           </li>
-          <li>
-            <a href="#" title="Messages" data-ripple=""><i class="ti-comment"></i><span>12</span></a>
-            <div class="dropdowns">
-              <span>5 New Messages</span>
-              <ul class="drops-menu">
-                <li>
-                  <a href="notifications.html" title="">
-                    <img src="/images/resources/thumb-1.jpg" alt="">
-                    <div class="mesg-meta">
-                      <h6>sarah Loren</h6>
-                      <span>Hi, how r u dear ...?</span>
-                      <i>2 min ago</i>
-                    </div>
-                  </a>
-                  <span class="tag green">New</span>
-                </li>
-                <li>
-                  <a href="notifications.html" title="">
-                    <img src="/images/resources/thumb-2.jpg" alt="">
-                    <div class="mesg-meta">
-                      <h6>Jhon doe</h6>
-                      <span>Hi, how r u dear ...?</span>
-                      <i>2 min ago</i>
-                    </div>
-                  </a>
-                  <span class="tag red">Reply</span>
-                </li>
-                <li>
-                  <a href="notifications.html" title="">
-                    <img src="/images/resources/thumb-3.jpg" alt="">
-                    <div class="mesg-meta">
-                      <h6>Andrew</h6>
-                      <span>Hi, how r u dear ...?</span>
-                      <i>2 min ago</i>
-                    </div>
-                  </a>
-                  <span class="tag blue">Unseen</span>
-                </li>
-                <li>
-                  <a href="notifications.html" title="">
-                    <img src="/images/resources/thumb-4.jpg" alt="">
-                    <div class="mesg-meta">
-                      <h6>Tom cruse</h6>
-                      <span>Hi, how r u dear ...?</span>
-                      <i>2 min ago</i>
-                    </div>
-                  </a>
-                  <span class="tag">New</span>
-                </li>
-                <li>
-                  <a href="notifications.html" title="">
-                    <img src="/images/resources/thumb-5.jpg" alt="">
-                    <div class="mesg-meta">
-                      <h6>Amy</h6>
-                      <span>Hi, how r u dear ...?</span>
-                      <i>2 min ago</i>
-                    </div>
-                  </a>
-                  <span class="tag">New</span>
-                </li>
-              </ul>
-              <a href="messages.html" title="" class="more-mesg">view more</a>
-            </div>
-          </li>
-          <li><a href="#" title="Languages" data-ripple=""><i class="fa fa-globe"></i></a>
-            <div class="dropdowns languages">
-              <a href="#" title=""><i class="ti-check"></i>English</a>
-              <a href="#" title="">Tiếng Việt</a>
-            </div>
-          </li>
         </ul>
         <div class="user-img">
           <img src="/images/resources/admin.jpg" alt="">
@@ -353,7 +268,7 @@
                 Log Out</button></a>
           </div>
         </div>
-        <span class="ti-menu main-menu" data-ripple=""></span>
+        {{!-- <span class="ti-menu main-menu" data-ripple=""></span> --}}
       </div>
     </div><!-- topbar -->
     

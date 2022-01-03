@@ -40,8 +40,31 @@ router.get("/", function (req, res, next) {
         if (error || !user) {
           return res.status(404).json({ message: error });
         }
-        //return res.status(200).json(post);
-        res.render("index2", { post: post, user: user });
+
+        Notification.find()
+          .limit(3)
+          .sort({ createdAt: -1 })
+          .populate("department")
+          .then((listNoti) => {
+            let depost_list = listNoti.map(function (myNoti) {
+              return {
+                id: myNoti.id,
+                title: myNoti.title,
+                content: myNoti.content,
+                department: myNoti.department._id,
+                departmentName: myNoti.department.departmentName,
+                user: myNoti.user,
+                date: moment(myNoti.updatedAt).format("DD/MM/YYYY"),
+              };
+            });
+
+            //return res.status(200).json(post);
+            return res.render("index2", {
+              post: post,
+              user: user,
+              depost_list: depost_list,
+            });
+          });
       });
     })
     .catch((error) => {

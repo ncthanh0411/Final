@@ -91,8 +91,13 @@
 													</figure>
 													<div class="friend-name">
 														<ins><a href="/me/{{user._id}}" title="">{{user.name}}</a>
-															<i class="fa fa-edit" style="cursor: pointer;" data-toggle="modal" data-target="#editPost" onclick="showPost('{{id}}')" ></i>
-															<i class="fa fa-remove" style="cursor: pointer" data-toggle="modal" data-target="#deletePost" onclick="showDelPost('{{id}}')"></i>
+															{{#ifEquals user._id ../user._id }}
+																<i class="fa fa-remove" style="cursor: pointer;float: right;margin-right:10px;"
+																data-toggle="modal" data-target="#deletePost" onclick="showDelPost('{{id}}')"></i>
+
+																<i class="fa fa-edit" style="cursor: pointer;float: right;margin-right:10px;"
+																data-toggle="modal" data-target="#editPost" onclick="showPost('{{id}}')" ></i>
+															{{/ifEquals}}
 														</ins>
 														<span>published: {{create_date}}</span>
 													</div>
@@ -163,11 +168,16 @@
 																	<h5><a href="time-line.html" >{{user.name}}</a>
 																	</h5>
 																	<span>{{create_date}}</span>
+
+																	{{#ifEquals user._id ../../user._id }}
 																	<i class="fa fa-remove" style="cursor: pointer;float: right;margin-right:10px;" data-toggle="modal"
 																		data-target="#deleteComment" onclick="showDelComment('{{id}}')"></i>
 																	
 																	<i class="fa fa-edit" style="cursor: pointer;float: right;margin-right:10px;" data-toggle="modal"
 																		data-target="#editComment" onclick="showComment('{{id}}')"> </i>
+																	{{/ifEquals}}	
+
+
 																</div>
 																<p id="content_comment{{id}}">{{content}}</p>
 															</div>
@@ -235,7 +245,7 @@
 									</div>
 								</form>	
 							</div>			
-							<!-- The Modal Delete -->
+							<!-- The Modal Delete Post -->
 							<div class="modal fade" id="deletePost">
 								<div class="modal-dialog">
 									<div class="modal-content">
@@ -247,7 +257,7 @@
 										</div>
 										<!-- Modal body -->
 										<div class="modal-body">
-											Do you want to delete comment?
+											Do you want to delete Post?
 										</div>
 										<!-- Modal footer -->
 										<div class="modal-footer">

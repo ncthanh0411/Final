@@ -9,7 +9,6 @@ var Notification = require("../models/notification");
 
 router.get("/", function (req, res, next) {
   // check login
-
   if (!req.session.user && !req.session.email) {
     return res.redirect("/login");
   }
@@ -68,5 +67,30 @@ router.post('/notiPost', (req, res, next) => {
         return res.status(404).json({ msg: "DB error" });
       })
 });
+
+
+router.get("/mypost", function (req, res, next) {
+  // check login
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  if (req.session.role == 2 || !req.session.user) {
+    return res.redirect("/");
+  }
+  User.findOne({ username: req.session.user })
+    .populate("department")
+    .then((user) => {
+      return res.render("user", {
+        layout: "alayout",
+        title: "User Posts",
+        user: user,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(404).json({ msg: "DB error" });
+    });
+});
+
 
 module.exports = router;

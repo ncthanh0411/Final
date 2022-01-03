@@ -19,6 +19,7 @@ var Post = require('../models/post');
 var Comment = require('../models/comment');
 var Department = require("../models/department");
 var Notification = require('../models/notification');
+const e = require('express');
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -29,55 +30,61 @@ router.get("/", function (req, res, next) {
     return res.redirect("/login");
   }
   console.log("role: ", req.session.role);
-  Post.find()
-    .sort({createdAt: -1})
-    .populate()
-    .populate("user")
-    .populate({
-      path: "comment",
-      populate: [
-        {
-          path: "user",
-        },
-      ],
-      options: { sort: { createdAt: -1 } },
-    })
-    .then((post) => {
-      User.findOne({ email: req.session.email }, (error, user) => {
-        if (error || !user) {
-          return res.status(404).json({ message: error });
-        }
+  if (req.session.role == 1) {
+    res.redirect('/users')
+  }
+  else {
+    Post.find()
+      .sort({ createdAt: -1 })
+      .populate()
+      .populate("user")
+      .populate({
+        path: "comment",
+        populate: [
+          {
+            path: "user",
+          },
+        ],
+        options: { sort: { createdAt: -1 } },
+      })
+      .then((post) => {
+        User.findOne({ email: req.session.email }, (error, user) => {
+          if (error || !user) {
+            return res.status(404).json({ message: error });
+          }
 
-        Notification.find()
-          .limit(3)
-          .sort({ createdAt: -1 })
-          .populate("department")
-          .then((listNoti) => {
-            let depost_list = listNoti.map(function (myNoti) {
-              return {
-                id: myNoti.id,
-                title: myNoti.title,
-                content: myNoti.content,
-                department: myNoti.department._id,
-                departmentName: myNoti.department.departmentName,
-                user: myNoti.user,
-                date: moment(myNoti.updatedAt).format("DD/MM/YYYY"),
-              };
-            });
+          Notification.find()
+            .limit(3)
+            .sort({ createdAt: -1 })
+            .populate("department")
+            .then((listNoti) => {
+              let depost_list = listNoti.map(function (myNoti) {
+                return {
+                  id: myNoti.id,
+                  title: myNoti.title,
+                  content: myNoti.content,
+                  department: myNoti.department._id,
+                  departmentName: myNoti.department.departmentName,
+                  user: myNoti.user,
+                  date: moment(myNoti.updatedAt).format("DD/MM/YYYY"),
+                };
+              });
 
-            //return res.status(200).json(post);
-            return res.render("index2", {
-              post: post,
-              user: user,
-              depost_list: depost_list,
+              //return res.status(200).json(post);
+              return res.render("index2", {
+                post: post,
+                user: user,
+                depost_list: depost_list,
+              });
             });
-          });
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.render("index2");
       });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.render("index2");
-    });
+  }
+    
 });
 
 router.get("/login", function (req, res, next) {
@@ -254,10 +261,21 @@ router.get("/edit/:id", function (req, res, next) {
         .populate('department')
         .then(user => {
           if(user.role == 2 && user.email == req.session.email) {
-            departLst.forEach(depart => {
-              if(depart.id != user.department[0].id) mydepartLst.push(depart)
-            })
-            return res.render('edit', { user: user, departLst: mydepartLst, userDepart: user.department[0] });
+            if(user.department[0]) {
+              departLst.forEach(depart => {
+                  if(depart.id != user.department[0].id) mydepartLst.push(depart);
+              })
+            } else {
+              mydepartLst = departLst;
+            }
+            var haveImg = false
+            if(user.image_url) haveImg = true;
+
+            return res.render('edit', { 
+              user: user, 
+              departLst: mydepartLst, 
+              userDepart: user.department[0] 
+            });
           } else {
             return res.redirect('/');
           }

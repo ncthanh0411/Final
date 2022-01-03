@@ -191,7 +191,7 @@ router.get("/me", function (req, res, next) {
           return res.status(404).json({ message: error });
         }
         //return res.status(200).json(post);
-        res.render("me", { post: post, user: user });
+        res.render("me", { post: post, user: user, user_show: user });
       });
     })
     .catch((error) => {
@@ -229,7 +229,7 @@ router.get("/me/:id", function (req, res, next) {
               options: { sort: { createdAt: -1 } }
             })        
             .then((user_show) => {
-              res.render("me", { post: user_show.post, user: user });
+              res.render("me", { post: user_show.post, user: user, user_show: user_show });
             })
             .catch((error) => {
               console.log(error);

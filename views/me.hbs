@@ -35,14 +35,16 @@
                             <div class="timeline-info">
                                 <ul>
                                     <li class="admin-name">
-                                        <h5>{{user.name}}</h5>
-                                        <span>{{user.email}}</span>
+                                        <h5>{{user_show.name}}</h5>
+                                        <span>{{user_show.email}}</span>
                                     </li>
                                     <li>
                                         <a class="active" href="/me/{{user._id}}" title="" data-ripple="">time
                                             line</a>
                                         <a class="" href="timeline-photos.html" title="" data-ripple="">Photos</a>
-                                        <a class="" href="/edit/{{user._id}}" title="" data-ripple="">Edit Account</a>
+                                        {{#ifEquals user._id user_show._id}}
+                                            <a class="" href="/edit/{{user._id}}" title="" data-ripple="">Edit Account</a>
+                                        {{/ifEquals}}
                                     </li>
                                 </ul>
                             </div>

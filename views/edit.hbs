@@ -20,11 +20,11 @@
                     <div class="col-lg-2 col-sm-3">
                         <div class="user-avatar">
                             <figure>
-                                {{#if user.image_url}}
-                                    <img src="{{user.image_url}}" alt="">
-                                {{else}}
+                                {{#ifEquals user.image_url ""}}
                                     <img src="images/resources/user-avatar.jpg" alt="">
-                                {{/if}}
+                                {{else}}
+                                    <img src="{{user.image_url}}" alt="">
+                                {{/ifEquals}}
                                 <form class="edit-phto">
                                     <i class="fa fa-camera-retro"></i>
                                     <label class="fileContainer">
@@ -92,7 +92,7 @@
                                         </ul>
                                     </div><!-- Shortcuts -->
 
-                                </aside>
+                                </aside>osadff{{user.image_url}}
                             </div><!-- sidebar -->
                             <div class="col-lg-6">
                                 <div class="central-meta">
@@ -115,7 +115,9 @@
                                                 <div class="form-group">
                                                     <label for="name">Chọn Khoa</label>
                                                     <select class="js-editSU-basic-single" style="width: 100%;" name="states">
-                                                        <option id="edit_user_depart_{{userDepart.id}}" value="{{userDepart.id}}">{{userDepart.departmentName}}</option>
+                                                        {{!-- {{#if userDepart}}
+                                                            <option id="edit_user_depart_{{userDepart.id}}" value="{{userDepart.id}}">{{userDepart.departmentName}}</option>
+                                                        {{/if}} --}}
                                                         {{#each departLst}}
                                                             <option id="edit_user_depart_{{id}}" value="{{id}}">{{departmentName}}</option>
                                                         {{/each}}

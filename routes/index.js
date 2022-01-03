@@ -231,10 +231,21 @@ router.get("/edit/:id", function (req, res, next) {
         .populate('department')
         .then(user => {
           if(user.role == 2 && user.email == req.session.email) {
-            departLst.forEach(depart => {
-              if(depart.id != user.department[0].id) mydepartLst.push(depart)
-            })
-            return res.render('edit', { user: user, departLst: mydepartLst, userDepart: user.department[0] });
+            if(user.department[0]) {
+              departLst.forEach(depart => {
+                  if(depart.id != user.department[0].id) mydepartLst.push(depart);
+              })
+            } else {
+              mydepartLst = departLst;
+            }
+            var haveImg = false
+            if(user.image_url) haveImg = true;
+
+            return res.render('edit', { 
+              user: user, 
+              departLst: mydepartLst, 
+              userDepart: user.department[0] 
+            });
           } else {
             return res.redirect('/');
           }

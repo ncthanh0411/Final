@@ -425,29 +425,36 @@ function addPost(post){
   var youtube_link = ''
   var img = ''
   if(post.image){
-    img = '<img src="' + post.image +  '" alt=""> '
+    img = '<img src="' + post.image +  '" alt="" id = "imgPost'+ post._id +'">'
   }
   if(post.youtube_url)
   {
-  youtube_link = '  <iframe width="420" height="315" ' +
+  youtube_link = 
+                 '<p id = "videoPost' + post._id +'" hidden>' + post.youtube_url + '</p>' +
+                 '  <iframe width="420" height="315" ' +
                  '  src= ' + post.youtube_url          +
-                 ' allow="autoplay;" allowfullscreen> ' +
+                 ' allow="autoplay;" allowfullscreen id = "if_frame' +post._id +'" >' +
                  ' </iframe>                         '
   }
   console.log(post_id)
   var post_link = 
-  '<div class="central-meta item">' +
+  '<div class="central-meta item" id = "postDiv' + post._id +'">' +
     '<div class="user-post">'         +
     '  <div class="friend-info">    ' +
     '    <figure>                   ' +
     '      <img src="images/resources/friend-avatar10.jpg" alt="">        ' + 
     '    </figure>                  ' +
     '    <div class="friend-name">  ' +
-    '      <ins><a href="time-line.html" title="">' + post.user.name + '</a></ins> ' +
+    '      <ins><a href="/me/' + post.user._id + '" title="">' + post.user.name + '</a>' +
+          '<i class="fa fa-remove" style="cursor: pointer;float: right;margin-right:10px;"' +
+          ' data-toggle="modal" data-target="#deletePost" onclick="showDelPost(' + post_id  +')"></i>' +
+          '<i class="fa fa-edit" style="cursor: pointer;float: right;margin-right:10px;"' +
+          'data-toggle="modal" data-target="#editPost" onclick="showPost(' + post_id  +')" ></i>' +
+    '      </ins> ' +
     '      <span>published: ' + post.create_date + '</span> ' +
     '    </div>                     ' +
     '    <div class="description">  ' +
-    '      <p>                      ' +
+    '      <p id = "contentPost' + post._id + '">' +
               post.content +
     '      </p>                     ' +
     '    </div>                     ' +
@@ -580,6 +587,7 @@ function previewFile(input){
 }
 //Show Post need to edit
 function showPost(id) {
+  console.log("vô")
   //Refresh data
   $("#previewImgEdit").attr("src", "");
   $("#previewImgEdit").css("display", "none")

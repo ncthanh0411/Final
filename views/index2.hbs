@@ -15,16 +15,8 @@
 												<a href="/" title="">News feed</a>
 											</li>
 											<li>
-												<i class="ti-mouse-alt"></i>
-												<a href="inbox.html" title="">Inbox</a>
-											</li>
-											<li>
 												<i class="ti-files"></i>
-												<a href="/me" title="">My page</a>
-											</li>
-											<li>
-												<i class="ti-image"></i>
-												<a href="timeline-photos.html" title="">images</a>
+												<a href="/me/{{user._id}}" title="">My page</a>
 											</li>
 											<li>
 												<i class="fa fa-edit"></i>
@@ -41,53 +33,55 @@
 								</aside>
 							</div><!-- sidebar -->
 							<div class="col-lg-6">
-								<div class="central-meta">
-									<div class="new-postbox">
-										<figure>
+								{{#ifEquals user.role 2}}
+									<div class="central-meta">
+										<div class="new-postbox">
+											<figure>
 											{{#if user.image_url}}
 												<img src="{{user.image_url}}" alt="">
 											{{else}}
 												<img src="images/resources/admin2.jpg" alt="">
 											{{/if}}
-										</figure>
-										<div class="newpst-input">
-											<form id="formSubmit" method="post" onsubmit="postForm(event)" enctype="multipart/form-data">
-												<textarea rows="3" id="content" name="content" placeholder="write something"></textarea>
-												<div class="attachments">
-													<ul>
-														<li>
-															<i class="fa fa-image"></i>
-															<label class="fileContainer">
-																<input type="file" name="img" accept="image/*" onchange="previewFile(this);">
-															</label>
-														</li>
-														<li>
-															<i class="fa fa-video-camera" onclick="showVideo()"></i>
-														</li>
-														<li>
-															<button type="submit">Post</button>
-														</li>
-													</ul>
-												</div>
-												<br>
-												<div style="display: none;" id = "youtube_link">
-													<div class="input-group-prepend" >
-														<span class="input-group-text" id="inputGroup-sizing-lg">Youtube link</span>
+											</figure>
+											<div class="newpst-input">
+												<form id="formSubmit" method="post" onsubmit="postForm(event)" enctype="multipart/form-data">
+													<textarea rows="3" id="content" name="content" placeholder="write something"></textarea>
+													<div class="attachments">
+														<ul>
+															<li>
+																<i class="fa fa-image"></i>
+																<label class="fileContainer">
+																	<input type="file" name="img" accept="image/*" onchange="previewFile(this);">
+																</label>
+															</li>
+															<li>
+																<i class="fa fa-video-camera" onclick="showVideo()"></i>
+															</li>
+															<li>
+																<button type="submit">Post</button>
+															</li>
+														</ul>
 													</div>
-													<input type="text" id ="video_youtube" class="form-control" name = "video" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
-												</div>
-												<img id="previewImg">	
-											</form>
+													<br>
+													<div style="display: none;" id = "youtube_link">
+														<div class="input-group-prepend" >
+															<span class="input-group-text" id="inputGroup-sizing-lg">Youtube link</span>
+														</div>
+														<input type="text" id ="video_youtube" class="form-control" name = "video" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+													</div>
+													<img id="previewImg">	
+												</form>
+											</div>
 										</div>
-									</div>
-								</div><!-- add post new box -->
+									</div><!-- add post new box -->
+								{{/ifEquals}}	
 								<div class="loadMore" id = "list_post">
 									{{#each post}}
 										<div class="central-meta item" id = "postDiv{{id}}">
 											<div class="user-post">
 												<div class="friend-info">
 													<figure>
-														<img src="images/resources/friend-avatar10.jpg" alt="">
+														<img src="/images/resources/friend-avatar10.jpg" alt="">
 													</figure>
 													<div class="friend-name">
 														<ins><a href="/me/{{user._id}}" title="">{{user.name}}</a>
@@ -141,7 +135,7 @@
 													<ul class="we-comet">
 														<li class="post-comment">
 															<div class="comet-avatar">
-																<img src="images/resources/comet-1.jpg" alt="">
+																<img src="/images/resources/comet-1.jpg" alt="">
 															</div>
 															<div class="post-comt-box">
 																<form method="post">
@@ -161,7 +155,7 @@
 														{{#each comment}}	
 														<li id ="commentLi{{id}}">
 															<div class="comet-avatar">
-																<img src="images/resources/comet-1.jpg">
+																<img src="/images/resources/comet-1.jpg">
 															</div>
 															<div class="we-comment">
 																<div class="coment-head">
@@ -319,7 +313,7 @@
 											<div class="bg-image" style="background-image: url(images/TDTU.png)">
 											</div>
 											<div class="baner-top">
-												<span><img alt="" src="images/tdt.png"></span>
+												<span><img alt="" src="/images/tdt.png"></span>
 												<i class="fa fa-ellipsis-h"></i>
 											</div>
 											<div class="banermeta">
@@ -333,26 +327,15 @@
 											</div>
 											</div>
 									<div class="widget friend-list stick-widget">
-										<h4 class="widget-title">Department Posts <i class="fa fa-bell w3-text-red w3-large"></i></h4>
+										<h4 class="widget-title">Recent Department Posts <i class="fa fa-bell w3-text-red w3-large"></i></h4>
 										<ul class="short-profile">
-											<li>
-												<span><a href="#">Thông báo về việc Nộp học phí học kỳ 1 năm học
-														2021-2022 đợt 3
-														(đợt cứu xét cho các trường hợp trễ hạn)</a></span>
-												<p>Phòng Đại học | Ngày đăng 03/12/2021</p>
+											{{#each depost_list}}<li>
+												<span><a href="/detail/{{id}}">{{{title}}}</a></span>
+												<p>{{departmentName}} | Ngày đăng {{date}}</p>
 											</li>
-											<li>
-												<span><a href="#">Lịch thi và danh sách thi cuối kỳ HKdt1/2021-2022
-													</a></span>
-												<p>Phòng Đại học | Ngày đăng 17/11/2021</p>
-											</li>
-											<li>
-												<span><a href="#">THÔNG BÁO V/v đăng ký môn học trong HK2/2021-2022
-														dành cho sinh viên các lớp tiêu chuẩn, chất lượng cao, đại
-														học bằng
-														tiếng anh từ khóa tuyển sinh 2020 trở về trước</a></span>
-												<p>Phòng Đại học | Ngày đăng 10/11/2021</p>
-											</li>
+											
+											{{/each}}
+
 											<li><a href="/depost">See more</a></li>
 										</ul>
 									</div>

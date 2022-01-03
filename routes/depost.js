@@ -76,7 +76,11 @@ router.get("/home/:page", function (req, res, next) {
 });
 
 router.post("/filter", function (req, res, next) {
-  res.redirect("/depost/filter/" + req.body.select + "/1");
+  console.log('filter: ', req.body.select);
+  if (req.body.select !== '')
+    res.redirect("/depost/filter/" + req.body.select + "/1");
+  else
+    res.redirect("/depost")
 });
 
 router.get("/filter/:departID/:page", function (req, res, next) {

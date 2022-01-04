@@ -16,11 +16,11 @@
                     <div class="col-lg-2 col-sm-3">
                         <div class="user-avatar">
                             <figure>
-                                {{#ifEquals user.image_url ""}}
-                                    <img src="images/resources/user-avatar.jpg" alt="">
-                                {{else}}
+                                {{#if user.image_url}}
                                     <img src="{{user.image_url}}" alt="">
-                                {{/ifEquals}}
+                                {{else}}
+                                    <img src="/images/resources/admin2.jpg" alt="">
+                                {{/if}}
                                 <form class="edit-phto">
                                     <i class="fa fa-camera-retro"></i>
                                     <label class="fileContainer">
@@ -35,13 +35,13 @@
                         <div class="timeline-info">
                             <ul>
                                 <li class="admin-name">
-                                    <h5>Janice Griffith</h5>
-                                    <span>Group Admin</span>
+                                    <h5>{{user.name}}</h5>
+                                    <span>{{user.email}}</span>
                                 </li>
                                 <li>
-                                    <a class="" href="/me" title="" data-ripple="">time line</a>
+                                    <a class="" href="/me/{{user._id}}" title="" data-ripple="">time line</a>
                                     <a class="" href="timeline-photos.html" title="" data-ripple="">Photos</a>
-                                    <a class="active" href="#" title="" data-ripple="">Edit Account</a>
+                                    <a class="active" href="/edit/{{user._id}}" title="" data-ripple="">Edit Account</a>
                                 </li>
                             </ul>
                         </div>
@@ -67,16 +67,8 @@
                                                 <a href="/" title="">News feed</a>
                                             </li>
                                             <li>
-                                                <i class="ti-mouse-alt"></i>
-                                                <a href="inbox.html" title="">Inbox</a>
-                                            </li>
-                                            <li>
                                                 <i class="ti-files"></i>
-                                                <a href="/me" title="">My page</a>
-                                            </li>
-                                            <li>
-                                                <i class="ti-image"></i>
-                                                <a href="timeline-photos.html" title="">images</a>
+                                                <a href="/me/{{user._id}}" title="">My page</a>
                                             </li>
                                             <li>
                                                 <i class="ti-bell"></i>

@@ -673,6 +673,31 @@ function showVideo() {
     $("#youtube_link").css("display", "none");
   }
 }
+
+//like Post
+
+function likePost(id) {
+
+    var like = {
+      id: id
+    };
+
+    $.ajax({
+      url: "/post/like/" + id,
+      method: "post",
+      data: like,
+      success: function (post) {
+        let like_count = post.like.length;
+        $("#like" + post._id).val(like_count);
+      },
+      error: function (err) {
+        console.log(err.responseJSON);
+        alert(err.responseJSON.message);
+      },
+    });
+
+}
+
 //New Comment
 function post_comment(e, id) {
   //Press enter event

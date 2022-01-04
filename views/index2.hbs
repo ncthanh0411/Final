@@ -32,6 +32,7 @@
 									</div><!-- Shortcuts -->
 								</aside>
 							</div><!-- sidebar -->
+							<p id = "userID{{user._id}}" type = hidden></p>
 							<div class="col-lg-6">
 								{{#ifEquals user.role 2}}
 									<div class="central-meta">
@@ -115,16 +116,15 @@
 															<ul>
 																<li>
 																	<span class="like" data-toggle="tooltip"
-																		title="like">
-																		<i class="ti-heart"></i>
-																		<ins>2.2k</ins>
+																		title="like" >
+																		<i class="ti-heart" onclick="likePost('{{id}}')"></i>
+																		<ins id="like{{id}}">{{like.length}}</ins>
 																	</span>
-																</li>
+																</li>																																									
 																<li>
 																	<span class="comment" data-toggle="tooltip"
 																		title="Comments">
 																		<i class="fa fa-comments-o"></i>
-																		<ins>52</ins>
 																	</span>
 																</li>
 															</ul>

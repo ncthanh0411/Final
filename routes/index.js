@@ -20,6 +20,7 @@ var Comment = require('../models/comment');
 var Department = require("../models/department");
 var Notification = require('../models/notification');
 const e = require('express');
+const { redirect } = require('express/lib/response');
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -48,40 +49,50 @@ router.get("/", function (req, res, next) {
         options: { sort: { createdAt: -1 } },
       })
       .then((post) => {
-        User.findOne({ email: req.session.email }, (error, user) => {
-          if (error || !user) {
-            return res.status(404).json({ message: error });
-          }
+        User.findOne({ email: req.session.email })
+          .populate('department')
+          .then((user) => {
+            // console.log('khoa: ', user.department[0].departmentName)
+            if (user.department[0]) {
+              console.log('check khoa true')
+            } else {
+              console.log('check khoa false')
+              console.log('id', user.id);
+              return res.redirect("/edit/"+ user.id);
+            }
 
-          Notification.find()
-            .limit(3)
-            .sort({ createdAt: -1 })
-            .populate("department")
-            .then((listNoti) => {
-              let depost_list = listNoti.map(function (myNoti) {
-                return {
-                  id: myNoti.id,
-                  title: myNoti.title,
-                  content: myNoti.content,
-                  department: myNoti.department._id,
-                  departmentName: myNoti.department.departmentName,
-                  user: myNoti.user,
-                  date: moment(myNoti.updatedAt).format("DD/MM/YYYY"),
-                };
-              });
+            Notification.find()
+              .limit(3)
+              .sort({ createdAt: -1 })
+              .populate("department")
+              .then((listNoti) => {
+                let depost_list = listNoti.map(function (myNoti) {
+                  return {
+                    id: myNoti.id,
+                    title: myNoti.title,
+                    content: myNoti.content,
+                    department: myNoti.department._id,
+                    departmentName: myNoti.department.departmentName,
+                    user: myNoti.user,
+                    date: moment(myNoti.updatedAt).format("DD/MM/YYYY"),
+                  };
+                });
 
-              //return res.status(200).json(post);
-              return res.render("index2", {
-                post: post,
-                user: user,
-                depost_list: depost_list,
+                //return res.status(200).json(post);
+                return res.render("index2", {
+                  post: post,
+                  user: user,
+                  depost_list: depost_list,
+                });
               });
-            });
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        res.render("index2");
+          }).catch((err) => {
+            console.log(err);
+            return res.status(404).json({ msg: "DB error" });
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          res.render("index2");
       });
   }
     

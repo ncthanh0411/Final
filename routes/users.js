@@ -221,4 +221,22 @@ router.post('/mypost/edit', function(req, res, next) {
     });
 });
 
+router.delete('/mypost/delete/:id', function(req, res, next) {
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  if (req.session.role == 2 || !req.session.user) {
+    return res.redirect('/');
+  }
+
+  Notification.findByIdAndDelete(req.params.id)
+    .then(deleted_noti => {
+      return res.json({ isvalid: true, noti: deleted_noti });
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(404).json({ msg: "DB error" });
+    });
+});
+
 module.exports = router;

@@ -35,19 +35,57 @@ router.get('/', function (req, res, next) {
                     else
                         user_stu_lst.push(user);
                 });
-                return res.render("admin2", {
-                    stu_departLst: stu_departLst,
-                    departlst: departLst,
-                    layout: "alayout",
-                    title: "Admin Page",
-                    user_depart_lst: user_depart_lst,
-                    user_stu_lst: user_stu_lst,
-                });
+
+                User.findOne({ role: 0, username: req.session.user })
+                  .then(useradmin => {
+                    console.log('use:', useradmin._id);
+                    return res.render("admin2", {
+                      stu_departLst: stu_departLst,
+                      departlst: departLst,
+                      layout: "alayout",
+                      title: "Admin Page",
+                      user_depart_lst: user_depart_lst,
+                      user_stu_lst: user_stu_lst,
+                      userid: useradmin._id
+                    });
+                  })
+                  .catch(err => {
+                    console.log(err);
+                    return res.status(404).json({ msg: "DB error" });
+                  });
             })
             .catch(err => {
                 console.log(err);
                 return res.status(404).json({ msg: "DB error" });
             });
+    });
+});
+
+router.post('/passchange/:id', (req, res, next) => {
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  if(req.session.role != 0) {
+      return res.redirect('/');
+  }
+
+  User.findOne({ _id: req.params.id })
+    .then(user => {
+      var oldpass = req.body.pass;
+      var newpass = req.body.newpass;
+      var confnewpass = req.body.confnewpass;
+      if(oldpass != user.password) return res.json({ isvalid: false, msg: 'Sai mật khẩu!' });
+      if(newpass != confnewpass) return res.json({ isvalid: false, msg: 'Xác nhận mật khẩu không chính xác!' });
+
+      user.password = newpass;
+      user.save((err, edited_user) => {
+        if(err) return res.json({ isvalid: false, msg: err });
+        return res.json({ isvalid: true, msg: 'Đổi mật khẩu thành công!' })
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(404).json({ msg: "DB error" });
     });
 });
 

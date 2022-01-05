@@ -442,6 +442,50 @@ function editNotiLoad(title, content) {
   $('#user_editnoti_content').val(content.replaceAll('<br/>', '\n'));
 }
 
+function confirmDelPost(id) {
+  $('#delPostId').val(id);
+}
+
+function delPost() {
+  var id = $('#delPostId').val();
+  $.ajax({
+    type: 'DELETE',
+    url: "/users/mypost/delete/" + id,
+    success: function(data){
+      if (data.isvalid) {
+        $('#li_post_' + data.noti._id).remove();
+        $('#delPostId').val('517H0042');
+        alert("Xóa bài post thành công!");
+      } else {
+        alert(data.msg);
+      }
+    },
+    error: function (err) {
+      console.log(err);
+      alert(err);
+    }
+  })
+}
+
+function changeAdPass(id) {
+  $.ajax({
+    type: 'POST',
+    url: '/admin/passchange/' + id,
+    data: {
+      pass: $('#admin_currpass').val(),
+      newpass: $('#admin_newpass').val(),
+      confnewpass: $('#admin_confnewpass').val()
+    },
+    success: data => {
+      alert(data.msg);
+    },
+    error: function (err) {
+      console.log(err);
+      alert(err);
+    }
+  });
+}
+
 socket.on('showFlash', ({ depart, noti }) => {
   document.getElementById('myFlashMsg').style.display = 'inline-block';
   document.getElementById('flash_link').href = '/detail/' + noti;

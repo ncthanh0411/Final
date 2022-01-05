@@ -108,16 +108,16 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="name">Current password</label>
-                            <input type="password" placeholder="Enter current password" class="form-control" id="currpass" />
+                            <input type="password" placeholder="Enter current password" class="form-control" id="admin_currpass" />
                             <label for="name">New password</label>
-                            <input type="password" placeholder="At least 8 characters long" class="form-control" id="newpass" />
+                            <input type="password" placeholder="At least 8 characters long" class="form-control" id="admin_newpass" />
                             <label for="name">Confirm new password</label>
-                            <input type="password" placeholder="Re-enter new password" class="form-control" id="newpass2" />
+                            <input type="password" placeholder="Re-enter new password" class="form-control" id="admin_confnewpass"/>
                         </div>
                     </div>
         
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success" onclick="#">Save</button>
+                        <button type="button" class="btn btn-success" onclick="changeAdPass('{{userid}}')" data-dismiss="modal">Save</button>
                     </div>
                 </div>
             </div>

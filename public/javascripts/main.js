@@ -409,6 +409,39 @@ function notiSubmit() {
   }); 
 }
 
+function notiEditSubmit() {
+  var id = $('#notiHidden').val();
+  var depart = $('#user_editselected_depart').find(':selected').val();
+  var title = $('#user_editnoti_title').val().replace(/\n/g, '<br/>');
+  var content = $('#user_editnoti_content').val().replace(/\n/g, '<br/>');
+  $.ajax({
+    type: "POST",
+    url: "/users/mypost/edit",
+    data: {
+      id: id,
+      depart: depart,
+      title: title,
+      content: content
+    },
+    success: function(data){
+      if (data.isvalid) {
+        alert(data.msg);
+      } else {
+        alert(data.msg);
+      }
+    },
+    error: function (err) {
+      console.log(err);
+      alert(err);
+    }
+  });
+}
+
+function editNotiLoad(title, content) {
+  $('#user_editnoti_title').val(title.replace('<br/>', '\n'));
+  $('#user_editnoti_content').val(content.replaceAll('<br/>', '\n'));
+}
+
 socket.on('showFlash', ({ depart, noti }) => {
   document.getElementById('myFlashMsg').style.display = 'inline-block';
   document.getElementById('flash_link').href = '/detail/' + noti;

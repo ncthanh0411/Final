@@ -1,0 +1,45 @@
+<body class="w3-light-grey">
+
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-main" style="margin-left:300px;margin-top:43px;">
+        <!-- Header -->
+        <header class="w3-container" style="padding-top:22px">
+            <h5><b><i class="fa fa-dashboard"></i> Recent Posted</b></h5>
+        </header>
+        
+        <div class="w3-container">
+            <!-- pagination -->
+            {{#if depost_list}}
+                <div class="pagination">
+                    <a href="/users/posted/1">&laquo;</a>
+                    {{#each pagearray}}
+                        {{#ifEquals ../current this }}
+                        <a href="#" class="active">
+                        {{else}}
+                        <a href="/users/posted/{{this}}">
+                        {{/ifEquals}}
+                        {{this}}</a>
+                    {{/each}}
+                    <a href="/depost/posted/{{pages}}">&raquo;</a>
+                </div>
+            {{/if}}
+
+            <ul class="w3-ul w3-card-4 w3-white">
+                {{#each depost_list}}
+                <li class="w3-padding-16">
+                    <div class="w3-row">
+                        <div class="w3-col m12 w3-container">
+                            <h4><span class="w3-opacity w3-medium"> {{date}} </span> <a href="/detail/{{id}}" title="">{{{title}}}</a> </h4>
+                            <a href="#" title="" style="float: right; padding-right: 10px"><i class="fa fa-remove"></i> Remove post</a>
+                            <a href="#" title="" style="float: right; padding-right: 10px"><i class="fa fa-edit" ></i> Edit post</a>
+                            <h5>Department: {{departmentName}}</h5><br>
+                        </div>
+                    </div>
+                </li>
+                    
+                {{/each}}
+
+            </ul>
+        </div>
+    </div>
+</body>

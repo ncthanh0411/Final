@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var bcrypt = require("bcrypt");
+var moment = require("moment"); 
 const saltRounds = 10;
 
 var User = require("../models/user");
@@ -69,7 +70,11 @@ router.post('/notiPost', (req, res, next) => {
 });
 
 
-router.get("/mypost", function (req, res, next) {
+router.get("/posted", function (req, res, next) {
+  res.redirect("/users/posted/1");
+});
+
+router.get("/posted/:page", function (req, res, next) {
   // check login
   if (!req.session.user && !req.session.email) {
     return res.redirect("/login");
@@ -80,11 +85,54 @@ router.get("/mypost", function (req, res, next) {
   User.findOne({ username: req.session.user })
     .populate("department")
     .then((user) => {
-      return res.render("user", {
-        layout: "alayout",
-        title: "User Posts",
-        user: user,
-      });
+      
+      let perPage = 10; // số lượng thông báo xuất hiện trên 1 page
+      let page = req.params.page || 1;
+      let pagearray = [];
+      console.log('user id: ', user.id);
+      Notification.find({ user: user.id })
+        .skip(perPage * page - perPage) // Trong page đầu tiên sẽ bỏ qua giá trị là 0
+        .limit(perPage)
+        .sort({ createdAt: -1 })
+        .populate("user")
+        .populate("department")
+        .then((listNoti) => {
+          let depost_list = listNoti.map(function (myNoti) {
+            return {
+              id: myNoti.id,
+              title: myNoti.title,
+              content: myNoti.content,
+              department: myNoti.department._id,
+              departmentName: myNoti.department.departmentName,
+              user: myNoti.user,
+              date: moment(myNoti.updatedAt).format("DD/MM/YYYY"),
+            };
+          });
+          Notification.countDocuments({ user: user }, (err, count) => {
+            // count = Notification.countDocuments({ _id: req.params.departID });
+            console.log("number of posts: ", count);
+            if (err) return next(err);
+            // đếm để tính có bao nhiêu trang
+            let pages = Math.ceil(count / perPage);
+
+            for (i = 1; i <= pages; i++) {
+              if (pagearray.length < 10) pagearray.push(i);
+            }
+            return res.render("posted", {
+              // departlst: departLst,
+              layout: "alayout",
+              title: "User Posts",
+              depost_list: depost_list,
+              current: page, // page hiện tại
+              pages: pages, // tổng số các page
+              pagearray: pagearray
+            });
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(404).json({ msg: "DB error" });
+        });
     })
     .catch((err) => {
       console.log(err);

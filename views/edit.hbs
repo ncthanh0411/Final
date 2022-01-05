@@ -107,11 +107,14 @@
                                                 <div class="form-group">
                                                     <label for="name">Chọn Khoa</label>
                                                     <select class="js-editSU-basic-single" style="width: 100%;" name="states">
-                                                        {{!-- {{#if userDepart}}
+                                                        {{#if userDepart}}
                                                             <option id="edit_user_depart_{{userDepart.id}}" value="{{userDepart.id}}">{{userDepart.departmentName}}</option>
-                                                        {{/if}} --}}
+                                                        {{/if}}
                                                         {{#each departLst}}
-                                                            <option id="edit_user_depart_{{id}}" value="{{id}}">{{departmentName}}</option>
+                                                            {{#ifEquals id ../userDepart.id}}
+                                                            {{else}}
+                                                                <option id="edit_user_depart_{{id}}" value="{{id}}">{{departmentName}}</option>
+                                                            {{/ifEquals}}
                                                         {{/each}}
                                                     </select>
                                                 </div>

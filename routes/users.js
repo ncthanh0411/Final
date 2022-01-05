@@ -92,5 +92,85 @@ router.get("/mypost", function (req, res, next) {
     });
 });
 
+router.get('/mypost/edit/:id', function(req, res, next) {
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  if (req.session.role == 2 || !req.session.user) {
+    return res.redirect('/');
+  }
+  
+  User.findOne({ username: req.session.user })
+    .populate("department")
+    .populate("notification")
+    .then((user) => {
+      var nextRun = false;
+      user.notification.forEach(userNoti => {
+        if(req.params.id == userNoti.id){
+          nextRun = true;
+        }
+      });
+
+      if(!nextRun) return res.redirect('/');
+      Notification.findOne({ _id: req.params.id })
+        .populate('department')
+        .then(myNoti => {
+          var mapNoti = {
+            id: myNoti.id,
+            title: myNoti.title,
+            content: myNoti.content,
+            department:  myNoti.department._id,
+            departmentName: myNoti.department.departmentName,
+          };
+
+          return res.render("editNoti", {
+            layout: "alayout",
+            title: "Edit Posts",
+            user: user,
+            noti: mapNoti
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          return res.status(404).json({ msg: "DB error" });
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(404).json({ msg: "DB error" });
+    });
+});
+
+router.post('/mypost/edit', function(req, res, next) {
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  if (req.session.role == 2 || !req.session.user) {
+    return res.redirect('/');
+  }
+
+  var id = req.body.id;
+  var depart = req.body.depart;
+  var title = req.body.title;
+  var content = req.body.content;
+  if(!title) return res.json({ isvalid: false, msg: 'Vui lòng ghi tiêu đề bài đăng!' });
+
+  Notification.findById(id)
+    .then(myNoti => {
+      myNoti.department = depart;
+      myNoti.title = title;
+      myNoti.content = content;
+
+      myNoti.save((err, edited_noti) => {
+        if(err) res.status(404).json({ isvalid: false, msg: err });
+        console.log('edit: ');
+        return res.json({ isvalid: true, msg: 'Cập nhật bài đăng thành công!' });
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(404).json({ msg: "DB error" });
+    });
+});
 
 module.exports = router;

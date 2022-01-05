@@ -256,25 +256,21 @@ router.get("/edit/:id", function (req, res, next) {
   }
   Department.find({ role: 1 })
     .then(departLst => {
-      let mydepartLst = [];
+      let mydepart;
       User.findOne({ _id: req.params.id })
         .populate('department')
         .then(user => {
           if(user.role == 2 && user.email == req.session.email) {
             if(user.department[0]) {
-              departLst.forEach(depart => {
-                  if(depart.id != user.department[0].id) mydepartLst.push(depart);
-              })
-            } else {
-              mydepartLst = departLst;
+              mydepart = user.department[0];
             }
             var haveImg = false
             if(user.image_url) haveImg = true;
 
             return res.render('edit', { 
               user: user, 
-              departLst: mydepartLst, 
-              userDepart: user.department[0] 
+              departLst: departLst, 
+              userDepart: mydepart
             });
           } else {
             return res.redirect('/');

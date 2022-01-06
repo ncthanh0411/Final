@@ -38,7 +38,15 @@ router.get("/", function (req, res, next) {
     Post.find()
       .sort({ createdAt: -1 })
       .populate()
-      .populate("user")
+      .populate("user")     
+      .populate({
+        path: "like",
+        populate: [
+          {
+            path: "user",
+          },
+        ]
+      })       
       .populate({
         path: "comment",
         populate: [
@@ -79,6 +87,7 @@ router.get("/", function (req, res, next) {
                 });
 
                 //return res.status(200).json(post);
+                
                 return res.render("index2", {
                   post: post,
                   user: user,
@@ -195,6 +204,14 @@ router.get("/me", function (req, res, next) {
     .populate()
     .populate("user")
     .populate({
+      path: "like",
+      populate: [
+        {
+          path: "user",
+        },
+      ]
+    })    
+    .populate({
       path: "comment",
       populate: [
         {
@@ -242,7 +259,14 @@ router.get("/me/:id", function (req, res, next) {
                     {
                       path: "user"
                     }
-                }]
+                }],
+                [{
+                  path: "like",
+                  populate: 
+                    {
+                      path: "user"
+                    }
+                }]               
               ],
               options: { sort: { createdAt: -1 } }
             })        

@@ -764,8 +764,22 @@ function likePost(id) {
       method: "post",
       data: like,
       success: function (post) {
+        console.log(post)
         let like_count = post.like.length;
-        $("#like" + post._id).val(like_count);
+        var Ilike = $("#Ilike" + post._id).attr('class')
+        if(Ilike == 'ti-heart')
+        {
+          $("#Ilike" + post._id).removeClass('ti-heart');
+          $("#Ilike" + post._id).addClass('fa');
+          $("#Ilike" + post._id).addClass('fa-heart');
+        }
+        else{
+          $("#Ilike" + post._id).removeClass('fa');
+          $("#Ilike" + post._id).removeClass('fa-heart');
+          $("#Ilike" + post._id).addClass('ti-heart');
+        }
+        
+        $("#like" + post._id).text(like_count);
       },
       error: function (err) {
         console.log(err.responseJSON);

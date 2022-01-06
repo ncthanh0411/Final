@@ -259,7 +259,14 @@ router.get("/me/:id", function (req, res, next) {
                     {
                       path: "user"
                     }
-                }]
+                }],
+                [{
+                  path: "like",
+                  populate: 
+                    {
+                      path: "user"
+                    }
+                }]               
               ],
               options: { sort: { createdAt: -1 } }
             })        

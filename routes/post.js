@@ -172,58 +172,68 @@ router.post('/like/:id', function(req, res, next) {
     let id_post = req.body.id;
     let flag = 0;
     //post
-    Like.findOne({user: user }, (error, like) => {
-      console.log("test")
-      if(error || !like) {                              
-        console.log(id_post) 
-        flag = 1;
+    
+    Post.findOne({_id: id_post }, (error, post) => {
+      console.log('flag-post')
+      console.log(post)
+      if(error || !post) {                              
+        return res.status(404).json({ message: error })      
       }
-      if ( flag ==1 ){
-        console.log('flag')
-        Post.findOne({_id: id_post }, (error, post) => {
-          console.log(post)
-          if(error || !post) {                              
-            return res.status(404).json({ message: error })      
-          }
-          //like 
-          
-          var datetime = new Date();
-          var c_date  = moment(datetime).format('YYYY-MM-DD h:mm:ss');
-          var u_date  = c_date;
-          var like = new Like({
-            user: user._id,
-            post: post._id,
-            create_date: c_date,
-            update_date: u_date
-          });       
-          console.log(like)
-          like.save(function (err, like) {
-            if(err || !like) return res.status(404).json({ message: error }) 
-            post.like.push(like._id)
-            post.save((err, post_update) => {
-              if(error || !post_update)
+      Like.findOne({user: user, post: post }, (error, like) => {
+      console.log('flag-like')
+      console.log(like)
+      if(!like)
+      {
+        
+        //like 
+        var datetime = new Date();
+        var c_date  = moment(datetime).format('YYYY-MM-DD h:mm:ss');
+        var u_date  = c_date;
+        var like = new Like({
+          user: user._id,
+          post: post._id,
+          create_date: c_date,
+          update_date: u_date
+        });       
+        console.log(like)
+        like.save(function (err, like) {
+          if(err) return res.status(404).json({ message: 'DB Error' }) 
+          //user.like.push(like._id)
+          post.like.push(like._id)
+          post.save((err, post_update) => {
+            if(err){
+              return res.status(404).json({ error: 'DB Error, please login again'})             
+            }
+            user.like.push(like._id)
+            user.save((err, user_update) => {
               if(err){
                 return res.status(404).json({ error: 'DB Error, please login again'})             
-              }      
-              console.log(post_update)
-              return res.status(200).json({post:post_update})
-            })         
-          });   
-        }) 
-        console.log(flag) 
+              }              
+              return res.status(200).json(post_update)
+            })
+          })         
+        });         
       }
-      like.remove(function(error){
-        if(error) {                              
-          return res.status(404).json({ message: error })      
-        }
-        Post.findOne({_id: like.post }, (error, post) => {
-          post.like.pull(id)
-          post.save()
-          return res.status(200).json({ post: post})
-        })     
-      })
-    })       
-        
+      else{
+        //Remove like
+        like.remove(function(error){
+          if(error) {                              
+            return res.status(404).json({ message: error })      
+          }
+          Post.findOne({_id: like.post._id }, (error, post) => {
+            post.like.pull(like._id)
+            post.save()
+            User.findOne({_id: like.user._id }, (error, user_like) => {
+              user_like.like.pull(like._id)
+              user_like.save()
+              return res.status(200).json(post)
+            })
+           
+          })     
+        })
+      }
+    })
+  })   
   })
 });
 //New Comment

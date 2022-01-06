@@ -467,7 +467,7 @@ function delPost() {
   })
 }
 
-function changeAdPass(id) {
+function changePass(id) {
   $.ajax({
     type: 'POST',
     url: '/admin/passchange/' + id,

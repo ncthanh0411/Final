@@ -120,7 +120,7 @@ router.get("/logout", function (req, res, next) {
     delete req.session.email;
   }
   
-  res.status(200).redirect("/login");
+  res.redirect("/login");
 });
 
 router.post("/login", function (req, res, next) {
@@ -131,7 +131,15 @@ router.post("/login", function (req, res, next) {
   var email = req.body.email;
   var pass = req.body.password;
   var id_gg = req.body.id_gg;
+  var image_url = req.body.image_url;
 
+  if(email){
+    if(!email.includes("@student.tdtu.edu.vn"))
+    {
+      return res.status(200).json({message: "Error format" });
+    }
+  }
+ 
   if (email) {
     User.findOne({ email: email }, (error, user) => {
       if (!error && user) {
@@ -145,10 +153,12 @@ router.post("/login", function (req, res, next) {
         name: name,
         email: email,
         id_gg: id_gg,
+        image_url: image_url,
         role: 2,
       });
+
       user_new.save((err, user_new) => {
-        console.log(err);
+      
         if (err) {
           return res
             .status(404)
@@ -156,33 +166,36 @@ router.post("/login", function (req, res, next) {
         }
         req.session.email = user_new.email;
         req.session.role = user_new.role;
+   
         return res.status(200).json({ message: "Student login sucessfull" });
       });
     });
   }
-
-  //For Admin or phòng ban
-  User.findOne({ username: username }, (error, user) => {
-    if (error || !user) {
-      // req.session.flash = {
-      //   msg: 'Không tìm thấy email trong dữ liệu'
-      // }
-      return res.redirect("/login");
-    }
-    console.log(user);
-    bcrypt.compare(pass, user.password).then(function (result) {
-      console.log(result);
-      if (result) {
-        req.session.user = user.username;
-        req.session.role = user.role;
-        return res.redirect("/");
+  else{
+    //For Admin or phòng ban
+    User.findOne({ username: username }, (error, user) => {
+      if (error || !user) {
+        // req.session.flash = {
+        //   msg: 'Không tìm thấy email trong dữ liệu'
+        // }
+        return res.redirect("/login");
       }
-      // req.session.flash = {
-      //   msg: 'Sai email hoặc mật khẩu'
-      // }
-      return res.redirect("/login");
+      console.log(user);
+      bcrypt.compare(pass, user.password).then(function (result) {
+        console.log(result);
+        if (result) {
+          req.session.user = user.username;
+          req.session.role = user.role;
+          return res.redirect("/");
+        }
+        // req.session.flash = {
+        //   msg: 'Sai email hoặc mật khẩu'
+        // }
+        return res.redirect("/login");
+      });
     });
-  });
+  }
+
 });
 
 // CongP 02.12.21 Update

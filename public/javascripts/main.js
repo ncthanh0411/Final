@@ -1,26 +1,46 @@
-window.onload = function () {
-  gapi.load("auth2", function () {
+
+// window.onload = function () {
+//   gapi.load("auth2", function () {
+//     gapi.auth2.init();
+//   });
+// };
+function onLoad() {
+  gapi.load('auth2', function() {
     gapi.auth2.init();
   });
-};
-
+}
 const socket = io('/');
 
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
-  console.log("test");
   var user_student = {
     id_gg: profile.getId(),
     name: profile.getName(),
     email: profile.getEmail(),
+    image_url: profile.getImageUrl()
   };
-  console.log(user_student);
   $.ajax({
     url: "/login",
     method: "post",
     data: user_student,
     success: function (user) {
-      window.location.replace("/");
+      console.log(user)
+      if(user.message == 'Error format'){
+        document.getElementById('myFlashMsgLogin').style.display = 'inline-block';
+        $('#flashLogin').text("Login must contain: @student.tdtu.edu.vn");
+        document.getElementById('myFlashMsgLogin').classList.add('show');   
+
+        gapi.auth2
+        .getAuthInstance()
+        .signOut()
+        .then(function () {
+          console.log("Sign Out");
+          //window.location.replace("/logout");
+        });
+      }
+      else{
+        window.location.replace("/");
+      }
     },
     error: function (user) {
       alert(user.error);

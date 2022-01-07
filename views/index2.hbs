@@ -338,12 +338,12 @@
 											</div>
 									<div class="widget friend-list stick-widget">
 										<h4 class="widget-title">Recent Department Posts <i class="fa fa-bell w3-text-red w3-large"></i></h4>
-										<ul class="short-profile">
-											{{#each depost_list}}<li>
-												<span><a href="/detail/{{id}}">{{{title}}}</a></span>
-												<p>{{departmentName}} | Ngày đăng {{date}}</p>
-											</li>
-											
+										<ul id="index_ul_departpost" class="short-profile">
+											{{#each depost_list}}
+												<li>
+													<span><a href="/detail/{{id}}">{{{title}}}</a></span>
+													<p>{{departmentName}} | Ngày đăng {{date}}</p>
+												</li>
 											{{/each}}
 
 											<li><a href="/depost">See more</a></li>

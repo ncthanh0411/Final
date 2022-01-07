@@ -394,7 +394,7 @@ function notiSubmit() {
     },
     success: function(data){
       if (data.isvalid) {
-        socket.emit('showFlash', { depart: data.mydepartName, noti: data.mynotiId });
+        socket.emit('showFlash', { depart: data.mydepartName, noti: data.mynoti });
         $('#user_noti_title').val('');
         $('#user_noti_content').val('');
         alert('Đăng thông báo thành công!');
@@ -488,8 +488,17 @@ function changePass(id) {
 
 socket.on('showFlash', ({ depart, noti }) => {
   document.getElementById('myFlashMsg').style.display = 'inline-block';
-  document.getElementById('flash_link').href = '/detail/' + noti;
+  document.getElementById('flash_link').href = '/detail/' + noti._id;
   $('#flashDepart').text(depart);
+  var departpost = document.getElementById('index_ul_departpost').innerHTML;
+  var date = new Date(noti.updatedAt);
+  console.log(date);
+  document.getElementById('index_ul_departpost').innerHTML = 
+    '<li>' + 
+      '<span><a href="/detail/' + noti._id + '">' + noti.title + '</a></span>' +
+      '<p>' + depart + '| Ngày đăng ' + String(date.getDate()).padStart(2, '0') + '/' + String(date.getMonth() + 1).padStart(2, '0') + '/' + date.getFullYear() + '</p>' +
+    '</li>';
+    document.getElementById('index_ul_departpost').innerHTML += departpost;
   document.getElementById('myFlashMsg').classList.add('show');
 });
 

@@ -36,7 +36,6 @@ router.post('/notiPost', (req, res, next) => {
   var userid = req.body.id;
   var depart = req.body.depart;
   var title = req.body.title;
-  console.log(title);
   var content = req.body.content;
   if(!title) return res.json({ isvalid: false, msg: 'Vui lòng ghi tiêu đề bài đăng!' });
   User.findOne({ _id: userid })
@@ -56,7 +55,7 @@ router.post('/notiPost', (req, res, next) => {
               .then(mydepart => {
                 mydepart.notification.push(notification.id);
                 mydepart.save();
-                return res.json({ isvalid: true, mydepartName: mydepart.departmentName, mynotiId: notification.id });
+                return res.json({ isvalid: true, mydepartName: mydepart.departmentName, mynoti: notification });
               })
               .catch(err => {
                 console.log(err);

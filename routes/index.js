@@ -34,7 +34,8 @@ router.get("/", function (req, res, next) {
   // if (req.session.role == 1) {
   //   // res.redirect('/users')
   // }
-  Post.find()
+  if(req.session.role == 2) {
+    Post.find()
     .sort({ createdAt: -1 })
     .populate()
     .populate("user")     
@@ -56,7 +57,7 @@ router.get("/", function (req, res, next) {
       options: { sort: { createdAt: -1 } },
     })
     .then((post) => {
-      User.findOne({ $or: [{ email: req.session.email }, { username: req.session.user }] })
+      User.findOne({ email: req.session.email })
         .populate('department')
         .then((user) => {
           // console.log('khoa: ', user.department[0].departmentName)
@@ -102,6 +103,77 @@ router.get("/", function (req, res, next) {
         console.log(error);
         res.render("index2");
     });
+  } else {
+    Post.find()
+    .sort({ createdAt: -1 })
+    .populate()
+    .populate("user")     
+    .populate({
+      path: "like",
+      populate: [
+        {
+          path: "user",
+        },
+      ]
+    })       
+    .populate({
+      path: "comment",
+      populate: [
+        {
+          path: "user",
+        },
+      ],
+      options: { sort: { createdAt: -1 } },
+    })
+    .then((post) => {
+      User.findOne({ username: req.session.user })
+        .populate('department')
+        .then((user) => {
+          // console.log('khoa: ', user.department[0].departmentName)
+          if (user.department[0]) {
+            console.log('check khoa true')
+          } else {
+            console.log('check khoa false')
+            console.log('id', user.id);
+            return res.redirect("/edit/"+ user.id);
+          }
+
+          Notification.find()
+            .limit(3)
+            .sort({ createdAt: -1 })
+            .populate("department")
+            .then((listNoti) => {
+              let depost_list = listNoti.map(function (myNoti) {
+                return {
+                  id: myNoti.id,
+                  title: myNoti.title,
+                  content: myNoti.content,
+                  department: myNoti.department._id,
+                  departmentName: myNoti.department.departmentName,
+                  user: myNoti.user,
+                  date: moment(myNoti.updatedAt).format("DD/MM/YYYY"),
+                };
+              });
+
+              //return res.status(200).json(post);
+              
+              return res.render("index2", {
+                post: post,
+                user: user,
+                depost_list: depost_list,
+              });
+            });
+        }).catch((err) => {
+          console.log(err);
+          return res.status(404).json({ msg: "DB error" });
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.render("index2");
+    });
+  }
+  
     
 });
 

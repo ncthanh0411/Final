@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var Depost = require("../models/Depost");
+//var Depost = require("../models/depost");
 var Notification = require("../models/notification");
 
 var hbs = require("hbs");

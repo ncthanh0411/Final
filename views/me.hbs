@@ -16,8 +16,8 @@
                         <div class="col-lg-2 col-sm-3">
                             <div class="user-avatar">
                                 <figure>
-                                    {{#if user.image_url}}
-                                        <img src="{{user.image_url}}" alt="">
+                                    {{#if user_show.image_url}}
+                                        <img src="{{user_show.image_url}}" alt="">
                                     {{else}}
                                         <img src="/images/resources/admin2.jpg" alt="">
                                     {{/if}}
@@ -39,7 +39,7 @@
                                         <span>{{user_show.email}}</span>
                                     </li>
                                     <li>
-                                        <a class="active" href="/me/{{user._id}}" title="" data-ripple="">time
+                                        <a class="active" href="/me/{{user_show._id}}" title="" data-ripple="">time
                                             line</a>
                                         {{#ifEquals user._id user_show._id}}
                                             <a class="" href="/edit/{{user._id}}" title="" data-ripple="">Edit Account</a>

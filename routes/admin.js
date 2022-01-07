@@ -110,7 +110,7 @@ router.post("/newDepartment", function (req, res, next) {
       role: departRole
     }).save((err, new_depart) => {
       if (err) return res.status(404).json({ isvalid: false, msg: err });
-      User.findById('61c9c45f6eeee637df103f89')
+      User.findById('61d84afc7a296768be4ffb06')
           .then(adUser => {
             adUser.department.push(new_depart.id);
             adUser.save();

@@ -22,7 +22,8 @@ router.get("/", function (req, res, next) {
       return res.render('user', {
         layout: "alayout",
         title: "Users Page",
-        user: user
+        user: user,
+        userid: user._id
       })
     })
     .catch(err => {
@@ -228,10 +229,19 @@ router.delete('/mypost/delete/:id', function(req, res, next) {
   if (req.session.role == 2 || !req.session.user) {
     return res.redirect('/');
   }
-
   Notification.findByIdAndDelete(req.params.id)
     .then(deleted_noti => {
-      return res.json({ isvalid: true, noti: deleted_noti });
+      User.findById(deleted_noti.user)
+        .then(user => {
+          user.notification.pull(deleted_noti._id);
+          user.save();
+
+          return res.json({ isvalid: true, noti: deleted_noti });
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(404).json({ msg: "DB error" });
+        });
     })
     .catch((err) => {
       console.log(err);

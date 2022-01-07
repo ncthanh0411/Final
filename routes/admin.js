@@ -5,6 +5,10 @@ const saltRounds = 10;
 
 var User = require("../models/user");
 var Department = require("../models/department");
+var Like = require("../models/like");
+var Comment = require("../models/comment");
+var Post = require("../models/post");
+var Notification = require("../models/notification");
 
 // AllPosts.findOne({ user: req.params.userid })
 // .populate({path: 'housingposts', options: { sort: { 'date': -1 } } })
@@ -180,12 +184,24 @@ router.post("/createUser", function (req, res, next) {
 // Delete department - done
 router.delete("/delDepart", function (req, res, next) {
   let id = req.body.id;
-  Department.findByIdAndDelete(id)
-    .then((result) => {
-      return res.json({
-        isvalid: true,
-        msg: "Department " + result.departmentName + " had been deleted",
-      });
+  User.find()
+    .then(userlst => {
+      Department.findByIdAndDelete(id)
+        .then((result) => {
+          console.log('re: ', result);
+          userlst.forEach(user => {
+            user.department.pull(result._id);
+            user.save();
+          });
+
+          return res.json({
+            isvalid: true,
+            msg: "Department " + result.departmentName + " had been deleted",
+          });
+        })
+        .catch((err) => {
+          return res.json({ isvalid: false, msg: err });
+        });
     })
     .catch((err) => {
       return res.json({ isvalid: false, msg: err });
@@ -195,9 +211,34 @@ router.delete("/delDepart", function (req, res, next) {
 // Delete user - done
 router.delete("/delUser", function (req, res, next) {
   let id = req.body.id;
+  
   User.findByIdAndDelete(id)
     .then((result) => {
-      return res.json({ isvalid: true });
+      Post.deleteMany({ user: result._id })
+        .then(postLst => {
+          Comment.deleteMany({ user: result._id })
+            .then(commentLst => {
+              Like.deleteMany({ user: result._id })
+                .then(likeLst => { 
+                  Notification.deleteMany({ user: result._id })
+                    .then(notiLst => {
+                      return res.json({ isvalid: true });
+                    })
+                    .catch((err) => {
+                      return res.json({ isvalid: false, msg: err });
+                    });
+                })
+                .catch((err) => {
+                  return res.json({ isvalid: false, msg: err });
+                });
+            })
+            .catch((err) => {
+              return res.json({ isvalid: false, msg: err });
+            });
+        })
+        .catch((err) => {
+          return res.json({ isvalid: false, msg: err });
+        });
     })
     .catch((err) => {
       return res.json({ isvalid: false, msg: err });

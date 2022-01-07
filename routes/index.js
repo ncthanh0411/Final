@@ -154,9 +154,9 @@ router.post("/login", function (req, res, next) {
         image_url: image_url,
         role: 2,
       });
-
+      console.log('user neww:', user_new);
       user_new.save((err, user_new) => {
-      
+        console.log('err:', err)
         if (err) {
           return res
             .status(404)

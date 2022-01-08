@@ -234,8 +234,16 @@ router.delete('/mypost/delete/:id', function(req, res, next) {
         .then(user => {
           user.notification.pull(deleted_noti._id);
           user.save();
-
-          return res.json({ isvalid: true, noti: deleted_noti });
+          Department.findById(deleted_noti.department)
+            .then(depart => {
+              depart.notification.pull(deleted_noti._id);
+              depart.save();
+              return res.json({ isvalid: true, noti: deleted_noti });
+            })
+            .catch((err) => {
+              console.log(err);
+              return res.status(404).json({ msg: "DB error" });
+            });
         })
         .catch((err) => {
           console.log(err);

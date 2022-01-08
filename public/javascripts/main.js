@@ -59,6 +59,18 @@ function signOut() {
 }
 
 // ------------------------- Create department, Create User -------------
+function closeFlash() {
+  document.getElementById('myFlashMsg').style.display = 'none';
+  document.getElementById('flash_link').href = '#';
+  $('#flashDepart').text('Holy OMG');
+  document.getElementById('myFlashMsg').classList.remove('show');
+}
+
+function closeFlashLogin() {
+  document.getElementById('myFlashMsgLogin').style.display = 'none';
+  document.getElementById('myFlashMsgLogin').classList.remove('show');
+}
+
 function newDepartment() {
   var newDep = $("#newDepartment").val();
   var depart_radio = document.getElementsByName('radio_depart');

@@ -52,7 +52,9 @@
         <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
             <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey"
                 onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
-            <span class="w3-bar-item w3-right">Admin Page</span>
+            {{#ifEquals user.role 0}}
+                <a href="/admin"><span class="w3-bar-item w3-right">Admin Page</span></a>
+            {{/ifEquals}}
             <button class="w3-bar-item w3-button " data-toggle="modal" data-target="#edit-account"><i class="fa fa-cog fa-fw">
                 </i>
                  Account
@@ -63,7 +65,7 @@
                     <a href="#" id="flash_link" style="text-decoration: none;">
                         <strong id="flashDepart">Holy OMG</strong> Vừa có thông báo mới.
                     </a>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <button type="button" class="close" onclick="closeFlash()" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -78,6 +80,8 @@
             <div class="w3-bar-block">
                 <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black"
                     onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+                <a href="/" class="w3-bar-item w3-button w3-padding"><i class="fa fa-home fa-fw"></i>
+                    Home</a>
                 <a href="/users" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>
                     New Post</a>
                 <a href="/depost" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i> View Post</a>

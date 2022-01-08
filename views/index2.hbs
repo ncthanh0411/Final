@@ -10,6 +10,23 @@
 									<div class="widget stick-widget">
 										<h4 class="widget-title">Shortcuts</h4>
 										<ul class="naves">
+											{{#ifEquals user.role 0}}
+												<li>
+													<i class="ti-desktop"></i>
+													<a href="/admin" title="">Admin</a>
+												</li>
+												<li>
+													<i class="ti-smallcap"></i>
+													<a href="/users" title="">New post</a>
+												</li>
+											{{/ifEquals}}
+											{{#ifEquals user.role 1}}
+												<li>
+													<i class="ti-smallcap"></i>
+													<a href="/users" title="">New post</a>
+												</li>
+											{{/ifEquals}}
+												
 											<li>
 												<i class="ti-clipboard"></i>
 												<a href="/" title="">News feed</a>

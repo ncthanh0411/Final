@@ -141,7 +141,11 @@
 													<ul class="we-comet">
 														<li class="post-comment">
 															<div class="comet-avatar">
-																<img src="/images/resources/comet-1.jpg" alt="">
+															{{#if user.image_url}}
+																<img src="{{user.image_url}}" alt="">
+															{{else}}
+																<img src="images/resources/admin2.jpg" alt="">
+															{{/if}}
 															</div>
 															<div class="post-comt-box">
 																<form method="post">

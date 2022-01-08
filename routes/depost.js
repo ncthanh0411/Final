@@ -156,27 +156,17 @@ router.get("/list", function (req, res, next) {
   if (!req.session.user && !req.session.email) {
     return res.redirect("/login");
   }
-  Department.find(function (err, departLst) {
-    if (err) return res.status(404).json({ msg: "DB error" });
 
-    let list = departLst.map(function (myList) {
+  Department.find().then((lst) => {
+    var list = lst.map(function (depart) {
       return {
-        id: myList._id,
-        departmentName: myList.departmentName,
-        count: 0.
+        id: depart.id,
+        departName: depart.departmentName,
+        count: depart.notification.length,
       };
     });
-
-    for (i = 0; i < list.length; i++) {
-      console.log(list[i].departmentName);
-      Notification.find(
-        { department: list[i].id }, function (err, count) {
-          // list[i].count = count;
-          console.log(count.length);
-        }
-      );
-    // console.log(num);
-    }
+    // console.log("result: ", result);
+    
     return res.render("delist", {
       departlst: list,
       layout: "playout",

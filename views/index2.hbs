@@ -10,23 +10,6 @@
 									<div class="widget stick-widget">
 										<h4 class="widget-title">Shortcuts</h4>
 										<ul class="naves">
-											{{#ifEquals user.role 0}}
-												<li>
-													<i class="ti-desktop"></i>
-													<a href="/admin" title="">Admin</a>
-												</li>
-												<li>
-													<i class="ti-smallcap"></i>
-													<a href="/users" title="">New post</a>
-												</li>
-											{{/ifEquals}}
-											{{#ifEquals user.role 1}}
-												<li>
-													<i class="ti-smallcap"></i>
-													<a href="/users" title="">New post</a>
-												</li>
-											{{/ifEquals}}
-												
 											<li>
 												<i class="ti-clipboard"></i>
 												<a href="/" title="">News feed</a>
@@ -58,7 +41,7 @@
 											{{#if user.image_url}}
 												<img src="{{user.image_url}}" alt="">
 											{{else}}
-												<img src="/images/resources/admin2.jpg" alt="">
+												<img src="/images/tdt.png" alt="">
 											{{/if}}
 											</figure>
 											<div class="newpst-input">
@@ -102,7 +85,7 @@
 													{{#if user.image_url}}
 														<img src="{{user.image_url}}" alt="">
 													{{else}}
-														<img src="/images/resources/admin2.jpg" alt="">
+														<img src="/images/tdt.png" alt="">
 													{{/if}}
 													</figure>
 													<div class="friend-name">
@@ -165,7 +148,7 @@
 															{{#if user.image_url}}
 																<img src="{{user.image_url}}" alt="">
 															{{else}}
-																<img src="images/resources/admin2.jpg" alt="">
+																<img src="/images/tdt.png" alt="">
 															{{/if}}
 															</div>
 															<div class="post-comt-box">
@@ -182,39 +165,49 @@
 															</div>
 														</li>
 													</ul>
-													<ul class="we-comet"  id = "post_comment{{id}}">
+													<ul class="container we-comet"  id = "post_comment{{id}}">
+														
 														{{#each comment}}	
-														<li id ="commentLi{{id}}">
-															<div class="comet-avatar">
-																<img src="/images/resources/comet-1.jpg">
-															</div>
-															<div class="we-comment">
-																<div class="coment-head">
-																	<h5><a href="time-line.html" >{{user.name}}</a>
-																	</h5>
-																	<span>{{create_date}}</span>
-
-																	{{#ifEquals user._id ../../user._id }}
-																	<i class="fa fa-remove" style="cursor: pointer;float: right;margin-right:10px;" data-toggle="modal"
-																		data-target="#deleteComment" onclick="showDelComment('{{id}}')"></i>
-																	
-																	<i class="fa fa-edit" style="cursor: pointer;float: right;margin-right:10px;" data-toggle="modal"
-																		data-target="#editComment" onclick="showComment('{{id}}')"> </i>
-																	{{/ifEquals}}	
-
-
+														<li class="flex" id ="commentLi{{id}}">
+															<div class="cm-content " name='{{id}}'>
+																<div class="comet-avatar ">
+																	{{#if user.image_url}}
+																		<img src="{{user.image_url}}" width="30px">
+																	{{else}}
+																		<img src="/images/tdt.png"  width="30px" alt="">
+																	{{/if}}
 																</div>
-																<p id="content_comment{{id}}">{{content}}</p>
+																<div class="we-comment">
+																	<div class="coment-head">
+																		<h5><a href="/me/{{user._id}}" >{{user.name}}</a>
+																		</h5>
+																		<span>{{create_date}}</span>
+
+																		{{#ifEquals user._id ../../user._id }}
+																		<i class="fa fa-remove" style="cursor: pointer;float: right;margin-right:10px;" data-toggle="modal"
+																			data-target="#deleteComment" onclick="showDelComment('{{id}}')"></i>
+																		
+																		<i class="fa fa-edit" style="cursor: pointer;float: right;margin-right:10px;" data-toggle="modal"
+																			data-target="#editComment" onclick="showComment('{{id}}')"> </i>
+																		{{/ifEquals}}	
+
+
+																	</div>
+																	<p id="content_comment{{id}}">{{content}}</p>
+																</div>
 															</div>
 														</li>																														
-														{{/each}}													
+														{{/each}}
+																										
 													</ul>
+													{{#if comment}}
 													<ul class="we-comet">
 														<li>
-															<a href="#" title="" class="showmore underline">more
+															<a href="#" title="" class="showmore underline cm-loadMore" onclick="loadMoreComment('{{id}}')">more
 																comments</a>
 														</li>
 													</ul>
+													{{/if}}
 												</div>
 											</div>
 										</div>									

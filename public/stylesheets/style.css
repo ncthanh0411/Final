@@ -44,6 +44,9 @@ ewImgEdit{
   border-radius: 5px;
 }
 
+.cm-content {
+  display: none;
+}
 /*
 
 [Master Stylesheet]

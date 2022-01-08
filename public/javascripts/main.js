@@ -946,3 +946,28 @@ function deleteComment() {
   });  
 }
 
+
+// Load more comment
+function loadMoreComment(id) {
+  $(".cm-loadMore").on("click", function (e) {
+    console.log("loadMoreComment .cm-" + id);
+    e.preventDefault();
+    cm = document.getElementsByName('cm-'+id)
+    // console.log($("."+id+":hiden"))
+    console.log($(".cm-content:hidden"));
+
+    
+    $(".cm-content:hidden").slice(0, 3).slideDown();
+    if ($(".cm-content:hidden").length == 0) {
+      $(".cm-loadMore").text("No more comment").addClass("noContent");
+    }
+    // $(".cm-content:hidden").slice(0, 4).slideDown();
+    // if ($(".cm-content:hidden").length == 0) {
+    //   $(".cm-loadMore").text("No more comment").addClass("noContent");
+    // }
+  });
+}
+$(document).ready(function () {
+  $(".cm-content").slice(0, 3).show();
+})
+  

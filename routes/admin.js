@@ -5,6 +5,10 @@ const saltRounds = 10;
 
 var User = require("../models/user");
 var Department = require("../models/department");
+var Like = require("../models/like");
+var Comment = require("../models/comment");
+var Post = require("../models/post");
+var Notification = require("../models/notification");
 
 // AllPosts.findOne({ user: req.params.userid })
 // .populate({path: 'housingposts', options: { sort: { 'date': -1 } } })
@@ -35,19 +39,57 @@ router.get('/', function (req, res, next) {
                     else
                         user_stu_lst.push(user);
                 });
-                return res.render("admin2", {
-                    stu_departLst: stu_departLst,
-                    departlst: departLst,
-                    layout: "alayout",
-                    title: "Admin Page",
-                    user_depart_lst: user_depart_lst,
-                    user_stu_lst: user_stu_lst,
-                });
+
+                User.findOne({ role: 0, username: req.session.user })
+                  .then(useradmin => {
+                    console.log('use:', useradmin._id);
+                    return res.render("admin2", {
+                      stu_departLst: stu_departLst,
+                      departlst: departLst,
+                      layout: "alayout",
+                      title: "Admin Page",
+                      user_depart_lst: user_depart_lst,
+                      user_stu_lst: user_stu_lst,
+                      userid: useradmin._id
+                    });
+                  })
+                  .catch(err => {
+                    console.log(err);
+                    return res.status(404).json({ msg: "DB error" });
+                  });
             })
             .catch(err => {
                 console.log(err);
                 return res.status(404).json({ msg: "DB error" });
             });
+    });
+});
+
+router.post('/passchange/:id', (req, res, next) => {
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  if(req.session.role != 0) {
+      return res.redirect('/');
+  }
+
+  User.findOne({ _id: req.params.id })
+    .then(user => {
+      var oldpass = req.body.pass;
+      var newpass = req.body.newpass;
+      var confnewpass = req.body.confnewpass;
+      if(oldpass != user.password) return res.json({ isvalid: false, msg: 'Sai mật khẩu!' });
+      if(newpass != confnewpass) return res.json({ isvalid: false, msg: 'Xác nhận mật khẩu không chính xác!' });
+
+      user.password = newpass;
+      user.save((err, edited_user) => {
+        if(err) return res.json({ isvalid: false, msg: err });
+        return res.json({ isvalid: true, msg: 'Đổi mật khẩu thành công!' })
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(404).json({ msg: "DB error" });
     });
 });
 
@@ -68,7 +110,7 @@ router.post("/newDepartment", function (req, res, next) {
       role: departRole
     }).save((err, new_depart) => {
       if (err) return res.status(404).json({ isvalid: false, msg: err });
-      User.findById('61c9c45f6eeee637df103f89')
+      User.findById('61d84afc7a296768be4ffb06')
           .then(adUser => {
             adUser.department.push(new_depart.id);
             adUser.save();
@@ -142,12 +184,24 @@ router.post("/createUser", function (req, res, next) {
 // Delete department - done
 router.delete("/delDepart", function (req, res, next) {
   let id = req.body.id;
-  Department.findByIdAndDelete(id)
-    .then((result) => {
-      return res.json({
-        isvalid: true,
-        msg: "Department " + result.departmentName + " had been deleted",
-      });
+  User.find()
+    .then(userlst => {
+      Department.findByIdAndDelete(id)
+        .then((result) => {
+          console.log('re: ', result);
+          userlst.forEach(user => {
+            user.department.pull(result._id);
+            user.save();
+          });
+
+          return res.json({
+            isvalid: true,
+            msg: "Department " + result.departmentName + " had been deleted",
+          });
+        })
+        .catch((err) => {
+          return res.json({ isvalid: false, msg: err });
+        });
     })
     .catch((err) => {
       return res.json({ isvalid: false, msg: err });
@@ -157,9 +211,34 @@ router.delete("/delDepart", function (req, res, next) {
 // Delete user - done
 router.delete("/delUser", function (req, res, next) {
   let id = req.body.id;
+  
   User.findByIdAndDelete(id)
     .then((result) => {
-      return res.json({ isvalid: true });
+      Post.deleteMany({ user: result._id })
+        .then(postLst => {
+          Comment.deleteMany({ user: result._id })
+            .then(commentLst => {
+              Like.deleteMany({ user: result._id })
+                .then(likeLst => { 
+                  Notification.deleteMany({ user: result._id })
+                    .then(notiLst => {
+                      return res.json({ isvalid: true });
+                    })
+                    .catch((err) => {
+                      return res.json({ isvalid: false, msg: err });
+                    });
+                })
+                .catch((err) => {
+                  return res.json({ isvalid: false, msg: err });
+                });
+            })
+            .catch((err) => {
+              return res.json({ isvalid: false, msg: err });
+            });
+        })
+        .catch((err) => {
+          return res.json({ isvalid: false, msg: err });
+        });
     })
     .catch((err) => {
       return res.json({ isvalid: false, msg: err });

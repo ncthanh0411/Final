@@ -41,7 +41,7 @@
 											{{#if user.image_url}}
 												<img src="{{user.image_url}}" alt="">
 											{{else}}
-												<img src="images/resources/admin2.jpg" alt="">
+												<img src="/images/resources/admin2.jpg" alt="">
 											{{/if}}
 											</figure>
 											<div class="newpst-input">
@@ -85,7 +85,7 @@
 													{{#if user.image_url}}
 														<img src="{{user.image_url}}" alt="">
 													{{else}}
-														<img src="images/resources/admin2.jpg" alt="">
+														<img src="/images/resources/admin2.jpg" alt="">
 													{{/if}}
 													</figure>
 													<div class="friend-name">
@@ -121,7 +121,11 @@
 																<li>
 																	<span class="like" data-toggle="tooltip"
 																		title="like" >
-																		<i class="ti-heart" onclick="likePost('{{id}}')"></i>
+																		{{#ifEqualsLike ../user._id like}}
+																			<i class="fa fa-heart" id = "Ilike{{id}}" onclick="likePost('{{id}}')"></i>
+																		{{else}}
+																			<i class="ti-heart" id = "Ilike{{id}}" onclick="likePost('{{id}}')"></i>
+																		{{/ifEqualsLike}}	
 																		<ins id="like{{id}}">{{like.length}}</ins>
 
 																		{{!-- <i class="fa fa-heart" onclick="unlikePost('{{id}}')"></i>  --}}
@@ -338,12 +342,12 @@
 											</div>
 									<div class="widget friend-list stick-widget">
 										<h4 class="widget-title">Recent Department Posts <i class="fa fa-bell w3-text-red w3-large"></i></h4>
-										<ul class="short-profile">
-											{{#each depost_list}}<li>
-												<span><a href="/detail/{{id}}">{{{title}}}</a></span>
-												<p>{{departmentName}} | Ngày đăng {{date}}</p>
-											</li>
-											
+										<ul id="index_ul_departpost" class="short-profile">
+											{{#each depost_list}}
+												<li>
+													<span><a href="/detail/{{id}}">{{{title}}}</a></span>
+													<p>{{departmentName}} | Ngày đăng {{date}}</p>
+												</li>
 											{{/each}}
 
 											<li><a href="/depost">See more</a></li>

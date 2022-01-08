@@ -22,7 +22,8 @@ router.get("/", function (req, res, next) {
       return res.render('user', {
         layout: "alayout",
         title: "Users Page",
-        user: user
+        user: user,
+        userid: user._id
       })
     })
     .catch(err => {
@@ -35,7 +36,6 @@ router.post('/notiPost', (req, res, next) => {
   var userid = req.body.id;
   var depart = req.body.depart;
   var title = req.body.title;
-  console.log(title);
   var content = req.body.content;
   if(!title) return res.json({ isvalid: false, msg: 'Vui lòng ghi tiêu đề bài đăng!' });
   User.findOne({ _id: userid })
@@ -55,7 +55,7 @@ router.post('/notiPost', (req, res, next) => {
               .then(mydepart => {
                 mydepart.notification.push(notification.id);
                 mydepart.save();
-                return res.json({ isvalid: true, mydepartName: mydepart.departmentName, mynotiId: notification.id });
+                return res.json({ isvalid: true, mydepartName: mydepart.departmentName, mynoti: notification });
               })
               .catch(err => {
                 console.log(err);
@@ -216,6 +216,33 @@ router.post('/mypost/edit', function(req, res, next) {
       });
     })
     .catch(err => {
+      console.log(err);
+      return res.status(404).json({ msg: "DB error" });
+    });
+});
+
+router.delete('/mypost/delete/:id', function(req, res, next) {
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  if (req.session.role == 2 || !req.session.user) {
+    return res.redirect('/');
+  }
+  Notification.findByIdAndDelete(req.params.id)
+    .then(deleted_noti => {
+      User.findById(deleted_noti.user)
+        .then(user => {
+          user.notification.pull(deleted_noti._id);
+          user.save();
+
+          return res.json({ isvalid: true, noti: deleted_noti });
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(404).json({ msg: "DB error" });
+        });
+    })
+    .catch((err) => {
       console.log(err);
       return res.status(404).json({ msg: "DB error" });
     });

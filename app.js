@@ -23,8 +23,20 @@ const io = require("socket.io")(server);
 
 // Add helper here
 hbs.registerHelper("ifEquals", function (firstVal, secondVal, options) {
-  console.log(firstVal, secondVal);
+  //console.log(firstVal, secondVal);
   return String(firstVal) == String(secondVal) ? options.fn(this) : options.inverse(this);
+});
+
+hbs.registerHelper("ifEqualsLike", function (firstVal, secondVal, options) {
+  let value = 0
+  console.log("user");
+  console.log(firstVal);
+  console.log("like");
+  for(var i in secondVal) {
+    if(String(firstVal) == String(secondVal[i].user._id))
+    value = 1
+  }
+  return value == 1 ? options.fn(this) : options.inverse(this);
 });
 
 console.log(process.env.MONGO_URL);

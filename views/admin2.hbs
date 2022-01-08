@@ -27,10 +27,10 @@
                     </button>
                 </div>
                 <hr>
-                {{#if user_depart_lst}}
-                    <div class="w3-container">
-                    <h5>Department Users</h5>
-                    <table id="departuser_table" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+                <div class="w3-container">
+                <h5>Department Users</h5>
+                <table id="departuser_table" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+                    {{#if user_depart_lst}}
                         {{#each user_depart_lst}}
                             <tr id="tr_user{{id}}">
                                 <td>
@@ -52,18 +52,18 @@
                                 </td>
                             </tr>
                         {{/each}}
-                    </table><br>
-                    <button type="button" onclick="setCreate()" class="btn btn-light border" data-toggle="modal" data-target="#new-user-dialog">
-                        <i class="fa fa-file"></i> Create New User for Department
-                    </button>
-                    </div>
-                    <hr>
-                {{/if}}
+                    {{/if}}
+                </table><br>
+                <button type="button" onclick="setCreate()" class="btn btn-light border" data-toggle="modal" data-target="#new-user-dialog">
+                    <i class="fa fa-file"></i> Create New User for Department
+                </button>
+                </div>
+                <hr>
 
-                {{#if user_stu_lst}}
-                    <div class="w3-container">
-                    <h5>Student Users</h5>
-                    <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+                <div class="w3-container">
+                <h5>Student Users</h5>
+                <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+                    {{#if user_stu_lst}}
                         {{#each user_stu_lst}}
                             <tr id="tr_user{{id}}">
                                 <td>
@@ -85,10 +85,10 @@
                                 </td>
                             </tr>
                         {{/each}}
-                    </table><br>
-                    </div>
-                    <hr>
-                {{/if}}
+                    {{/if}}
+                </table><br>
+                </div>
+                <hr>
 
 <!-- New department dialog -->
 <div class="modal fade" id="new-department-dialog">
@@ -183,7 +183,7 @@
                 </div>
                 <div class="form-group">
                     <label for="name">Userame</label>
-                    <input type="text" placeholder="Username" class="form-control" id="newUsername" />
+                    <input type="text" placeholder="Username" class="form-control" id="newUsername" onkeypress="return event.charCode != 32"/>
                 </div>
                 <div class="form-group">
                     <label for="name">Password</label>
@@ -343,7 +343,7 @@
         
       </div>
     </div>
-  </div>
+</div>
 <!-- End Confirm delete User -->
 
 

@@ -1,26 +1,46 @@
-window.onload = function () {
-  gapi.load("auth2", function () {
+
+// window.onload = function () {
+//   gapi.load("auth2", function () {
+//     gapi.auth2.init();
+//   });
+// };
+function onLoad() {
+  gapi.load('auth2', function() {
     gapi.auth2.init();
   });
-};
-
+}
 const socket = io('/');
 
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
-  console.log("test");
   var user_student = {
     id_gg: profile.getId(),
     name: profile.getName(),
     email: profile.getEmail(),
+    image_url: profile.getImageUrl()
   };
-  console.log(user_student);
   $.ajax({
     url: "/login",
     method: "post",
     data: user_student,
     success: function (user) {
-      window.location.replace("/");
+      console.log(user)
+      if(user.message == 'Error format'){
+        document.getElementById('myFlashMsgLogin').style.display = 'inline-block';
+        $('#flashLogin').text("Login must contain: @student.tdtu.edu.vn");
+        document.getElementById('myFlashMsgLogin').classList.add('show');   
+
+        gapi.auth2
+        .getAuthInstance()
+        .signOut()
+        .then(function () {
+          console.log("Sign Out");
+          //window.location.replace("/logout");
+        });
+      }
+      else{
+        window.location.replace("/");
+      }
     },
     error: function (user) {
       alert(user.error);
@@ -394,7 +414,7 @@ function notiSubmit() {
     },
     success: function(data){
       if (data.isvalid) {
-        socket.emit('showFlash', { depart: data.mydepartName, noti: data.mynotiId });
+        socket.emit('showFlash', { depart: data.mydepartName, noti: data.mynoti });
         $('#user_noti_title').val('');
         $('#user_noti_content').val('');
         alert('Đăng thông báo thành công!');
@@ -442,10 +462,63 @@ function editNotiLoad(title, content) {
   $('#user_editnoti_content').val(content.replaceAll('<br/>', '\n'));
 }
 
+function confirmDelPost(id) {
+  $('#delPostId').val(id);
+}
+
+function delPost() {
+  var id = $('#delPostId').val();
+  $.ajax({
+    type: 'DELETE',
+    url: "/users/mypost/delete/" + id,
+    success: function(data){
+      if (data.isvalid) {
+        $('#li_post_' + data.noti._id).remove();
+        $('#delPostId').val('517H0042');
+        alert("Xóa bài post thành công!");
+      } else {
+        alert(data.msg);
+      }
+    },
+    error: function (err) {
+      console.log(err);
+      alert(err);
+    }
+  })
+}
+
+function changePass(id) {
+  $.ajax({
+    type: 'POST',
+    url: '/admin/passchange/' + id,
+    data: {
+      pass: $('#admin_currpass').val(),
+      newpass: $('#admin_newpass').val(),
+      confnewpass: $('#admin_confnewpass').val()
+    },
+    success: data => {
+      alert(data.msg);
+    },
+    error: function (err) {
+      console.log(err);
+      alert(err);
+    }
+  });
+}
+
 socket.on('showFlash', ({ depart, noti }) => {
   document.getElementById('myFlashMsg').style.display = 'inline-block';
-  document.getElementById('flash_link').href = '/detail/' + noti;
+  document.getElementById('flash_link').href = '/detail/' + noti._id;
   $('#flashDepart').text(depart);
+  var departpost = document.getElementById('index_ul_departpost').innerHTML;
+  var date = new Date(noti.updatedAt);
+  console.log(date);
+  document.getElementById('index_ul_departpost').innerHTML = 
+    '<li>' + 
+      '<span><a href="/detail/' + noti._id + '">' + noti.title + '</a></span>' +
+      '<p>' + depart + '| Ngày đăng ' + String(date.getDate()).padStart(2, '0') + '/' + String(date.getMonth() + 1).padStart(2, '0') + '/' + date.getFullYear() + '</p>' +
+    '</li>';
+    document.getElementById('index_ul_departpost').innerHTML += departpost;
   document.getElementById('myFlashMsg').classList.add('show');
 });
 
@@ -720,8 +793,22 @@ function likePost(id) {
       method: "post",
       data: like,
       success: function (post) {
+        console.log(post)
         let like_count = post.like.length;
-        $("#like" + post._id).val(like_count);
+        var Ilike = $("#Ilike" + post._id).attr('class')
+        if(Ilike == 'ti-heart')
+        {
+          $("#Ilike" + post._id).removeClass('ti-heart');
+          $("#Ilike" + post._id).addClass('fa');
+          $("#Ilike" + post._id).addClass('fa-heart');
+        }
+        else{
+          $("#Ilike" + post._id).removeClass('fa');
+          $("#Ilike" + post._id).removeClass('fa-heart');
+          $("#Ilike" + post._id).addClass('ti-heart');
+        }
+        
+        $("#like" + post._id).text(like_count);
       },
       error: function (err) {
         console.log(err.responseJSON);

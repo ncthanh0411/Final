@@ -16,8 +16,8 @@
                         <div class="col-lg-2 col-sm-3">
                             <div class="user-avatar">
                                 <figure>
-                                    {{#if user.image_url}}
-                                        <img src="{{user.image_url}}" alt="">
+                                    {{#if user_show.image_url}}
+                                        <img src="{{user_show.image_url}}" alt="">
                                     {{else}}
                                         <img src="/images/resources/admin2.jpg" alt="">
                                     {{/if}}
@@ -39,7 +39,7 @@
                                         <span>{{user_show.email}}</span>
                                     </li>
                                     <li>
-                                        <a class="active" href="/me/{{user._id}}" title="" data-ripple="">time
+                                        <a class="active" href="/me/{{user_show._id}}" title="" data-ripple="">time
                                             line</a>
                                         {{#ifEquals user._id user_show._id}}
                                             <a class="" href="/edit/{{user._id}}" title="" data-ripple="">Edit Account</a>
@@ -58,10 +58,10 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="row" id="page-contents">
+                            <div class="row merged20" id="page-contents">
                                 <div class="col-lg-3">
-                                    <aside class="sidebar static">
-                                        <div class="widget">
+                                    <aside class="sidebar static left">
+                                        <div class="widget stick-widget">
                                             <h4 class="widget-title">Shortcuts</h4>
                                             <ul class="naves">
                                                 <li>
@@ -70,7 +70,7 @@
                                                 </li>
                                                 <li>
                                                     <i class="ti-files"></i>
-                                                    <a href="/me" title="">My pages</a>
+                                                    <a href="/me/{{user._id}}" title="">My page</a>
                                                 </li>
                                                 <li>
                                                     <i class="fa fa-edit"></i>
@@ -80,21 +80,67 @@
                                                     <i class="ti-bell"></i>
                                                     <a href="/depost" title="">Department Post</a>
                                                 </li>
-                                                <button type="button" onclick="signOut()" class="btn btn-outline-info"><i class="ti-power-off"></i> Log
-                                                    Out</button>
+                                                <button type="button" onclick="signOut()" class="btn btn-outline-info"><i
+                                                        class="ti-power-off"></i> Log Out</button>
                                             </ul>
                                         </div><!-- Shortcuts -->
                                     </aside>
                                 </div><!-- sidebar -->
+                                <p id = "userID{{user._id}}" type = hidden></p>
                                 <div class="col-lg-6">
-                                    
+                                    {{#ifEquals user.role 2}}
+                                        <div class="central-meta">
+                                            <div class="new-postbox">
+                                                <figure>
+                                                {{#if user.image_url}}
+                                                    <img src="{{user.image_url}}" alt="">
+                                                {{else}}
+                                                    <img src="/images/resources/admin2.jpg" alt="">
+                                                {{/if}}
+                                                </figure>
+                                                <div class="newpst-input">
+                                                    <form id="formSubmit" method="post" onsubmit="postForm(event)" enctype="multipart/form-data">
+                                                        <textarea rows="3" id="content" name="content" placeholder="write something"></textarea>
+                                                        <div class="attachments">
+                                                            <ul>
+                                                                <li>
+                                                                    <i class="fa fa-image"></i>
+                                                                    <label class="fileContainer">
+                                                                        <input type="file" name="img" accept="image/*" onchange="previewFile(this);">
+                                                                    </label>
+                                                                </li>
+                                                                <li>
+                                                                    <i class="fa fa-video-camera" onclick="showVideo()"></i>
+                                                                </li>
+                                                                <li>
+                                                                    <button type="submit">Post</button>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <br>
+                                                        <div style="display: none;" id = "youtube_link">
+                                                            <div class="input-group-prepend" >
+                                                                <span class="input-group-text" id="inputGroup-sizing-lg">Youtube link</span>
+                                                            </div>
+                                                            <input type="text" id ="video_youtube" class="form-control" name = "video" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+                                                        </div>
+                                                        <img id="previewImg">	
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div><!-- add post new box -->
+                                    {{/ifEquals}}	
                                     <div class="loadMore" id = "list_post">
                                         {{#each post}}
                                             <div class="central-meta item" id = "postDiv{{id}}">
                                                 <div class="user-post">
                                                     <div class="friend-info">
                                                         <figure>
-                                                            <img src="/images/resources/friend-avatar10.jpg" alt="">
+                                                        {{#if user.image_url}}
+                                                            <img src="{{user.image_url}}" alt="">
+                                                        {{else}}
+                                                            <img src="/images/resources/admin2.jpg" alt="">
+                                                        {{/if}}
                                                         </figure>
                                                         <div class="friend-name">
                                                             <ins><a href="/me/{{user._id}}" title="">{{user.name}}</a>
@@ -128,16 +174,21 @@
                                                                 <ul>
                                                                     <li>
                                                                         <span class="like" data-toggle="tooltip"
-                                                                            title="like">
-                                                                            <i class="ti-heart"></i>
-                                                                            <ins>2.2k</ins>
+                                                                            title="like" >
+                                                                            {{#ifEqualsLike ../user._id like}}
+                                                                                <i class="fa fa-heart" id = "Ilike{{id}}" onclick="likePost('{{id}}')"></i>
+                                                                            {{else}}
+                                                                                <i class="ti-heart" id = "Ilike{{id}}" onclick="likePost('{{id}}')"></i>
+                                                                            {{/ifEqualsLike}}	
+                                                                            <ins id="like{{id}}">{{like.length}}</ins>
+
+                                                                            {{!-- <i class="fa fa-heart" onclick="unlikePost('{{id}}')"></i>  --}}
                                                                         </span>
-                                                                    </li>
+                                                                    </li>																																									
                                                                     <li>
                                                                         <span class="comment" data-toggle="tooltip"
                                                                             title="Comments">
                                                                             <i class="fa fa-comments-o"></i>
-                                                                            <ins>52</ins>
                                                                         </span>
                                                                     </li>
                                                                 </ul>
@@ -203,6 +254,7 @@
                                         {{/each}}
                                     </div>
                                 </div><!-- centerl meta -->
+
                                 <!-- The Modal Post -->
                                 <div class="modal fade" id="editPost">
                                     <form id="formSubmitEdit" method="post" onsubmit="putForm(event)" enctype="multipart/form-data">
@@ -317,7 +369,7 @@
                                         </div>
                                         </div>
                                     </div>
-                                </div>	
+                                </div>								
                                 <div class="col-lg-3">
                                     <aside class="sidebar static right">
                                         <div class="widget">
@@ -336,29 +388,18 @@
                                                     <a data-ripple="" title="" href="https://www.tdtu.edu.vn/">Check
                                                         now</a>
                                                 </div>
-                                            </div>
-                                        </div>
+                                                </div>
+                                                </div>
                                         <div class="widget friend-list stick-widget">
-                                            <h4 class="widget-title">Department Posts <i class="fa fa-bell w3-text-red w3-large"></i></h4>
+                                            <h4 class="widget-title">Recent Department Posts <i class="fa fa-bell w3-text-red w3-large"></i></h4>
                                             <ul class="short-profile">
-                                                <li>
-                                                    <span><a href="#">Thông báo về việc Nộp học phí học kỳ 1 năm học
-                                                            2021-2022 đợt 3
-                                                            (đợt cứu xét cho các trường hợp trễ hạn)</a></span>
-                                                    <p>Phòng Đại học | Ngày đăng 03/12/2021</p>
+                                                {{#each depost_list}}<li>
+                                                    <span><a href="/detail/{{id}}">{{{title}}}</a></span>
+                                                    <p>{{departmentName}} | Ngày đăng {{date}}</p>
                                                 </li>
-                                                <li>
-                                                    <span><a href="#">Lịch thi và danh sách thi cuối kỳ HKdt1/2021-2022
-                                                        </a></span>
-                                                    <p>Phòng Đại học | Ngày đăng 17/11/2021</p>
-                                                </li>
-                                                <li>
-                                                    <span><a href="#">THÔNG BÁO V/v đăng ký môn học trong HK2/2021-2022
-                                                            dành cho sinh viên các lớp tiêu chuẩn, chất lượng cao, đại
-                                                            học bằng
-                                                            tiếng anh từ khóa tuyển sinh 2020 trở về trước</a></span>
-                                                    <p>Phòng Đại học | Ngày đăng 10/11/2021</p>
-                                                </li>
+                                                
+                                                {{/each}}
+
                                                 <li><a href="/depost">See more</a></li>
                                             </ul>
                                         </div>

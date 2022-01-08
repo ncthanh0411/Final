@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var Depost = require("../models/Depost");
+//var Depost = require("../models/depost");
 var Notification = require("../models/notification");
 
 var hbs = require("hbs");
@@ -147,16 +147,6 @@ router.get("/filter/:departID/:page", function (req, res, next) {
         return res.status(404).json({ msg: "DB error" });
       });
   });
-});
-
-router.delete('/delete/:id', (req, res, next) => {
-    Notification.findByIdAndDelete(req.params.id)
-        .then((result) => {
-            return res.json({ isvalid: true, msg: result._id + ' had been deleted!!!' });
-        })
-        .catch((err) => {
-            return res.json({ isvalid: false, msg: err });
-        });
 });
 
 module.exports = router;

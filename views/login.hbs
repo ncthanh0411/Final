@@ -29,44 +29,58 @@
   <meta name="google-signin-client_id"
     content="184293983150-4t91b630845pn6h5sb2m9van1o4lndrd.apps.googleusercontent.com">
   <link rel="icon" href="/images/tdt.png" type="image/png" sizes="16x16">
+  <script src="https://cdn.socket.io/4.4.0/socket.io.min.js" 
+    integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" 
+    crossorigin="anonymous"></script>  
   <script src="/javascripts/main.js"></script>
 </head>
 
-<form method="POST">
-  <section class="vh-100" >
-    <div class="container h-100" >
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-          <div class="card shadow-2-strong" style="border-radius: 1rem;">
-            <div class="card-body p-5 text-center" >
+<body>
+  <form method="POST">
+    <section class="vh-100" >
+      <div class="container h-100" >
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card shadow-2-strong" style="border-radius: 1rem;">
+              <div class="card-body p-5 text-center" >
+                <h4 class="mb-5">Login</h4>
+                <div class="form-outline mb-4">
+                  <input type="text" id="typeEmailX-2" class="form-control form-control-lg" placeholder="Username" name="username"/>
+                </div>
+                <div class="form-outline mb-4">
+                  <input type="password" id="typePasswordX-2" class="form-control form-control-lg" placeholder="Password" name="password"/>
+                </div>
 
-              <h4 class="mb-5">Login</h4>
-              <div class="form-outline mb-4">
-                <input type="text" id="typeEmailX-2" class="form-control form-control-lg" placeholder="Username" name="username"/>
-              </div>
-              <div class="form-outline mb-4">
-                <input type="password" id="typePasswordX-2" class="form-control form-control-lg" placeholder="Password" name="password"/>
-              </div>
+                <!-- Checkbox -->
+                <div class="form-check d-flex justify-content-start mb-4">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="form1Example3"
+                  />
+                  <label class="form-check-label" for="form1Example3"> Remember password </label>
+                </div>
 
-              <!-- Checkbox -->
-              <div class="form-check d-flex justify-content-start mb-4">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="form1Example3"
-                />
-                <label class="form-check-label" for="form1Example3"> Remember password </label>
-              </div>
-
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
-            <hr>
-            <h5>Login with Google Student Account</h5>
-            <h6>*MSSV@student.tdtu.edu.vn</h6>
-           <div class="g-signin2" data-onsuccess="onSignIn" ></div>
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+              <hr>
+              <h5>Login with Google Student Account</h5>
+              <h6>*MSSV@student.tdtu.edu.vn</h6>
+              <div class="g-signin2" data-onsuccess="onSignIn" ></div>
+              <br>
+              <div style="text-align: center;">
+                <div id="myFlashMsgLogin" class="alert alert-danger alert-dismissible fade" style="display: none;" role="alert">
+                        <strong id="flashLogin">Login must contain: @student.tdtu.edu.vn</strong>
+                    </a>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+              </div>              
+          </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-</form>
+    </section>
+  </form>
+</body>

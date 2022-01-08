@@ -31,70 +31,149 @@ router.get("/", function (req, res, next) {
     return res.redirect("/login");
   }
   console.log("role: ", req.session.role);
-  if (req.session.role == 1) {
-    res.redirect('/users')
-  }
-  else {
+  // if (req.session.role == 1) {
+  //   // res.redirect('/users')
+  // }
+  if(req.session.role == 2) {
     Post.find()
-      .sort({ createdAt: -1 })
-      .populate()
-      .populate("user")
-      .populate({
-        path: "comment",
-        populate: [
-          {
-            path: "user",
-          },
-        ],
-        options: { sort: { createdAt: -1 } },
-      })
-      .then((post) => {
-        User.findOne({ email: req.session.email })
-          .populate('department')
-          .then((user) => {
-            // console.log('khoa: ', user.department[0].departmentName)
-            if (user.department[0]) {
-              console.log('check khoa true')
-            } else {
-              console.log('check khoa false')
-              console.log('id', user.id);
-              return res.redirect("/edit/"+ user.id);
-            }
+    .sort({ createdAt: -1 })
+    .populate()
+    .populate("user")     
+    .populate({
+      path: "like",
+      populate: [
+        {
+          path: "user",
+        },
+      ]
+    })       
+    .populate({
+      path: "comment",
+      populate: [
+        {
+          path: "user",
+        },
+      ],
+      options: { sort: { createdAt: -1 } },
+    })
+    .then((post) => {
+      User.findOne({ email: req.session.email })
+        .populate('department')
+        .then((user) => {
+          // console.log('khoa: ', user.department[0].departmentName)
+          if (user.department[0]) {
+            console.log('check khoa true')
+          } else {
+            console.log('check khoa false')
+            console.log('id', user.id);
+            return res.redirect("/edit/"+ user.id);
+          }
 
-            Notification.find()
-              .limit(3)
-              .sort({ createdAt: -1 })
-              .populate("department")
-              .then((listNoti) => {
-                let depost_list = listNoti.map(function (myNoti) {
-                  return {
-                    id: myNoti.id,
-                    title: myNoti.title,
-                    content: myNoti.content,
-                    department: myNoti.department._id,
-                    departmentName: myNoti.department.departmentName,
-                    user: myNoti.user,
-                    date: moment(myNoti.updatedAt).format("DD/MM/YYYY"),
-                  };
-                });
-
-                //return res.status(200).json(post);
-                return res.render("index2", {
-                  post: post,
-                  user: user,
-                  depost_list: depost_list,
-                });
+          Notification.find()
+            .limit(3)
+            .sort({ createdAt: -1 })
+            .populate("department")
+            .then((listNoti) => {
+              let depost_list = listNoti.map(function (myNoti) {
+                return {
+                  id: myNoti.id,
+                  title: myNoti.title,
+                  content: myNoti.content,
+                  department: myNoti.department._id,
+                  departmentName: myNoti.department.departmentName,
+                  user: myNoti.user,
+                  date: moment(myNoti.updatedAt).format("DD/MM/YYYY"),
+                };
               });
-          }).catch((err) => {
-            console.log(err);
-            return res.status(404).json({ msg: "DB error" });
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-          res.render("index2");
-      });
+
+              //return res.status(200).json(post);
+              
+              return res.render("index2", {
+                post: post,
+                user: user,
+                depost_list: depost_list,
+              });
+            });
+        }).catch((err) => {
+          console.log(err);
+          return res.status(404).json({ msg: "DB error" });
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.render("index2");
+    });
+  } else {
+    Post.find()
+    .sort({ createdAt: -1 })
+    .populate()
+    .populate("user")     
+    .populate({
+      path: "like",
+      populate: [
+        {
+          path: "user",
+        },
+      ]
+    })       
+    .populate({
+      path: "comment",
+      populate: [
+        {
+          path: "user",
+        },
+      ],
+      options: { sort: { createdAt: -1 } },
+    })
+    .then((post) => {
+      User.findOne({ username: req.session.user })
+        .populate('department')
+        .then((user) => {
+          // console.log('khoa: ', user.department[0].departmentName)
+          if (user.department[0]) {
+            console.log('check khoa true')
+          } else {
+            console.log('check khoa false')
+            console.log('id', user.id);
+            return res.redirect("/edit/"+ user.id);
+          }
+
+          Notification.find()
+            .limit(3)
+            .sort({ createdAt: -1 })
+            .populate("department")
+            .then((listNoti) => {
+              let depost_list = listNoti.map(function (myNoti) {
+                return {
+                  id: myNoti.id,
+                  title: myNoti.title,
+                  content: myNoti.content,
+                  department: myNoti.department._id,
+                  departmentName: myNoti.department.departmentName,
+                  user: myNoti.user,
+                  date: moment(myNoti.updatedAt).format("DD/MM/YYYY"),
+                };
+              });
+
+              //return res.status(200).json(post);
+              
+              return res.render("index2", {
+                post: post,
+                user: user,
+                depost_list: depost_list,
+              });
+            });
+        }).catch((err) => {
+          console.log(err);
+          return res.status(404).json({ msg: "DB error" });
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.render("index2");
+    });
   }
+  
     
 });
 
@@ -111,7 +190,7 @@ router.get("/logout", function (req, res, next) {
     delete req.session.email;
   }
   
-  res.status(200).redirect("/login");
+  res.redirect("/login");
 });
 
 router.post("/login", function (req, res, next) {
@@ -122,7 +201,15 @@ router.post("/login", function (req, res, next) {
   var email = req.body.email;
   var pass = req.body.password;
   var id_gg = req.body.id_gg;
+  var image_url = req.body.image_url;
 
+  if(email){
+    if(!email.includes("@student.tdtu.edu.vn"))
+    {
+      return res.status(200).json({message: "Error format" });
+    }
+  }
+ 
   if (email) {
     User.findOne({ email: email }, (error, user) => {
       if (!error && user) {
@@ -136,10 +223,12 @@ router.post("/login", function (req, res, next) {
         name: name,
         email: email,
         id_gg: id_gg,
+        image_url: image_url,
         role: 2,
       });
+      console.log('user neww:', user_new);
       user_new.save((err, user_new) => {
-        console.log(err);
+        console.log('err:', err)
         if (err) {
           return res
             .status(404)
@@ -147,33 +236,36 @@ router.post("/login", function (req, res, next) {
         }
         req.session.email = user_new.email;
         req.session.role = user_new.role;
+   
         return res.status(200).json({ message: "Student login sucessfull" });
       });
     });
   }
-
-  //For Admin or phòng ban
-  User.findOne({ username: username }, (error, user) => {
-    if (error || !user) {
-      // req.session.flash = {
-      //   msg: 'Không tìm thấy email trong dữ liệu'
-      // }
-      return res.redirect("/login");
-    }
-    console.log(user);
-    bcrypt.compare(pass, user.password).then(function (result) {
-      console.log(result);
-      if (result) {
-        req.session.user = user.username;
-        req.session.role = user.role;
-        return res.redirect("/");
+  else{
+    //For Admin or phòng ban
+    User.findOne({ username: username }, (error, user) => {
+      if (error || !user) {
+        // req.session.flash = {
+        //   msg: 'Không tìm thấy email trong dữ liệu'
+        // }
+        return res.redirect("/login");
       }
-      // req.session.flash = {
-      //   msg: 'Sai email hoặc mật khẩu'
-      // }
-      return res.redirect("/login");
+      console.log(user);
+      bcrypt.compare(pass, user.password).then(function (result) {
+        console.log(result);
+        if (result) {
+          req.session.user = user.username;
+          req.session.role = user.role;
+          return res.redirect("/");
+        }
+        // req.session.flash = {
+        //   msg: 'Sai email hoặc mật khẩu'
+        // }
+        return res.redirect("/login");
+      });
     });
-  });
+  }
+
 });
 
 // CongP 02.12.21 Update
@@ -194,6 +286,14 @@ router.get("/me", function (req, res, next) {
   Post.find({})
     .populate()
     .populate("user")
+    .populate({
+      path: "like",
+      populate: [
+        {
+          path: "user",
+        },
+      ]
+    })    
     .populate({
       path: "comment",
       populate: [
@@ -242,7 +342,14 @@ router.get("/me/:id", function (req, res, next) {
                     {
                       path: "user"
                     }
-                }]
+                }],
+                [{
+                  path: "like",
+                  populate: 
+                    {
+                      path: "user"
+                    }
+                }]               
               ],
               options: { sort: { createdAt: -1 } }
             })        

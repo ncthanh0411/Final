@@ -136,6 +136,7 @@ router.get("/filter/:departID/:page", function (req, res, next) {
                 pagearray: pagearray,
                 filter: "filter/" + req.params.departID,
                 select: rs.departmentName,
+                curr_id: rs.id
               });
             });
 
@@ -149,4 +150,39 @@ router.get("/filter/:departID/:page", function (req, res, next) {
   });
 });
 
+router.get("/list", function (req, res, next) {
+  // check login
+
+  if (!req.session.user && !req.session.email) {
+    return res.redirect("/login");
+  }
+  Department.find(function (err, departLst) {
+    if (err) return res.status(404).json({ msg: "DB error" });
+
+    let list = departLst.map(function (myList) {
+      return {
+        id: myList._id,
+        departmentName: myList.departmentName,
+        count: 0.
+      };
+    });
+
+    for (i = 0; i < list.length; i++) {
+      console.log(list[i].departmentName);
+      Notification.find(
+        { department: list[i].id }, function (err, count) {
+          // list[i].count = count;
+          console.log(count.length);
+        }
+      );
+    // console.log(num);
+    }
+    return res.render("delist", {
+      departlst: list,
+      layout: "playout",
+      title: "Department List",
+    });
+  });
+
+});
 module.exports = router;

@@ -1,0 +1,48 @@
+
+<div class="col-lg-9">
+    <div class="blog-sec right-pading">
+        <div class="post-filter-sec">
+        <span>Department List</span>
+        <div class="purify">
+            
+            <form action="/depost/filter" method="post">
+                <select style="width: 100%;" name="select">
+                    {{#if select}}
+                        <option value="{{curr_id}}">{{select}}</option>
+                    {{else}}
+                        <option value="">All Department</option>
+                    {{/if}}
+    
+                    {{#each departlst}}
+                        {{#ifEquals departmentName ../select}}
+                    {{else}}
+                        <option value="{{id}}">{{departmentName}}</option>
+                        {{/ifEquals}}
+                    {{/each}}
+                </select>
+                <button type="submit" class="btn btn-outline-info"><i class="ti-filter"></i></i>
+                    Filter</button>
+        </div>
+        </form>
+    </div>
+    </div>
+        <div class="row">
+            {{#each departlst}}
+            <div class="col-6 col-sm-2">
+                <div class="g-post-classic">
+                    <figure>
+                        <img alt="" src="/images/resources/bloggrid-6.jpg">
+                    </figure>
+                    <div class="g-post-meta">
+                        <div class="post-title">
+                            <h4><a title="{{departmentName}}" href="/depost/filter/{{id}}/1">{{departmentName}}</a></h4>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>

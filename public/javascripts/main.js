@@ -952,8 +952,8 @@ function loadMoreComment(id) {
   $(".cm-loadMore").on("click", function (e) {
     console.log("loadMoreComment .cm-" + id);
     e.preventDefault();
-    cm = document.getElementsByName('cm-'+id)
-    // console.log($("."+id+":hiden"))
+    cm =document.getElementsByName("cm-" + id)
+    console.log($(cm).length);
     console.log($(".cm-content:hidden"));
 
     

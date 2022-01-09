@@ -10,9 +10,9 @@
         <div class="w3-container">
             <input type="hidden" id="userHidden" value="{{user._id}}"/>
             <h5>New Post</h5>
-            <div class="form-group">
+            <div class="form-select form-select-sm" >
                 <label for="name">Department</label>
-                <select id="user_selected_depart" class="js-example-basic-multiple" style="width: 100%;" name="states">
+                <select id="user_selected_depart " class="js-example-basic-multiple" style="width: 100%;" name="states">
                     {{#each user.department}}
                         <option value="{{id}}">{{departmentName}}</option>
                     {{/each}}

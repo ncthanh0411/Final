@@ -542,6 +542,7 @@ function addPost(post){
   var post_id = "'" + post._id + "'"
   var youtube_link = ''
   var img = ''
+  var imgLink = ''
   if(post.image){
     img = '<img src="' + post.image +  '" alt="" id = "imgPost'+ post._id +'">'
   }
@@ -554,13 +555,21 @@ function addPost(post){
                  ' allow="autoplay;" allowfullscreen id = "if_frame' +post._id +'" >' +
                  ' </iframe>                         '
   }
+
+  if($("#userImgUrl").val()){
+    imgLink = $("#userImgUrl").val()
+  }
+  else{
+    imgLink = "./images/tdt.png"
+  }
+
   console.log(post_id)
   var post_link = 
   '<div class="central-meta item" id = "postDiv' + post._id +'">' +
     '<div class="user-post">'         +
     '  <div class="friend-info">    ' +
     '    <figure>                   ' +
-    '      <img src="images/resources/friend-avatar10.jpg" alt="">        ' + 
+    '      <img src="' + imgLink +'" alt="">' + 
     '    </figure>                  ' +
     '    <div class="friend-name">  ' +
     '      <ins><a href="/me/' + post.user._id + '" title="">' + post.user.name + '</a>' +
@@ -583,15 +592,14 @@ function addPost(post){
     '          <li>                     ' +
     '            <span class="like" data-toggle="tooltip" ' +
     '              title="like">        ' +
-    '              <i class="ti-heart"></i>               ' +
-    '              <ins>0</ins>         ' +
+    '              <i class="ti-heart" id = "Ilike'+ post._id +'" onclick="likePost(' + post_id +')"></i> ' +
+    '              <ins id="like'+ post._id + '">0</ins>         ' +
     '            </span>                ' +
     '          </li>                    ' +
     '          <li>                     ' +
     '            <span class="comment" data-toggle="tooltip" ' +
     '              title="Comments">    ' +
     '              <i class="fa fa-comments-o"></i>          ' +
-    '              <ins>0</ins>         ' +
     '            </span>                ' +
     '          </li>                    ' +
     '        </ul>                      ' +
@@ -602,7 +610,7 @@ function addPost(post){
     '    <ul class="we-comet">          ' +
     '      <li class="post-comment">    ' +
     '        <div class="comet-avatar"> ' +
-    '          <img src="images/resources/comet-1.jpg" alt=""> ' +
+    '<img src="' + imgLink +'" alt="" width="30px">' +
     '        </div>                     ' +
     '        <div class="post-comt-box"> ' +
     '          <form method="post">      ' +
@@ -618,14 +626,8 @@ function addPost(post){
     '        </div>                                   ' +
     '          </li>                                  ' +
     '    </ul>                                        ' +
-    '    <ul class="we-comet"  id = "post_comment' + post._id  + '"> ' +
-    '    </ul>                                            ' +
-    '    <ul class="we-comet">                            ' +
-    '      <li>                                           ' +
-    '        <a href="#" title="" class="showmore underline">more ' +
-    '          comments</a> ' +
-    '      </li> ' +
-    '    </ul> ' +
+    '    <ul class="container we-comet"  id = "post_comment' + post._id  + '"> ' +
+    '    </ul>                                        ' +
     '  </div> ' +
     '</div> ' +
   '</div> '
@@ -843,7 +845,13 @@ function post_comment(e, id) {
       id_post: id,
       comment: comment_content.val(),
     };
-  
+    if($("#userImgUrl").val()){
+      imgLink = $("#userImgUrl").val()
+    }
+    else{
+      imgLink = "./images/tdt.png"
+    }
+    
     $.ajax({
       url: "/post/comment",
       method: "post",
@@ -852,27 +860,28 @@ function post_comment(e, id) {
         console.log(comment)
         var comment_id = "'" + comment.id + "'"
         var comment_HTML =
-          "<li id = 'commentLi" + comment.id  + "'>" +
-          '<div class="comet-avatar">' +
-            '<img src="images/resources/comet-1.jpg" alt="">' +
-          '</div>' +
-          '<div class="we-comment">' +
-            '<div class="coment-head">' +
-              '<h5><a href="time-line.html" title="">' +
-              comment.user_name +
-              '</a></h5>' +
-              '<span>' +
-              comment.create_date +
-              "</span>" +
-            "</div>" +
-            '<p id = "content_comment' + comment.id + '">' +
-            comment.content +
-            "</p>" +
-            '<i class="fa fa-edit" style="cursor: pointer;" data-toggle="modal"'  +
-            'data-target="#editComment" onclick="showComment(' + comment_id +')"></i>' +
-            '<i class="fa fa-remove" style="cursor: pointer;" data-toggle="modal"' +
-            'data-target="#deleteComment" onclick="showDelComment(' + comment_id +')"></i>' +
-          "</div>" +
+          '<li ' + 'class="flex"' + "id = 'commentLi" + comment.id  + "'>" +
+              '<div class="comet-avatar">' +
+                '<img src="' + imgLink +'" alt="" width="30px">' +
+              '</div>' +
+              '<div class="we-comment">' +
+                '<div class="coment-head">' +
+                  '<h5><a href="/me/'+ comment.user_id +'" title="">' +
+                  comment.user_name +
+                  '</a></h5>' +
+                  '<span>' +
+                  comment.create_date +
+                  "</span>" +
+                '<i class="fa fa-remove" style="cursor: pointer;float: right;margin-right:10px;" data-toggle="modal"' +
+                'data-target="#deleteComment" onclick="showDelComment(' + comment_id +')"></i>' +            
+                '<i class="fa fa-edit" style="cursor: pointer;float: right;margin-right:10px;" data-toggle="modal"'  +
+                'data-target="#editComment" onclick="showComment(' + comment_id +')"></i>' +
+              "</div>" +
+              '<p id = "content_comment' + comment.id + '">' +
+              comment.content +
+              "</p>" +   
+              "</div>" +
+               
           "</li>";         
         post_comment.prepend(comment_HTML);
         comment_content.val("");

@@ -106,6 +106,7 @@
 							<input id = "userImgUrl" type="hidden" value="{{user.image_url}}">
 							<div class="col-lg-6">
 								{{#ifEquals user.role 2}}
+									{{#ifEquals user._id user_show }}
 									<div class="central-meta">
 										<div class="new-postbox">
 											<figure>
@@ -146,6 +147,7 @@
 											</div>
 										</div>
 									</div><!-- add post new box -->
+									{{/ifEquals}}
 								{{/ifEquals}}	
 								<div class="loadMore" id = "list_post">
 									{{#each post}}

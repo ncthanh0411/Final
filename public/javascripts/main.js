@@ -50,7 +50,7 @@ function onSignIn(googleUser) {
       alert(user.error);
     },
   });
-}
+};
 function signOut() {
   console.log("logging out");
   gapi.auth2
@@ -60,7 +60,7 @@ function signOut() {
       console.log("Sign Out");
       window.location.replace("/logout");
     });
-}
+};
 
 // ------------------------- Create department, Create User -------------
 function closeFlash() {
@@ -68,12 +68,12 @@ function closeFlash() {
   document.getElementById('flash_link').href = '#';
   $('#flashDepart').text('Holy OMG');
   document.getElementById('myFlashMsg').classList.remove('show');
-}
+};
 
 function closeFlashLogin() {
   document.getElementById('myFlashMsgLogin').style.display = 'none';
   document.getElementById('myFlashMsgLogin').classList.remove('show');
-}
+};
 
 function newDepartment() {
   var newDep = $("#newDepartment").val();
@@ -82,7 +82,7 @@ function newDepartment() {
   depart_radio.forEach(type => {
     if(type.checked) {
       departType = type.value;
-    }
+    };
   });
   $.ajax({
       url: '/admin/newDepartment',
@@ -107,11 +107,11 @@ function newDepartment() {
           console.log(err);
       }
   });
-}
+};
 
 function setCreate() {
   $(".js-example-basic-multiple").select2();
-}
+};
 
 function createUser() {
   var departlst = $(".js-example-basic-multiple").select2("val");
@@ -167,17 +167,17 @@ function createUser() {
       console.log(err);
     },
   });
-}
+};
 
 function confirmDelDepart(id) {
   $('#delDepartName').text(document.getElementById('tr_depart' + id).cells[0].innerText);
   $('#delidD').val(id);
-}
+};
 
 function confirmDelUser(id, name) {
   $('#delUserName').text(name);
   $('#delidU').val(id);
-}
+};
 
 function editDepartDialog(id) {
   $('#editDepartment').val(document.getElementById('tr_depart' + id).cells[0].innerText);
@@ -189,7 +189,7 @@ function editDepartDialog(id) {
       type.checked = true;
     }
   });
-}
+};
 
 function editDepart() {
   let id = $('#editD').val();
@@ -221,7 +221,7 @@ function editDepart() {
       console.log(err);
     },
   });
-}
+};
 
 function editDUserDialog(id, username) {
   $(".js-editDU-basic-multiple").select2();
@@ -234,7 +234,7 @@ function editDUserDialog(id, username) {
     departLst.push(lst_p[i].id.replace('DU_', ''));
   }
   $(".js-editDU-basic-multiple").val(departLst).trigger('change');
-}
+};
 
 function editDUser() {
   var id = $('#editUD_hidden').val();
@@ -265,7 +265,7 @@ function editDUser() {
       console.log(err);
     },
   });
-}
+};
 
 function editSUserDialog(id, email) {
   $(".js-editSU-basic-single").select2();
@@ -277,7 +277,7 @@ function editSUserDialog(id, email) {
   if(departid.length != 0) {
     $(".js-editSU-basic-single").val(departid[0].id.replace('SU_', '')).trigger('change');
   }
-}
+};
 
 function editSUser() {
   var id = $('#editSU_hidden').val();
@@ -304,7 +304,7 @@ function editSUser() {
       console.log(err);
     },
   });
-}
+};
 
 function delDepart() {
   let id = $("#delidD").val();
@@ -326,7 +326,7 @@ function delDepart() {
       console.log(err);
     },
   });
-}
+};
 
 function delUser() {
   let id = $('#delidU').val();
@@ -347,7 +347,7 @@ function delUser() {
       console.log(err);
     },
   });
-}
+};
 
 function previewEditAvatar(input) {
   var imgfile = $("#edit_upload_img").get(0).files[0];
@@ -359,13 +359,13 @@ function previewEditAvatar(input) {
     }
     reader.readAsDataURL(imgfile);
   }
-}
+};
 
 function closeEditError() {
   document.getElementById('edit_user_div_error').className = 
     document.getElementById('edit_user_div_error').className.replace( /(?:^|\s)show(?!\S)/g , '' );
   $('#edit_user_error').text('OMG ERROR');
-}
+};
 
 function editUser(event) {
   event.preventDefault();
@@ -392,7 +392,7 @@ function editUser(event) {
         alert(err);
       }
   });  
-}
+};
 
 function avatarRemove() {
   var id = $('#edit_hidden_id').val();
@@ -412,7 +412,7 @@ function avatarRemove() {
       alert(err);
     }
   }); 
-}
+};
 
 function notiSubmit() {
   var id = $('#userHidden').val();
@@ -443,7 +443,7 @@ function notiSubmit() {
       alert(err);
     }
   }); 
-}
+};
 
 function notiEditSubmit() {
   var id = $('#notiHidden').val();
@@ -471,16 +471,16 @@ function notiEditSubmit() {
       alert(err);
     }
   });
-}
+};
 
 function editNotiLoad(title, content) {
   $('#user_editnoti_title').val(title.replace('<br/>', '\n'));
   $('#user_editnoti_content').val(content.replaceAll('<br/>', '\n'));
-}
+};
 
 function confirmDelPost(id) {
   $('#delPostId').val(id);
-}
+};
 
 function delPost() {
   var id = $('#delPostId').val();
@@ -501,7 +501,7 @@ function delPost() {
       alert(err);
     }
   })
-}
+};
 
 function changePass(id) {
   $.ajax({
@@ -520,7 +520,7 @@ function changePass(id) {
       alert(err);
     }
   });
-}
+};
 
 socket.on('showFlash', ({ depart, noti }) => {
   document.getElementById('myFlashMsg').style.display = 'inline-block';
@@ -637,7 +637,7 @@ function addPost(post){
   '</div> '
 
   return post_link;
-}
+};
 
 //New Post
 function postForm(e) {
@@ -664,7 +664,7 @@ function postForm(e) {
         alert(err);
       }
   });  
-}
+};
 
 //edit Post
 function putForm(e) {
@@ -693,7 +693,7 @@ function putForm(e) {
         alert(err);
       }
   });  
-}
+};
 
 function previewFile(input){
   $("#youtube_link").css("display", "none")
@@ -708,7 +708,7 @@ function previewFile(input){
     reader.readAsDataURL(file);
     $("#video_youtube").val("")
   }
-}
+};
 //Show Post need to edit
 function showPost(id) {
   console.log("vô")
@@ -749,12 +749,12 @@ function showPost(id) {
     $("#video_edit_icon").show()   
   }
 
-}
+};
 
 function showDelPost(id) {
 
   $('#postDelete').val(id);
-}
+};
 
 //Delete Post
 function deletePost() {
@@ -774,7 +774,7 @@ function deletePost() {
         alert(err.responseJSON.message);
       }
   });  
-}
+};
 
 function previewFileEdit(input){
   console.log($("#file_edit"))
@@ -786,7 +786,7 @@ function previewFileEdit(input){
     }
     reader.readAsDataURL(file);
   }
-}
+};
 
 function showVideo() {
   if ($("#youtube_link").css("display") == "none") {
@@ -796,7 +796,7 @@ function showVideo() {
   } else {
     $("#youtube_link").css("display", "none");
   }
-}
+};
 
 //like Post
 
@@ -834,7 +834,7 @@ function likePost(id) {
       },
     });
 
-}
+};
 
 //New Comment
 function post_comment(e, id) {
@@ -896,7 +896,7 @@ function post_comment(e, id) {
       },
     });
   }
-}
+};
 
 //Show Comment need to edit
 function showComment(id) {
@@ -905,11 +905,11 @@ function showComment(id) {
   let content = $("#content_comment" + id).text();
   $("#edit_comment").val(content);
 
-}
+};
 function showDelComment(id) {
 
   $('#commentDelete').val(id);
-}
+};
 
 //Edit Comment
 function editComment() {
@@ -935,7 +935,7 @@ function editComment() {
       },
     });
  
-}
+};
 
 //Delete Comment
 function deleteComment() {
@@ -957,8 +957,7 @@ function deleteComment() {
         alert(err.responseJSON.message);
       }
   });  
-}
-
+};
 
 // Load more comment
 function loadMoreComment(id) {
@@ -974,13 +973,444 @@ function loadMoreComment(id) {
     if ($(".cm-content:hidden").length == 0) {
       $(".cm-loadMore").text("No more comment").addClass("noContent");
     }
-    // $(".cm-content:hidden").slice(0, 4).slideDown();
-    // if ($(".cm-content:hidden").length == 0) {
-    //   $(".cm-loadMore").text("No more comment").addClass("noContent");
-    // }
   });
-}
+};
 $(document).ready(function () {
   $(".cm-content").slice(0, 3).show();
-})
+});
   
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  // Get the Sidebar
+  var mySidebar = document.getElementById("mySidebar");
+
+  // Get the DIV with overlay effect
+  var overlayBg = document.getElementById("myOverlay");
+  if (mySidebar.style.display === "block") {
+    mySidebar.style.display = "none";
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = "block";
+    overlayBg.style.display = "block";
+  }
+}
+// Close the sidebar with the close button
+function w3_close() {
+  // Get the Sidebar
+  var mySidebar = document.getElementById("mySidebar");
+
+  // Get the DIV with overlay effect
+  var overlayBg = document.getElementById("myOverlay");
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+
+jQuery(document).ready(function($) {
+	
+	"use strict";
+	
+//------- Notifications Dropdowns
+  $('.top-area > .setting-area > li').on("click",function(){
+	$(this).siblings().children('div').removeClass('active');
+	$(this).children('div').addClass('active');
+	return false;
+  });
+//------- remove class active on body
+  $("body *").not('.top-area > .setting-area > li').on("click", function() {
+	$(".top-area > .setting-area > li > div").removeClass('active');		
+ });
+	
+
+//--- user setting dropdown on topbar	
+$('.user-img').on('click', function() {
+	$('.user-setting').toggleClass("active");
+	return false;
+});	
+	
+//--- side message box	
+$('.friendz-list > li, .chat-users > li').on('click', function() {
+	$('.chat-box').addClass("show");
+	return false;
+});	
+	$('.close-mesage').on('click', function() {
+		$('.chat-box').removeClass("show");
+		return false;
+	});	
+	
+//------ scrollbar plugin
+	if ($.isFunction($.fn.perfectScrollbar)) {
+		$('.dropdowns, .twiter-feed, .invition, .followers, .chatting-area, .peoples, #people-list, .chat-list > ul, .message-list, .chat-users, .left-menu').perfectScrollbar();
+	}
+
+/*--- socials menu scritp ---*/	
+	$('.trigger').on("click", function() {
+	    $(this).parent(".menu").toggleClass("active");
+	  });
+	
+/*--- emojies show on text area ---*/	
+	$('.add-smiles > span').on("click", function() {
+	    $(this).parent().siblings(".smiles-bunch").toggleClass("active");
+	  });
+
+// delete notifications
+$('.notification-box > ul li > i.del').on("click", function(){
+    $(this).parent().slideUp();
+	return false;
+  }); 	
+
+/*--- socials menu scritp ---*/	
+	$('.f-page > figure i').on("click", function() {
+	    $(".drop").toggleClass("active");
+	  });
+
+//===== Search Filter =====//
+	(function ($) {
+	// custom css expression for a case-insensitive contains()
+	jQuery.expr[':'].Contains = function(a,i,m){
+	  return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
+	};
+
+	function listFilter(searchDir, list) { 
+	  var form = $("<form>").attr({"class":"filterform","action":"#"}),
+	  input = $("<input>").attr({"class":"filterinput","type":"text","placeholder":"Search Contacts..."});
+	  $(form).append(input).appendTo(searchDir);
+
+	  $(input)
+	  .change( function () {
+		var filter = $(this).val();
+		if(filter) {
+		  $(list).find("li:not(:Contains(" + filter + "))").slideUp();
+		  $(list).find("li:Contains(" + filter + ")").slideDown();
+		} else {
+		  $(list).find("li").slideDown();
+		}
+		return false;
+	  })
+	  .keyup( function () {
+		$(this).change();
+	  });
+	}
+
+//search friends widget
+	$(function () {
+	  listFilter($("#searchDir"), $("#people-list"));
+	});
+	}(jQuery));	
+
+//progress line for page loader
+	$('body').show();
+	NProgress.start();
+	setTimeout(function() { NProgress.done(); $('.fade').removeClass('out'); }, 2000);
+	
+//--- bootstrap tooltip	
+	$(function () {
+	  $('[data-toggle="tooltip"]').tooltip();
+	});
+	
+// Sticky Sidebar & header
+	if($(window).width() < 769) {
+		jQuery(".sidebar").children().removeClass("stick-widget");
+	}
+
+	if ($.isFunction($.fn.stick_in_parent)) {
+		$('.stick-widget').stick_in_parent({
+			parent: '#page-contents',
+			offset_top: 60,
+		});
+
+		
+		$('.stick').stick_in_parent({
+		    parent: 'body',
+            offset_top: 0,
+		});
+		
+	}
+	
+/*--- topbar setting dropdown ---*/	
+	$(".we-page-setting").on("click", function() {
+	    $(".wesetting-dropdown").toggleClass("active");
+	  });	
+	  
+/*--- topbar toogle setting dropdown ---*/	
+$('#nightmode').on('change', function() {
+    if ($(this).is(':checked')) {
+        // Show popup window
+        $(".theme-layout").addClass('black');	
+    }
+	else {
+        $(".theme-layout").removeClass("black");
+    }
+});
+
+//chosen select plugin
+if ($.isFunction($.fn.chosen)) {
+	$("select").chosen();
+}
+
+//----- add item plus minus button
+if ($.isFunction($.fn.userincr)) {
+	$(".manual-adjust").userincr({
+		buttonlabels:{'dec':'-','inc':'+'},
+	}).data({'min':0,'max':20,'step':1});
+}	
+	
+if ($.isFunction($.fn.loadMoreResults)) {	
+	$(".loadMore").loadMoreResults({
+    displayedItems: 10,
+    showItems: 10,
+    button: {
+      class: "btn-load-more",
+      text: "Load More",
+    },
+  });	
+}
+	//===== owl carousel  =====//
+	if ($.isFunction($.fn.owlCarousel)) {
+		$('.sponsor-logo').owlCarousel({
+			items: 6,
+			loop: true,
+			margin: 30,
+			autoplay: true,
+			autoplayTimeout: 1500,
+			smartSpeed: 1000,
+			autoplayHoverPause: true,
+			nav: false,
+			dots: false,
+			responsiveClass:true,
+				responsive:{
+					0:{
+						items:3,
+					},
+					600:{
+						items:3,
+
+					},
+					1000:{
+						items:6,
+					}
+				}
+
+		});
+	}
+	
+// slick carousel for detail page
+	if ($.isFunction($.fn.slick)) {
+	$('.slider-for-gold').slick({
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		arrows: false,
+		slide: 'li',
+		fade: false,
+		asNavFor: '.slider-nav-gold'
+	});
+	
+	$('.slider-nav-gold').slick({
+		slidesToShow: 3,
+		slidesToScroll: 1,
+		asNavFor: '.slider-for-gold',
+		dots: false,
+		arrows: true,
+		slide: 'li',
+		vertical: true,
+		centerMode: true,
+		centerPadding: '0',
+		focusOnSelect: true,
+		responsive: [
+		{
+			breakpoint: 768,
+			settings: {
+				slidesToShow: 3,
+				slidesToScroll: 1,
+				infinite: true,
+				vertical: false,
+				centerMode: true,
+				dots: false,
+				arrows: false
+			}
+		},
+		{
+			breakpoint: 641,
+			settings: {
+				slidesToShow: 3,
+				slidesToScroll: 1,
+				infinite: true,
+				vertical: true,
+				centerMode: true,
+				dots: false,
+				arrows: false
+			}
+		},
+		{
+			breakpoint: 420,
+			settings: {
+				slidesToShow: 3,
+				slidesToScroll: 1,
+				infinite: true,
+				vertical: false,
+				centerMode: true,
+				dots: false,
+				arrows: false
+			}
+		}	
+		]
+	});
+}
+	
+//---- responsive header
+	
+$(function() {
+
+	//	create the menus
+	$('#menu').mmenu();
+	$('#shoppingbag').mmenu({
+		navbar: {
+			title: 'General Setting'
+		},
+		offCanvas: {
+			position: 'right'
+		}
+	});
+
+	//	fire the plugin
+	$('.mh-head.first').mhead({
+		scroll: {
+			hide: 200
+		}
+		
+	});
+	$('.mh-head.second').mhead({
+		scroll: false
+	});
+
+	
+});		
+
+//**** Slide Panel Toggle ***//
+	  $("span.main-menu").on("click", function(){
+	     $(".side-panel").addClass('active');
+		  $(".theme-layout").addClass('active');
+		  return false;
+	  });
+
+	  $('.theme-layout').on("click",function(){
+		  $(this).removeClass('active');
+	     $(".side-panel").removeClass('active');
+		  
+	     
+	  });
+
+	  
+// login & register form
+	$('button.signup').on("click", function(){
+		$('.login-reg-bg').addClass('show');
+		return false;
+	  });
+	  
+	  $('.already-have').on("click", function(){
+		$('.login-reg-bg').removeClass('show');
+		return false;
+	  });
+	
+//----- count down timer		
+	if ($.isFunction($.fn.downCount)) {
+		$('.countdown').downCount({
+			date: '11/12/2018 12:00:00',
+			offset: +10
+		});
+	}
+	
+// /** Post a Comment **/
+// jQuery(".post-comt-box textarea").on("keydown", function(event) {
+
+// 	if (event.keyCode == 13) {
+// 		var comment = jQuery(this).val();
+// 		var parent = jQuery(".showmore").parent("li");
+// 		var comment_HTML = '	<li><div class="comet-avatar"><img src="images/resources/comet-1.jpg" alt=""></div><div class="we-comment"><div class="coment-head"><h5><a href="time-line.html" title="">Jason borne</a></h5><span>1 year ago</span><a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a></div><p>'+comment+'</p></div></li>';
+// 		$(comment_HTML).insertBefore(parent);
+// 		jQuery(this).val('');
+// 	}
+// }); 
+	
+//inbox page 	
+//***** Message Star *****//  
+    $('.message-list > li > span.star-this').on("click", function(){
+    	$(this).toggleClass('starred');
+    });
+
+
+//***** Message Important *****//
+    $('.message-list > li > span.make-important').on("click", function(){
+    	$(this).toggleClass('important-done');
+    });
+
+    
+
+// Listen for click on toggle checkbox
+	$('#select_all').on("click", function(event) {
+	  if(this.checked) {
+	      // Iterate each checkbox
+	      $('input:checkbox.select-message').each(function() {
+	          this.checked = true;
+	      });
+	  }
+	  else {
+	    $('input:checkbox.select-message').each(function() {
+	          this.checked = false;
+	      });
+	  }
+	});
+
+
+	$(".delete-email").on("click",function(){
+		$(".message-list .select-message").each(function(){
+			  if(this.checked) {
+			  	$(this).parent().slideUp();
+			  }
+		});
+	});
+
+// change background color on hover
+	$('.category-box').hover(function () {
+		$(this).addClass('selected');
+		$(this).parent().siblings().children('.category-box').removeClass('selected');
+	});
+	
+	
+//------- offcanvas menu 
+
+	const menu = document.querySelector('#toggle');  
+	const menuItems = document.querySelector('#overlay');  
+	const menuContainer = document.querySelector('.menu-container');  
+	const menuIcon = document.querySelector('.canvas-menu i');  
+
+	function toggleMenu(e) {
+		menuItems.classList.toggle('open');
+		menuContainer.classList.toggle('full-menu');
+		menuIcon.classList.toggle('fa-bars');
+		menuIcon.classList.add('fa-times');
+		e.preventDefault();
+	}
+
+	if( menu ) {
+		menu.addEventListener('click', toggleMenu, false);	
+	}
+	
+// Responsive nav dropdowns
+	$('.offcanvas-menu li.menu-item-has-children > a').on('click', function () {
+		$(this).parent().siblings().children('ul').slideUp();
+		$(this).parent().siblings().removeClass('active');
+		$(this).parent().children('ul').slideToggle();
+		$(this).parent().toggleClass('active');
+		return false;
+	});	
+	
+
+
+});//document ready end
+
+
+
+
+
+

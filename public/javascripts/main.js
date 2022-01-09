@@ -19,6 +19,8 @@ function onSignIn(googleUser) {
     email: profile.getEmail(),
     image_url: profile.getImageUrl()
   };
+  $("#signInDiv").css("display", "none")
+  $("#loadingBtn").css("display", "block")
   $.ajax({
     url: "/login",
     method: "post",
@@ -34,6 +36,8 @@ function onSignIn(googleUser) {
         .getAuthInstance()
         .signOut()
         .then(function () {
+          $("#signInDiv").css("display", "block")
+          $("#loadingBtn").css("display", "none")
           console.log("Sign Out");
           //window.location.replace("/logout");
         });

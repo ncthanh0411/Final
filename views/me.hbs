@@ -89,6 +89,7 @@
                                 <p id = "userID{{user._id}}" type = hidden></p>
                                 <div class="col-lg-6">
                                     {{#ifEquals user.role 2}}
+                                        {{#ifEquals user_show.email user.email}}
                                         <div class="central-meta">
                                             <div class="new-postbox">
                                                 <figure>
@@ -129,6 +130,7 @@
                                                 </div>
                                             </div>
                                         </div><!-- add post new box -->
+                                        {{/ifEquals}}
                                     {{/ifEquals}}	
                                     <div class="loadMore" id = "list_post">
                                         {{#each post}}

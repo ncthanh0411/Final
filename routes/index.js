@@ -274,49 +274,74 @@ router.get("/test", function (req, res, next) {
   res.render("test");
 });
 
-// CongP 06.12.21 Update
-router.get("/me", function (req, res, next) {
-  console.log("session1" + req.session.user);
-  console.log("session2" + req.session.email);
+// // CongP 06.12.21 Update
+// router.get("/me", function (req, res, next) {
+//   console.log("session1" + req.session.user);
+//   console.log("session2" + req.session.email);
 
-  if (!req.session.user && !req.session.email) {
-    return res.redirect("/login");
-  }
-  console.log("role: ", req.session.role);
-  Post.find({})
-    .populate()
-    .populate("user")
-    .populate({
-      path: "like",
-      populate: [
-        {
-          path: "user",
-        },
-      ]
-    })    
-    .populate({
-      path: "comment",
-      populate: [
-        {
-          path: "user",
-        },
-      ],
-      options: { sort: { createdAt: -1 } },
-    })
-    .then((post) => {
-      User.findOne({ email: req.session.email }, (error, user) => {
-        if (error || !user) {
-          return res.status(404).json({ message: error });
-        }
-        //return res.status(200).json(post);
-        res.render("me", { post: post, user: user, user_show: user });
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.render("me");
-    });
-});
+//   if (!req.session.user && !req.session.email) {
+//     return res.redirect("/login");
+//   }
+//   console.log("role: ", req.session.role);
+//   Post.find({})
+//     .populate()
+//     .populate("user")
+//     .populate({
+//       path: "like",
+//       populate: [
+//         {
+//           path: "user",
+//         },
+//       ]
+//     })    
+//     .populate({
+//       path: "comment",
+//       populate: [
+//         {
+//           path: "user",
+//         },
+//       ],
+//       options: { sort: { createdAt: -1 } },
+//     })
+//     .then((post) => {
+//       User.findOne({ email: req.session.email }, (error, user) => {
+//         if (error || !user) {
+//           return res.status(404).json({ message: error });
+//         }
+
+//         Notification.find()
+//           .limit(3)
+//           .sort({ createdAt: -1 })
+//           .populate("department")
+//           .then((listNoti) => {
+//             let depost_list = listNoti.map(function (myNoti) {
+//               return {
+//                 id: myNoti.id,
+//                 title: myNoti.title,
+//                 content: myNoti.content,
+//                 department: myNoti.department._id,
+//                 departmentName: myNoti.department.departmentName,
+//                 user: myNoti.user,
+//                 date: moment(myNoti.updatedAt).format("DD/MM/YYYY"),
+//               };
+//             });
+
+//             //return res.status(200).json(post);
+//             res.render("me", {
+//               post: post,
+//               user: user,
+//               user_show: user,
+//               depost_list: depost_list,
+//             });
+//           });
+        
+//       });
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//       res.render("me");
+//     });
+// });
 
 router.get("/me/:id", function (req, res, next) {
   console.log("session1" + req.session.user);
@@ -353,8 +378,40 @@ router.get("/me/:id", function (req, res, next) {
               ],
               options: { sort: { createdAt: -1 } }
             })        
-            .then((user_show) => {
-              res.render("me", { post: user_show.post, user: user, user_show: user_show });
+          .then((user_show) => {
+              Notification.find()
+                .limit(3)
+                .sort({ createdAt: -1 })
+                .populate("department")
+                .then((listNoti) => {
+                  let depost_list = listNoti.map(function (myNoti) {
+                    return {
+                      id: myNoti.id,
+                      title: myNoti.title,
+                      content: myNoti.content,
+                      department: myNoti.department._id,
+                      departmentName: myNoti.department.departmentName,
+                      user: myNoti.user,
+                      date: moment(myNoti.updatedAt).format(
+                        "DD/MM/YYYY"
+                      ),
+                    };
+                  });
+
+                  //return res.status(200).json(post);
+
+                  return res.render("me", {
+                    post: user_show.post,
+                    user: user,
+                    user_show: user_show,
+                    depost_list: depost_list,
+                  });
+                  
+                  
+                });  
+
+            
+              
             })
             .catch((error) => {
               console.log(error);

@@ -51,7 +51,10 @@ var upload = multer({ dest: './public/images/posts/' })
 router.post('/', upload.single('img'),function(req, res, next) {
 
   var data = req.body;
-  var you_url = req.body.video.replace('watch?v=', "embed/");
+  var your_url = req.body.video.replace('watch?v=', "embed/");
+  var url = your_url.split('&ab_channel=');
+  var you_url = url[0];
+  console.log(you_url)  
   var img = ''
   if(req.file){
     img = '/images/posts/' + req.file.filename;
@@ -95,7 +98,10 @@ router.post('/', upload.single('img'),function(req, res, next) {
 //Edit Post
 var upload = multer({ dest: './public/images/posts/' })
 router.put('/', upload.single('img'),function(req, res, next) {
-  var you_url = req.body.video.replace('watch?v=', "embed/");
+  var your_url = req.body.video.replace('watch?v=', "embed/");
+  var url = your_url.split('&ab_channel=');
+  var you_url = url[0];
+  console.log(you_url)
   var img = ''
   if(req.file){
     img = '/images/posts/' + req.file.filename;

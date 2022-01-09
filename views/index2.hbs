@@ -48,7 +48,8 @@
 									</div><!-- Shortcuts -->
 								</aside>
 							</div><!-- sidebar -->
-							<p id = "userID{{user._id}}" type = hidden></p>
+							<p id = "userID{{user._id}}" hidden></p>
+							<input id = "userImgUrl" type="hidden" value="{{user.image_url}}">
 							<div class="col-lg-6">
 								{{#ifEquals user.role 2}}
 									<div class="central-meta">
@@ -57,7 +58,7 @@
 											{{#if user.image_url}}
 												<img src="{{user.image_url}}" alt="">
 											{{else}}
-												<img src="/images/tdt.png" alt="">
+												<img src="./images/tdt.png" alt="">
 											{{/if}}
 											</figure>
 											<div class="newpst-input">
@@ -101,7 +102,7 @@
 													{{#if user.image_url}}
 														<img src="{{user.image_url}}" alt="">
 													{{else}}
-														<img src="/images/tdt.png" alt="">
+														<img src="./images/tdt.png" alt="">
 													{{/if}}
 													</figure>
 													<div class="friend-name">
@@ -161,10 +162,10 @@
 													<ul class="we-comet">
 														<li class="post-comment">
 															<div class="comet-avatar">
-															{{#if user.image_url}}
-																<img src="{{user.image_url}}" alt="">
+															{{#if ../user.image_url}}
+																<img src="{{../user.image_url}}" alt="">
 															{{else}}
-																<img src="/images/tdt.png" alt="">
+																<img src="./images/tdt.png" alt="">
 															{{/if}}
 															</div>
 															<div class="post-comt-box">
@@ -190,7 +191,7 @@
 																	{{#if user.image_url}}
 																		<img src="{{user.image_url}}" width="30px">
 																	{{else}}
-																		<img src="/images/tdt.png"  width="30px" alt="">
+																		<img src="./images/tdt.png"  width="30px" alt="">
 																	{{/if}}
 																</div>
 																<div class="we-comment">
@@ -353,7 +354,7 @@
 											<div class="bg-image" style="background-image: url(images/TDTU.png)">
 											</div>
 											<div class="baner-top">
-												<span><img alt="" src="/images/tdt.png"></span>
+												<span><img alt="" src="./images/tdt.png"></span>
 												<i class="fa fa-ellipsis-h"></i>
 											</div>
 											<div class="banermeta">

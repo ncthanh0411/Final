@@ -89,6 +89,7 @@ router.get("/", function (req, res, next) {
               //return res.status(200).json(post);
               
               return res.render("index2", {
+                title: 'Home',
                 post: post,
                 user: user,
                 depost_list: depost_list,

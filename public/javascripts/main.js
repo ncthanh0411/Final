@@ -6,6 +6,7 @@
 // };
 function onLoad() {
   gapi.load('auth2', function() {
+    console.log("Hello")
     gapi.auth2.init();
   });
 }
@@ -43,7 +44,8 @@ function onSignIn(googleUser) {
         });
       }
       else{
-        window.location.replace("/");
+        //window.location.replace("/");
+        location.href = "https://nodejs-finalproject.herokuapp.com/"
       }
     },
     error: function (user) {

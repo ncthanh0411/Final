@@ -6,10 +6,16 @@
 // };
 function onLoad() {
   gapi.load('auth2', function() {
-    console.log("Hello")
     gapi.auth2.init();
   });
 }
+window.onload = function()
+{
+  gapi.load('auth2', function() {
+    console.log("Hello")
+    gapi.auth2.init();
+  });
+};
 const socket = io('/');
 
 function onSignIn(googleUser) {
@@ -44,8 +50,8 @@ function onSignIn(googleUser) {
         });
       }
       else{
-        //window.location.replace("/");
-        location.href = "https://nodejs-finalproject.herokuapp.com/"
+        window.location.replace("/");
+        //location.href = "https://nodejs-finalproject.herokuapp.com/"
       }
     },
     error: function (user) {
